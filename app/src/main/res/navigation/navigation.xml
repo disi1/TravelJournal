@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/journeysFragment">
+
+    <fragment
+        android:id="@+id/journeysFragment"
+        android:name="com.example.traveljournal.Journeys"
+        android:label="fragment_journeys"
+        tools:layout="@layout/fragment_journeys" >
+        <action
+            android:id="@+id/action_journeysFragment_to_newJourneyFragment"
+            app:destination="@id/newJourneyFragment"
+            app:popUpTo="@+id/journeysFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newJourneyFragment"
+        android:name="com.example.traveljournal.NewJourney"
+        android:label="fragment_new_journey"
+        tools:layout="@layout/fragment_new_journey" />
+</navigation>
