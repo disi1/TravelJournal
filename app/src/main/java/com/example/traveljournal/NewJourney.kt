@@ -22,13 +22,6 @@ class NewJourney : Fragment() {
         val binding: FragmentNewJourneyBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_new_journey, container, false
         )
-        binding.addExperienceButton.setOnClickListener {
-            val experience = binding.experienceInputField.text
-            val checkBox = CheckBox(this.context)
-            checkBox.text = experience
-            binding.experiencesLinearLayout.addView(checkBox)
-            binding.experienceInputField.text!!.clear()
-        }
         setHasOptionsMenu(true)
         return binding.root
     }

@@ -13,11 +13,32 @@
         <action
             android:id="@+id/action_journeysFragment_to_newJourneyFragment"
             app:destination="@id/newJourneyFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/journeysFragment" />
+        <action
+            android:id="@+id/action_journeysFragment_to_journey"
+            app:destination="@id/journeyFragment" />
     </fragment>
     <fragment
         android:id="@+id/newJourneyFragment"
         android:name="com.example.traveljournal.NewJourney"
         android:label="fragment_new_journey"
         tools:layout="@layout/fragment_new_journey" />
+    <fragment
+        android:id="@+id/journeyFragment"
+        android:name="com.example.traveljournal.Journey"
+        android:label="fragment_journey"
+        tools:layout="@layout/fragment_journey" >
+        <action
+            android:id="@+id/action_journeyFragment_to_experienceFragment"
+            app:destination="@id/newExperienceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newExperienceFragment"
+        android:name="com.example.traveljournal.NewExperience"
+        android:label="fragment_new_experience"
+        tools:layout="@layout/fragment_new_experience" />
 </navigation>

@@ -13,7 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/navigation"></fragment>
+            app:navGraph="@navigation/navigation"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="110dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
