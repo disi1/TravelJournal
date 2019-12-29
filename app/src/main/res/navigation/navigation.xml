@@ -3,42 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/journeysFragment">
+    app:startDestination="@id/journeys_destination">
 
     <fragment
-        android:id="@+id/journeysFragment"
-        android:name="com.example.traveljournal.Journeys"
+        android:id="@+id/journeys_destination"
+        android:name="com.example.traveljournal.journeys.JourneysFragment"
         android:label="fragment_journeys"
         tools:layout="@layout/fragment_journeys" >
         <action
-            android:id="@+id/action_journeysFragment_to_newJourneyFragment"
-            app:destination="@id/newJourneyFragment"
+            android:id="@+id/action_journeys_destination_to_new_journey_destination"
+            app:destination="@id/new_journey_destination"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/journeysFragment" />
-        <action
-            android:id="@+id/action_journeysFragment_to_journey"
-            app:destination="@id/journeyFragment" />
+            app:popUpTo="@+id/journeys_destination" />
     </fragment>
     <fragment
-        android:id="@+id/newJourneyFragment"
-        android:name="com.example.traveljournal.NewJourney"
+        android:id="@+id/new_journey_destination"
+        android:name="com.example.traveljournal.journeys.NewJourneyFragment"
         android:label="fragment_new_journey"
         tools:layout="@layout/fragment_new_journey" />
-    <fragment
-        android:id="@+id/journeyFragment"
-        android:name="com.example.traveljournal.Journey"
-        android:label="fragment_journey"
-        tools:layout="@layout/fragment_journey" >
-        <action
-            android:id="@+id/action_journeyFragment_to_experienceFragment"
-            app:destination="@id/newExperienceFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newExperienceFragment"
-        android:name="com.example.traveljournal.NewExperience"
-        android:label="fragment_new_experience"
-        tools:layout="@layout/fragment_new_experience" />
 </navigation>
