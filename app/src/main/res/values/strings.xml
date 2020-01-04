@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Travel Journal</string>
 
+    <string name="apiKey">AIzaSyD9gTR55_KQYV0FkdZatU27KwFoTBNebxE</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="myJourneys">My Journeys</string>
     <string name="createJourney">Create Journey</string>

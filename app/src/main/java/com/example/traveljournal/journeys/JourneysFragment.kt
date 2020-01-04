@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 
@@ -23,9 +24,10 @@ class JourneysFragment : Fragment() {
             inflater,
             R.layout.fragment_journeys, container, false
         )
-        binding.newJourneyButton.setOnClickListener (
-            Navigation.createNavigateOnClickListener(R.id.action_journeys_destination_to_new_journey_destination)
-        )
+        binding.newJourneyButton.setOnClickListener {
+            this.findNavController()
+                .navigate(JourneysFragmentDirections.actionJourneysDestinationToNewJourneyDestination())
+        }
         return binding.root
     }
 }
