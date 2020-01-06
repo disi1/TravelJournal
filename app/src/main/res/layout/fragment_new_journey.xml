@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:text="@string/whereQuestion"
             android:textSize="18sp"
@@ -46,20 +46,27 @@
             android:layout_marginTop="10dp"
             android:src="@android:drawable/ic_menu_mylocation"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/journeyBckgImageView"
-            android:layout_width="400dp"
-            android:layout_height="300dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_undraw_destinations"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".95"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_undraw_destinations" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

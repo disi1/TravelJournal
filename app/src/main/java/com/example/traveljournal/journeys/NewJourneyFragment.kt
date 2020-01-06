@@ -1,6 +1,5 @@
 package com.example.traveljournal.journeys
 
-
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -59,11 +58,11 @@ class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
     override fun onPlaceSelected(p0: Place) {
         Toast.makeText(this.context,""+p0!!.name+p0!!.latLng,Toast.LENGTH_LONG).show();
-        Log.i(TAG, "Place: " + p0.getName() + ", " + p0.getId());
+        Log.i("PLACE", "Place: " + p0.getName() + ", " + p0.getId());
     }
 
     override fun onError(status: Status) {
         Toast.makeText(this.context,""+status.toString(),Toast.LENGTH_LONG).show();
-        Log.i(TAG, "An error occurred: " + status);
+        Log.i("ERROR", "An error occurred: " + status);
     }
 }
