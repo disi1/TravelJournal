@@ -16,6 +16,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import java.util.*
+import kotlin.reflect.typeOf
 
 class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
@@ -56,8 +57,8 @@ class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
         return super.onOptionsItemSelected(item)
     }
 
+    @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
-        Toast.makeText(this.context,""+p0!!.name+p0!!.latLng,Toast.LENGTH_LONG).show();
         Log.i("PLACE", "Place: " + p0.getName() + ", " + p0.getId());
     }
 

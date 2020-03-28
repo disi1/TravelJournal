@@ -4,6 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".journeys.JourneysFragment">
 
+    <!-- Data to make available to the XML via data binding. In this case,
+         the whole ViewModel, so that we can access the LiveData,
+         click handlers, and state variables. -->
+
+    <data>
+        <variable
+            name="journeysViewModel"
+            type="com.example.traveljournal.journeys.JourneysViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

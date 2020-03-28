@@ -23,5 +23,9 @@
         android:id="@+id/new_journey_destination"
         android:name="com.example.traveljournal.journeys.NewJourneyFragment"
         android:label="fragment_new_journey"
-        tools:layout="@layout/fragment_new_journey" />
+        tools:layout="@layout/fragment_new_journey" >
+        <action
+            android:id="@+id/action_new_journey_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination" />
+    </fragment>
 </navigation>
