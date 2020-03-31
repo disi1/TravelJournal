@@ -21,11 +21,16 @@
     </fragment>
     <fragment
         android:id="@+id/new_journey_destination"
-        android:name="com.example.traveljournal.journeys.NewJourneyFragment"
+        android:name="com.example.traveljournal.journey.NewJourneyFragment"
         android:label="fragment_new_journey"
         tools:layout="@layout/fragment_new_journey" >
+        <argument
+            android:name="journeyKey"
+            app:argType="long" />
         <action
             android:id="@+id/action_new_journey_destination_to_journeys_destination"
-            app:destination="@id/journeys_destination" />
+            app:destination="@id/journeys_destination"
+            app:popUpTo="@id/journeys_destination"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

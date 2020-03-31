@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -25,19 +26,34 @@ class JourneysFragment : Fragment() {
         val binding: FragmentJourneysBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_journeys, container, false)
+
         // get a reference to the application that this fragment is attached to, to pass in to the ViewModelFactory provider
         val application = requireNotNull(this.activity).application
+
         // get a reference to the data source via a reference to the Dao
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
+
         val viewModelFactory = JourneysViewModelFactory(dataSource, application)
+
         val journeysViewModel = ViewModelProviders.of(this, viewModelFactory).get(JourneysViewModel::class.java)
+
         binding.journeysViewModel = journeysViewModel
+
         binding.setLifecycleOwner(this)
 
-        binding.newJourneyButton.setOnClickListener {
-            this.findNavController()
-                .navigate(JourneysFragmentDirections.actionJourneysDestinationToNewJourneyDestination())
-        }
+        journeysViewModel.navigateToNewJourney.observe(this, Observer { journey ->
+            journey?.let {
+                this.findNavController().navigate(
+                    JourneysFragmentDirections
+                        .actionJourneysDestinationToNewJourneyDestination(journey.journeyId))
+                journeysViewModel.doneNavigating()
+            }
+        })
+
+//        binding.newJourneyButton.setOnClickListener {
+//            this.findNavController()
+//                .navigate(JourneysFragmentDirections.actionJourneysDestinationToNewJourneyDestination())
+//        }
         return binding.root
     }
 }

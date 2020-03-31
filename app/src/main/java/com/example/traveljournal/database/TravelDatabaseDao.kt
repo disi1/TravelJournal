@@ -24,5 +24,5 @@ interface TravelDatabaseDao {
     fun getAllJourneys(): LiveData<List<Journey>>
 
     @Query("SELECT * FROM journey_table ORDER BY journeyId DESC LIMIT 1")
-    fun getLastJourney(): Journey?
+    fun getLatestJourney(): Journey?
 }
