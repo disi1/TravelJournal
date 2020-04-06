@@ -27,4 +27,5 @@
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
     <string name="describeMemory">Describe your memory</string>
+    <string name="cleared_message">All your Journeys have been deleted.</string>
 </resources>

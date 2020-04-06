@@ -2,7 +2,9 @@ package com.example.traveljournal.journey
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,7 +22,10 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import java.util.*
 
-class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
+
+class NewJourneyFragment : Fragment(), PlaceSelectionListener {
+
+    private lateinit var newJourneyViewModel: NewJourneyViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.createJourney)
@@ -38,7 +43,7 @@ class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         val viewModelFactory = NewJourneyViewModelFactory(arguments.journeyKey, dataSource)
 
-        val newJourneyViewModel =
+        newJourneyViewModel =
             ViewModelProviders.of(
                 this, viewModelFactory).get(NewJourneyViewModel::class.java)
 
@@ -55,14 +60,20 @@ class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
 //        setHasOptionsMenu(true)
 
         if (!Places.isInitialized()) {
-            this.context?.let { Places.initialize(it, getString(R.string.apiKey), Locale.US) };
+            this.context?.let { Places.initialize(it, getString(R.string.apiKey), Locale.US) }
         }
 
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
-        autocompleteFragment!!.setHint(getString(R.string.destinationExample));
-        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment!!.setHint(getString(R.string.destinationExample))
+        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
+
+        val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
+        clearButton?.setOnClickListener { view: View? ->
+            autocompleteFragment.setText("")
+            newJourneyViewModel.selectedPlaceName.value = null
+        }
 
         return binding.root
     }
@@ -84,11 +95,13 @@ class   NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
-        Log.i("PLACE", "Place: " + p0.getName() + ", " + p0.getId());
+        Log.i("JO", "Place: " + p0.name + ", " + p0.id )
+        Log.i("JO", "Place: $p0")
+        newJourneyViewModel.selectedPlaceName.value = p0.address
     }
 
     override fun onError(status: Status) {
-        Toast.makeText(this.context,""+status.toString(),Toast.LENGTH_LONG).show();
-        Log.i("ERROR", "An error occurred: " + status);
+        Toast.makeText(this.context,""+status.toString(),Toast.LENGTH_LONG).show()
+        Log.i("ERROR", "An error occurred: " + status)
     }
 }

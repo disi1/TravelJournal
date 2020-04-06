@@ -12,8 +12,7 @@ fun formatJourneys(journeys: List<Journey>, resources: Resources): Spanned {
     val sb = StringBuilder()
     sb.apply {
         journeys.forEach {
-            append("<br>")
-            append(it.placeId)
+            append("Journey to ${it.placeName}")
             append("<br><br>")
         }
     }

@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_journey.*
 
 class JourneysFragment : Fragment() {
 
@@ -39,9 +41,9 @@ class JourneysFragment : Fragment() {
 
         binding.journeysViewModel = journeysViewModel
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
-        journeysViewModel.navigateToNewJourney.observe(this, Observer { journey ->
+        journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer { journey ->
             journey?.let {
                 this.findNavController().navigate(
                     JourneysFragmentDirections
@@ -50,10 +52,17 @@ class JourneysFragment : Fragment() {
             }
         })
 
-//        binding.newJourneyButton.setOnClickListener {
-//            this.findNavController()
-//                .navigate(JourneysFragmentDirections.actionJourneysDestinationToNewJourneyDestination())
-//        }
+        journeysViewModel.showSnackbarEvent.observe(this, Observer {
+            if (it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.cleared_message),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                journeysViewModel.doneShowingSnackbar()
+            }
+        })
+
         return binding.root
     }
 }

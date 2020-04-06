@@ -1,6 +1,7 @@
 package com.example.traveljournal.journeys
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,6 +33,19 @@ class JourneysViewModel(
         formatJourneys(journeys, application.resources)
     }
 
+    val clearButtonVisible = Transformations.map(journeys) {
+        it?.isNotEmpty()
+    }
+
+    private var _showSnackbarEvent = MutableLiveData<Boolean>()
+
+    val showSnackbarEvent: LiveData<Boolean>
+        get() = _showSnackbarEvent
+
+    fun doneShowingSnackbar() {
+        _showSnackbarEvent.value = false
+    }
+
     private val _navigateToNewJourney = MutableLiveData<Journey>()
 
     val navigateToNewJourney: LiveData<Journey>
@@ -54,7 +68,7 @@ class JourneysViewModel(
     private suspend fun getLatestJourneyFromDatabase(): Journey? {
         return withContext(Dispatchers.IO) {
             var journey = database.getLatestJourney()
-            if(journey?.placeId != "") {
+            if(journey?.placeName != "") {
                 journey = null
             }
             journey
@@ -85,6 +99,8 @@ class JourneysViewModel(
         uiScope.launch {
             clear()
             newJourney.value = null
+
+            _showSnackbarEvent.value = true
         }
     }
 
