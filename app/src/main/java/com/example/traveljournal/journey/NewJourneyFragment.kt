@@ -67,7 +67,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
         autocompleteFragment!!.setHint(getString(R.string.destinationExample))
-        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
+        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener { view: View? ->
@@ -97,7 +97,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
     override fun onPlaceSelected(p0: Place) {
         Log.i("JO", "Place: " + p0.name + ", " + p0.id )
         Log.i("JO", "Place: $p0")
-        newJourneyViewModel.selectedPlaceName.value = p0.address
+        newJourneyViewModel.selectedPlaceName.value = p0.name
     }
 
     override fun onError(status: Status) {

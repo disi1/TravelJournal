@@ -27,7 +27,7 @@ class JourneysViewModel(
 
     private var newJourney = MutableLiveData<Journey?>()
 
-    private val journeys = database.getAllJourneys()
+    val journeys = database.getAllJourneys()
 
     val journeysStrings = Transformations.map(journeys) { journeys ->
         formatJourneys(journeys, application.resources)

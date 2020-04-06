@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".journeys.JourneysFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Data to make available to the XML via data binding. In this case,
          the whole ViewModel, so that we can access the LiveData,
@@ -16,7 +15,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".journeys.JourneysFragment">
 
         <SearchView
             android:id="@+id/searchView"
@@ -27,58 +27,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
-            android:id="@+id/scrollView4"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/journeys_list"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/clear_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/clearBtn"
-            app:layout_constraintTop_toBottomOf="@+id/searchView">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/newJourneyButton"
-                    android:layout_width="176dp"
-                    android:layout_height="266dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/colorPrimary"
-                    android:text="@string/newJourney"
-                    android:onClick="@{() -> journeysViewModel.onNewJourney()}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:text="@{journeysViewModel.journeysStrings}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/newJourneyButton"
-                    tools:text="Text view" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/new_journey_button"/>
 
         <Button
-            android:id="@+id/clearBtn"
+            android:id="@+id/new_journey_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
+            android:onClick="@{() -> journeysViewModel.onNewJourney()}"
+            android:text="@string/newJourney"
+            app:layout_constraintBottom_toTopOf="@+id/journeys_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+        <Button
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:enabled="@{journeysViewModel.clearButtonVisible}"
             android:onClick="@{() -> journeysViewModel.onClear()}"
             android:text="CLEAR"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:enabled="@{journeysViewModel.clearButtonVisible}"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/journeys_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

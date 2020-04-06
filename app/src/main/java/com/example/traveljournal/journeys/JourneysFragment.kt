@@ -41,6 +41,15 @@ class JourneysFragment : Fragment() {
 
         binding.journeysViewModel = journeysViewModel
 
+        val adapter = JourneyAdapter()
+        binding.journeysList.adapter = adapter
+
+        journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
+            }
+        })
+
         binding.lifecycleOwner = this
 
         journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer { journey ->
@@ -52,7 +61,7 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.showSnackbarEvent.observe(this, Observer {
+        journeysViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Snackbar.make(
                     activity!!.findViewById(android.R.id.content),
