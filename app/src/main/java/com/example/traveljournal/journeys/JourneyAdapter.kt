@@ -18,9 +18,7 @@ class JourneyAdapter: RecyclerView.Adapter<JourneyAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_journey, parent, false)
-        return ViewHolder(view)
+        return ViewHolder.from(parent)
     }
 
     override fun getItemCount() = data.size
@@ -30,7 +28,7 @@ class JourneyAdapter: RecyclerView.Adapter<JourneyAdapter.ViewHolder>() {
         holder.bind(item)
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
         val journeyDestinationName: TextView = itemView.findViewById(R.id.journey_destination_name)
         val journeyDestinationAddress: TextView = itemView.findViewById(R.id.journey_destination_address)
         val journeyImage: ImageView = itemView.findViewById(R.id.journey_image)
@@ -39,6 +37,14 @@ class JourneyAdapter: RecyclerView.Adapter<JourneyAdapter.ViewHolder>() {
             journeyDestinationName.text = item.placeName
             journeyDestinationAddress.text = item.placeAddress
             journeyImage.setImageResource(R.drawable.ic_undraw_destinations)
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.list_item_journey, parent, false)
+                return ViewHolder(view)
+            }
         }
     }
 }

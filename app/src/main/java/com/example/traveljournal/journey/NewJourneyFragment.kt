@@ -95,7 +95,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
-        Log.i("JO", "Place: " + p0.name + ", " + p0.name + ", " + p0.id )
+        Log.i("JO", "Place: " + p0.name + ", " + p0.address + ", " + p0.id )
         Log.i("JO", "Place: $p0")
         newJourneyViewModel.selectedPlaceName.value = p0.name
         newJourneyViewModel.selectedPlaceAddress.value = p0.address
