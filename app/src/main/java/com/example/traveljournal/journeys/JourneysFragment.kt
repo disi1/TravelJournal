@@ -46,7 +46,7 @@ class JourneysFragment : Fragment() {
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

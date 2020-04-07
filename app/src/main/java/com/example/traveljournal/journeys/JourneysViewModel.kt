@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.traveljournal.database.Journey
-import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.database.TravelDatabaseDao
-import com.example.traveljournal.formatJourneys
 import kotlinx.coroutines.*
 
 class JourneysViewModel(
@@ -28,10 +26,6 @@ class JourneysViewModel(
     private var newJourney = MutableLiveData<Journey?>()
 
     val journeys = database.getAllJourneys()
-
-    val journeysStrings = Transformations.map(journeys) { journeys ->
-        formatJourneys(journeys, application.resources)
-    }
 
     val clearButtonVisible = Transformations.map(journeys) {
         it?.isNotEmpty()
