@@ -24,5 +24,3 @@ fun formatJourneys(journeys: List<Journey>, resources: Resources): Spanned {
         return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 }
-
-class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)

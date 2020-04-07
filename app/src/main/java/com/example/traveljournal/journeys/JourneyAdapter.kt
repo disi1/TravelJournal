@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.R
-import com.example.traveljournal.TextItemViewHolder
 import com.example.traveljournal.database.Journey
 
 class JourneyAdapter: RecyclerView.Adapter<JourneyAdapter.ViewHolder>() {
@@ -28,14 +27,18 @@ class JourneyAdapter: RecyclerView.Adapter<JourneyAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item = data[position]
-        holder.journeyDestinationName.text = item.placeName
-        holder.journeyDestinationAddress.text = item.placeAddress
-        holder.journeyImage.setImageResource(R.drawable.ic_undraw_destinations)
+        holder.bind(item)
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val journeyDestinationName: TextView = itemView.findViewById(R.id.journey_destination_name)
         val journeyDestinationAddress: TextView = itemView.findViewById(R.id.journey_destination_address)
         val journeyImage: ImageView = itemView.findViewById(R.id.journey_image)
+
+        fun bind(item: Journey) {
+            journeyDestinationName.text = item.placeName
+            journeyDestinationAddress.text = item.placeAddress
+            journeyImage.setImageResource(R.drawable.ic_undraw_destinations)
+        }
     }
 }
