@@ -18,6 +18,8 @@ class NewJourneyViewModel (
 
     val selectedPlaceName = MutableLiveData<String>()
 
+    val selectedPlaceAddress = MutableLiveData<String>()
+
     private var viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -52,6 +54,7 @@ class NewJourneyViewModel (
             withContext(Dispatchers.IO) {
                 val journey = database.getJourney(journeyKey) ?: return@withContext
                 journey.placeName = selectedPlaceName.value.toString()
+                journey.placeAddress = selectedPlaceAddress.value.toString()
                 database.updateJourney(journey)
             }
             _navigateToJourneys.value = true
