@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
@@ -40,8 +42,13 @@ class JourneysFragment : Fragment() {
         val journeysViewModel = ViewModelProviders.of(this, viewModelFactory).get(JourneysViewModel::class.java)
 
         binding.journeysViewModel = journeysViewModel
+        
+        val manager = GridLayoutManager(activity, 2)
+        binding.journeysList.layoutManager = manager
 
-        val adapter = JourneyAdapter()
+        val adapter = JourneyAdapter(JourneyListener {
+            journeyId -> Toast.makeText(context, "${journeyId}", Toast.LENGTH_LONG).show()
+        })
         binding.journeysList.adapter = adapter
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {

@@ -7,16 +7,20 @@
         <variable
             name="journey"
             type="com.example.traveljournal.database.Journey" />
+        <variable
+            name="clickListener"
+            type="com.example.traveljournal.journeys.JourneyListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(journey)}">
 
         <ImageView
             android:id="@+id/journey_image"
             android:layout_width="@dimen/icon_size"
-            android:layout_height="60dp"
+            android:layout_height="240dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -31,23 +35,23 @@
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="5dp"
             app:journeyDestinationName="@{journey}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/journey_image"
-            app:layout_constraintTop_toTopOf="@+id/journey_image"
-            tools:text="Zürich"/>
+            app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
+            app:layout_constraintEnd_toEndOf="@+id/journey_image"
+            app:layout_constraintStart_toStartOf="@+id/journey_image"
+            tools:text="Zürich" />
 
         <TextView
             android:id="@+id/journey_destination_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="9dp"
             app:journeyDestinationAddress="@{journey}"
+            app:layout_constraintBottom_toBottomOf="@+id/journey_image"
             app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
             app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
-            app:layout_constraintTop_toBottomOf="@+id/journey_destination_name"
-            tools:text="Zürich, Switzerland"/>
+            tools:text="Zürich, Switzerland" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
