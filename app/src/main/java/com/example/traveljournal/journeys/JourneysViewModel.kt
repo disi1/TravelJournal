@@ -16,11 +16,6 @@ class JourneysViewModel(
 
     private var viewModelJob = Job()
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private var newJourney = MutableLiveData<Journey?>()
@@ -103,4 +98,22 @@ class JourneysViewModel(
             database.clearJourneys()
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
+    private val _navigateToJourneyDetails = MutableLiveData<Long>()
+    val navigateToJourneyDetails
+        get() = _navigateToJourneyDetails
+
+    fun onJourneyClicked(id: Long) {
+        _navigateToJourneyDetails.value = id
+    }
+
+    fun onJourneyDetailsNavigated() {
+        _navigateToJourneyDetails.value = null
+    }
+
 }

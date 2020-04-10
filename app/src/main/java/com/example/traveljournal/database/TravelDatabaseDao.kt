@@ -25,4 +25,7 @@ interface TravelDatabaseDao {
 
     @Query("SELECT * FROM journey_table ORDER BY journeyId DESC LIMIT 1")
     fun getLatestJourney(): Journey?
+
+    @Query("SELECT * from journey_table WHERE journeyId = :key")
+    fun getJourneyWithId(key: Long): LiveData<Journey>
 }

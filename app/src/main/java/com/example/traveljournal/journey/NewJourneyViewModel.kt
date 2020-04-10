@@ -38,17 +38,6 @@ class NewJourneyViewModel (
         _navigateToJourneys.value = null
     }
 
-//    fun onCreateJourney(selectedPlaceName: String) {
-//        uiScope.launch {
-//            withContext(Dispatchers.IO) {
-//                val journey = database.getJourney(journeyKey) ?: return@withContext
-//                journey.placeName = selectedPlaceName
-//                database.updateJourney(journey)
-//            }
-//            _navigateToJourneys.value = true
-//        }
-//    }
-
     fun onCreateJourney() {
         uiScope.launch {
             withContext(Dispatchers.IO) {

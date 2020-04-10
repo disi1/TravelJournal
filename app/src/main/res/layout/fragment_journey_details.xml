@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="journeyDetailsViewModel"
+            type="com.example.traveljournal.journeyDetails.JourneyDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".journeyDetails.JourneyDetailsFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/experiences_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/close_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/journey_image"/>
+
+        <ImageView
+            android:id="@+id/journey_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            app:journeyImage="@{journeyDetailsViewModel.journey}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".30"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="1"
+            tools:src="@drawable/ic_undraw_destinations" />
+
+        <TextView
+            android:id="@+id/journey_destination_name"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:journeyDestinationName="@{journeyDetailsViewModel.journey}"
+            app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
+            app:layout_constraintEnd_toEndOf="@+id/journey_image"
+            app:layout_constraintStart_toStartOf="@+id/journey_image"
+            tools:text="Zürich" />
+
+        <TextView
+            android:id="@+id/journey_destination_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="9dp"
+            app:journeyDestinationAddress="@{journeyDetailsViewModel.journey}"
+            app:layout_constraintBottom_toBottomOf="@+id/journey_image"
+            app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
+            app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
+            tools:text="Zürich, Switzerland" />
+
+        <Button
+            android:id="@+id/close_button"
+            style="@style/TravelButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="@{() -> journeyDetailsViewModel.onClose()}"
+            android:text="Close"
+            app:layout_constraintBaseline_toBaselineOf="@id/new_experience_button"
+            app:layout_constraintEnd_toStartOf="@+id/new_experience_button"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/new_experience_button"
+            style="@style/TravelButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="New Experience"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/close_button"
+            app:layout_constraintTop_toBottomOf="@+id/experiences_list" />
+
+<!--        <ScrollView-->
+<!--            android:id="@+id/scrollView2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            tools:layout_editor_absoluteX="-43dp"-->
+<!--            tools:layout_editor_absoluteY="-337dp">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/journeyBackground"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="175dp"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    tools:src="@tools:sample/backgrounds/scenic[7]" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/journeyNameTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:text="Journey name"-->
+<!--                    android:textColor="@color/colorPrimaryDark"-->
+<!--                    android:textSize="24sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.0"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/journeyBackground" />-->
+
+<!--                <ProgressBar-->
+<!--                    android:id="@+id/progressBar"-->
+<!--                    style="?android:attr/progressBarStyleHorizontal"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="19dp"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/noOfExperiencesTextView"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/journeyNameTextView" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/noOfExperiencesTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:text="0/0 experiences"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/journeyNameTextView" />-->
+
+<!--                <com.google.android.gms.maps.MapView-->
+<!--                    android:id="@+id/journeyMap"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="160dp"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="1.0"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/progressBar" />-->
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--        </ScrollView>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/addExperienceButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="@string/addExperience"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="1.0"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,14 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_journey.*
 
 class JourneysFragment : Fragment() {
 
@@ -47,9 +45,17 @@ class JourneysFragment : Fragment() {
         binding.journeysList.layoutManager = manager
 
         val adapter = JourneyAdapter(JourneyListener {
-            journeyId -> Toast.makeText(context, "${journeyId}", Toast.LENGTH_LONG).show()
+            journeyId -> journeysViewModel.onJourneyClicked(journeyId)
         })
         binding.journeysList.adapter = adapter
+
+        journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journey ->
+            journey?.let {
+                this.findNavController().navigate(
+                    JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(journey))
+                journeysViewModel.onJourneyDetailsNavigated()
+            }
+        })
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {

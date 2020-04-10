@@ -14,10 +14,12 @@
             android:id="@+id/action_journeys_destination_to_new_journey_destination"
             app:destination="@id/new_journey_destination"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/journeys_destination" />
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
+        <action
+            android:id="@+id/action_journeys_destination_to_journey_details_destination"
+            app:destination="@id/journey_details_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
     </fragment>
     <fragment
         android:id="@+id/new_journey_destination"
@@ -30,6 +32,22 @@
         <action
             android:id="@+id/action_new_journey_destination_to_journeys_destination"
             app:destination="@id/journeys_destination"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/journeys_destination"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/journey_details_destination"
+        android:name="com.example.traveljournal.journeyDetails.JourneyDetailsFragment"
+        android:label="fragment_journey_details"
+        tools:layout="@layout/fragment_journey_details" >
+        <argument
+            android:name="journeyKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_journey_details_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination"
+            app:launchSingleTop="false"
             app:popUpTo="@id/journeys_destination"
             app:popUpToInclusive="true" />
     </fragment>

@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Basic buttons styling-->
+    <style name="TravelButtons" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@color/white_text_color</item>
+        <item name="colorAccent">@color/button_color</item>
+        <item name="colorControlHighlight">@color/button_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
