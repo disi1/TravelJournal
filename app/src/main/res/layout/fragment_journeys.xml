@@ -34,21 +34,7 @@
             app:layout_constraintBottom_toTopOf="@+id/clear_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/new_journey_button"/>
-
-        <Button
-            android:id="@+id/new_journey_button"
-            style="@style/TravelButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="@{() -> journeysViewModel.onNewJourney()}"
-            android:text="@string/newJourney"
-            app:layout_constraintBottom_toTopOf="@+id/journeys_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+            app:layout_constraintTop_toBottomOf="@id/searchView"/>
 
         <Button
             android:id="@+id/clear_button"
@@ -60,10 +46,23 @@
             android:enabled="@{journeysViewModel.clearButtonVisible}"
             android:onClick="@{() -> journeysViewModel.onClear()}"
             android:text="CLEAR"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/new_journey_button"
+            app:layout_constraintEnd_toStartOf="@+id/new_journey_button"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/new_journey_button"
+            style="@style/TravelButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{() -> journeysViewModel.onNewJourney()}"
+            android:text="@string/newJourney"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/journeys_list" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clear_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
