@@ -19,7 +19,7 @@ class NewExperience : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.createExperience)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_experience)
         val binding: FragmentNewExperienceBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_new_experience, container, false
         )

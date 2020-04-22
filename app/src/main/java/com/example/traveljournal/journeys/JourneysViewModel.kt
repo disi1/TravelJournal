@@ -22,17 +22,19 @@ class JourneysViewModel(
 
     val journeys = database.getAllJourneys()
 
-    val clearButtonVisible = Transformations.map(journeys) {
-        it?.isNotEmpty()
-    }
-
     private var _showSnackbarEvent = MutableLiveData<Boolean>()
+    private var _showSnackBarEventJourneyDeleted = MutableLiveData<Boolean>()
 
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
+    val showSnackBarEventJourneyDeleted: LiveData<Boolean>
+        get() = _showSnackBarEventJourneyDeleted
 
     fun doneShowingSnackbar() {
         _showSnackbarEvent.value = false
+    }
+    fun doneShowingSnackbarJourneyDeleted() {
+        _showSnackBarEventJourneyDeleted.value = false
     }
 
     private val _navigateToNewJourney = MutableLiveData<Journey>()
@@ -95,7 +97,22 @@ class JourneysViewModel(
 
     private suspend fun clear() {
         withContext(Dispatchers.IO) {
+            database.clearExperiences()
             database.clearJourneys()
+        }
+    }
+
+    fun onDeleteJourney(journey: Journey) {
+        uiScope.launch {
+            deleteJourney(journey)
+
+            _showSnackBarEventJourneyDeleted.value = true
+        }
+    }
+
+    private suspend fun deleteJourney(journey: Journey) {
+        withContext(Dispatchers.IO) {
+            database.deleteJourney(journey)
         }
     }
 

@@ -31,25 +31,12 @@
             android:id="@+id/journeys_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/clear_button"
+            app:layout_constraintBottom_toTopOf="@+id/new_journey_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchView"/>
-
-        <Button
-            android:id="@+id/clear_button"
-            style="@style/TravelButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:enabled="@{journeysViewModel.clearButtonVisible}"
-            android:onClick="@{() -> journeysViewModel.onClear()}"
-            android:text="CLEAR"
-            app:layout_constraintBaseline_toBaselineOf="@id/new_journey_button"
-            app:layout_constraintEnd_toStartOf="@+id/new_journey_button"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/searchView"
+            tools:itemCount="16"
+            tools:listitem="@layout/list_item_journey"/>
 
         <Button
             android:id="@+id/new_journey_button"
@@ -59,10 +46,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:onClick="@{() -> journeysViewModel.onNewJourney()}"
-            android:text="@string/newJourney"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/clear_button" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

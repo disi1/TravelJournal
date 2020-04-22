@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/createJourneyButton"
-        android:title="@string/createJourneyButton"
+        android:title="@string/create_journey_button"
         app:showAsAction="always"
         />
 </menu>

@@ -28,7 +28,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
     private lateinit var newJourneyViewModel: NewJourneyViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.createJourney)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_journey)
 
         val binding: FragmentNewJourneyBinding = DataBindingUtil.inflate(
             inflater,
@@ -66,13 +66,14 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
-        autocompleteFragment!!.setHint(getString(R.string.destinationExample))
+        autocompleteFragment!!.setHint(getString(R.string.destination_example))
         autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener { view: View? ->
             autocompleteFragment.setText("")
             newJourneyViewModel.selectedPlaceName.value = null
+            newJourneyViewModel.selectedPlaceAddress.value = null
         }
 
         return binding.root

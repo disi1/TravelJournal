@@ -10,3 +10,4 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.database.Journey
 import kotlin.text.StringBuilder
 
+class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)

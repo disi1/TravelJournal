@@ -3,29 +3,36 @@
 
     <string name="apiKey">AIzaSyD9gTR55_KQYV0FkdZatU27KwFoTBNebxE</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="myJourneys">My Journeys</string>
-    <string name="createJourney">Create Journey</string>
-    <string name="createExperience">Create Experience</string>
-    <string name="newJourney">New Journey</string>
-    <string name="whereQuestion">Where are you going?</string>
-    <string name="destinationExample">e.g. Bucharest / Switzerland / Lake Geneva</string>
-    <string name="createJourneyButton">CREATE</string>
-    <string name="useCurrentLocation">Use Current Location</string>
-    <string name="addExperienceHint">Add an experience</string>
-    <string name="add">Add</string>
+    // Journeys strings
+    <string name="my_journeys">My Journeys</string>
+    <string name="new_journey">New Journey</string>
+    <string name="create_journey">Create Journey</string>
+    <string name="create_journey_button">Create</string>
+    <string name="where_question">Where are you going?</string>
+    <string name="destination_example">e.g. Bucharest / Switzerland / Lake Zürich</string>
+    <string name="cleared_journeys_message">All your Journeys have been deleted.</string>
+    <string name="deleted_journey_message">Journey to %1$s was deleted.</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="describeExperienceHint">What are you up to?</string>
-    <string name="addExperienceName">Add experience name</string>
-    <string name="addExperience">Add Experience</string>
-    <string name="experienceName">Experience Name</string>
+    // Experiences strings
+    <string name="create_experience">Create Experience</string>
+    <string name="new_experience">New Experience</string>
+    <string name="create_experience_button">Create</string>
+    <string name="add_experience_name">Add experience name (Optional)</string>
+    <string name="where_to">Where to?</string>
     <string name="defaultNumberOfMemories">0 memories</string>
-    <string name="addMemory">Add Memory</string>
-    <string name="experienceDescription">Experience description</string>
+    <string name="new_memory">New memory</string>
+    <string name="use_current_location">Use Current Location</string>
+    <string name="experienceDescription">Describe your experience</string>
+    <string name="experienceName">Experience Name</string>
     <string name="location">Location:</string>
+    <string name="cleared_experiences_message">All your Experiences from %1$s have been deleted.</string>
+    <string name="experience_example">e.g. Brukenthal Museum / BärenPark</string>
+
+    // Memories strings
+    <string name="create_memory">Create memory</string>
+    <string name="create_memory_button">Create</string>
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
     <string name="describeMemory">Describe your memory</string>
-    <string name="cleared_message">All your Journeys have been deleted.</string>
+
 </resources>

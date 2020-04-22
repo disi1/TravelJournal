@@ -8,8 +8,10 @@ import androidx.room.PrimaryKey
 data class Journey(
     @PrimaryKey(autoGenerate = true)
     var journeyId: Long = 0L,
+
     @ColumnInfo(name = "place_name")
     var placeName: String = "",
+
     @ColumnInfo(name = "place_address")
     var placeAddress: String = ""
 )

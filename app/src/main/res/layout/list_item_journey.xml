@@ -10,12 +10,18 @@
         <variable
             name="clickListener"
             type="com.example.traveljournal.journeys.JourneyListener" />
+        <variable
+            name="longClickListener"
+            type="com.example.traveljournal.journeys.JourneyLongClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> clickListener.onClick(journey)}">
+
+    <!--        android:onLongClick="@{() -> longClickListener.onLongClick(journey)}">-->
+
 
         <ImageView
             android:id="@+id/journey_image"
@@ -28,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_undraw_destinations" />
+            tools:srcCompat="@drawable/ic_undraw_destinations"/>
 
         <TextView
             android:id="@+id/journey_destination_name"
