@@ -2,9 +2,7 @@ package com.example.traveljournal.journeyDetails
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,6 +16,7 @@ import com.example.traveljournal.databinding.FragmentJourneyDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
 class JourneyDetailsFragment: Fragment() {
+    private lateinit var journeyDetailsViewModel: JourneyDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +34,7 @@ class JourneyDetailsFragment: Fragment() {
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
         val viewModelFactory = JourneyDetailsViewModelFactory(arguments.journeyKey, dataSource)
 
-        val journeyDetailsViewModel = ViewModelProviders.of(
+        journeyDetailsViewModel = ViewModelProviders.of(
             this, viewModelFactory).get(JourneyDetailsViewModel::class.java)
 
         binding.journeyDetailsViewModel = journeyDetailsViewModel
@@ -46,7 +45,7 @@ class JourneyDetailsFragment: Fragment() {
 
         journeyDetailsViewModel.experiences.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 
@@ -78,9 +77,23 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.journey_details_overflow_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
 
+        if(id == R.id.clear_all_experiences_menu) {
+            journeyDetailsViewModel.onClear()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

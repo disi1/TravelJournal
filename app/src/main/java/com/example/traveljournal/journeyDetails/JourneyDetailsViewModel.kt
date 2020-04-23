@@ -61,7 +61,6 @@ class JourneyDetailsViewModel(
     fun onClear() {
         uiScope.launch {
             clearExperiences(journeyKey)
-//            newJourney.value = null
 
             _showSnackbarEventExpDeleted.value = true
         }

@@ -1,54 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/experience_image"
-        android:layout_width="@dimen/experience_icon_width"
-        android:layout_height="@dimen/experience_icon_height"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_undraw_destinations"
-        tools:srcCompat="@drawable/ic_undraw_destinations" />
+    <data>
+        <variable
+            name="experience"
+            type="com.example.traveljournal.database.Experience" />
+    </data>
 
-    <TextView
-        android:id="@+id/experience_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/experience_image"
-        app:layout_constraintTop_toTopOf="@+id/experience_image"
-        tools:text="Outdoor Swimming" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/experience_place_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/experience_image"
-        app:layout_constraintTop_toBottomOf="@+id/experience_name"
-        tools:text="Lake Zürich" />
+        <ImageView
+            android:id="@+id/experience_image"
+            android:layout_width="@dimen/experience_icon_width"
+            android:layout_height="@dimen/experience_icon_height"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:experienceImage="@{experience}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_undraw_destinations"
+            tools:srcCompat="@drawable/ic_undraw_destinations"/>
 
-    <TextView
-        android:id="@+id/experience_place_address"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/experience_place_name"
-        app:layout_constraintStart_toStartOf="@+id/experience_place_name"
-        app:layout_constraintTop_toBottomOf="@+id/experience_place_name"
-        tools:text="Lake Zürich, Switzerland" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/experience_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textStyle="bold"
+            app:experienceName="@{experience}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/experience_image"
+            app:layout_constraintTop_toTopOf="@+id/experience_image"
+            tools:text="Outdoor Swimming"/>
+
+        <TextView
+            android:id="@+id/experience_place_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:experiencePlaceName="@{experience}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/experience_image"
+            app:layout_constraintTop_toBottomOf="@+id/experience_name"
+            tools:text="Lake Zürich"/>
+
+        <TextView
+            android:id="@+id/experience_place_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:experiencePlaceAddress="@{experience}"
+            app:layout_constraintEnd_toEndOf="@+id/experience_place_name"
+            app:layout_constraintStart_toStartOf="@+id/experience_place_name"
+            app:layout_constraintTop_toBottomOf="@+id/experience_place_name"
+            tools:text="Lake Zürich, Switzerland"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

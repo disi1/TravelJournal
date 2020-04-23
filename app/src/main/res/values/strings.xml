@@ -35,5 +35,7 @@
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
     <string name="describeMemory">Describe your memory</string>
+    <string name="clear_all">Clear all</string>
+    <string name="clear_all_experiences">Clear all experiences</string>
 
 </resources>

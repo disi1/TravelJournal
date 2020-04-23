@@ -100,6 +100,7 @@ class JourneysFragment : Fragment() {
         })
 
         setHasOptionsMenu(true)
+
         return binding.root
     }
 
