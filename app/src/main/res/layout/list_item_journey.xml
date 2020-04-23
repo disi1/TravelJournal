@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/journey_image"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="220dp"
+            android:layout_width="@dimen/journey_icon_width"
+            android:layout_height="@dimen/journey_icon_height"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"

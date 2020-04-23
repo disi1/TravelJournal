@@ -12,6 +12,7 @@
     <string name="destination_example">e.g. Bucharest / Switzerland / Lake Zürich</string>
     <string name="cleared_journeys_message">All your Journeys have been deleted.</string>
     <string name="deleted_journey_message">Journey to %1$s was deleted.</string>
+    <string name="journey">Journey</string>
 
     // Experiences strings
     <string name="create_experience">Create Experience</string>

@@ -23,7 +23,7 @@ class JourneyDetailsFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_journeys)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey)
 
         val binding: FragmentJourneyDetailsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_journey_details, container, false

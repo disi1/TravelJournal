@@ -1,12 +1,16 @@
 package com.example.traveljournal.experience
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -78,7 +82,9 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
             newExperienceViewModel.selectedExperiencePlaceAddress.value = null
         }
 
-        newExperienceViewModel.experienceName.value = binding.experienceNameEditText.text.toString()
+        binding.experienceNameEditText.afterTextChanged { experienceName ->
+            newExperienceViewModel.experienceName.value = experienceName
+        }
 
         return binding.root
     }
@@ -90,5 +96,17 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
     override fun onError(p0: Status) {
         Log.i("ERROR", "An error occurred: " + p0)
+    }
+
+    private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+        this.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                afterTextChanged.invoke(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 }
