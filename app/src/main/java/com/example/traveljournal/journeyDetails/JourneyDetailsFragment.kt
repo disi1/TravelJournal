@@ -3,6 +3,7 @@ package com.example.traveljournal.journeyDetails
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -40,7 +41,9 @@ class JourneyDetailsFragment: Fragment() {
         binding.journeyDetailsViewModel = journeyDetailsViewModel
         binding.lifecycleOwner = this
 
-        val adapter = ExperienceAdapter()
+        val adapter = ExperienceAdapter(ExperienceListener {
+            experienceId -> journeyDetailsViewModel.onExperienceClicked(experienceId)
+        })
         binding.experiencesList.adapter = adapter
 
         journeyDetailsViewModel.experiences.observe(viewLifecycleOwner, Observer {
@@ -62,6 +65,14 @@ class JourneyDetailsFragment: Fragment() {
                 this.findNavController().navigate(
                     JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToNewExperienceDestination(journeyKey))
                 journeyDetailsViewModel.doneNavigatingToNewExperience()
+            }
+        })
+
+        journeyDetailsViewModel.navigateToExperienceDetails.observe(viewLifecycleOwner, Observer { experienceKey ->
+            experienceKey?.let {
+                this.findNavController().navigate(
+                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToExperienceDetailsDestination(experienceKey))
+                journeyDetailsViewModel.doneNavigatingToExperienceDetails()
             }
         })
 

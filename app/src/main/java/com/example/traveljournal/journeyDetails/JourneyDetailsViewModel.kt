@@ -46,6 +46,10 @@ class JourneyDetailsViewModel(
     val navigateToNewExperience: LiveData<Long>
         get() = _navigateToNewExperience
 
+    private val _navigateToExperienceDetails = MutableLiveData<Long>()
+    val navigateToExperienceDetails
+        get() = _navigateToExperienceDetails
+
     fun doneNavigating() {
         _navigateToJourneys.value = null
     }
@@ -54,8 +58,16 @@ class JourneyDetailsViewModel(
         _navigateToNewExperience.value = null
     }
 
+    fun doneNavigatingToExperienceDetails() {
+        _navigateToExperienceDetails.value = null
+    }
+
     fun onNewExperience() {
         _navigateToNewExperience.value = journeyKey
+    }
+
+    fun onExperienceClicked(experienceId: Long) {
+        _navigateToExperienceDetails.value = experienceId
     }
 
     fun onClear() {

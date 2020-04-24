@@ -30,6 +30,6 @@ fun TextView.setExperiencePlaceAddress(item: Experience?) {
 @BindingAdapter("experienceImage")
 fun ImageView.setExperienceImage(item: Experience?) {
     item?.let {
-        setImageResource(R.drawable.ic_undraw_destinations)
+        setImageResource(R.drawable.ic_undraw_experience)
     }
 }

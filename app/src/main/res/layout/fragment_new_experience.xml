@@ -19,7 +19,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_undraw_destinations"
+                android:src="@drawable/ic_undraw_experience"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_default="percent"
                 app:layout_constraintHeight_percent=".25"
@@ -28,19 +28,33 @@
                 app:layout_constraintWidth_default="percent"
                 app:layout_constraintWidth_percent="1"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/ic_undraw_destinations" />
+                tools:src="@drawable/ic_undraw_experience" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/experience_name_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/add_experience_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/experience_image" />
+
+            <TextView
+                android:id="@+id/whereToQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/where_to"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.027"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/experience_name_edit_text" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -54,12 +68,12 @@
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/experience_name_edit_text" />
+                app:layout_constraintTop_toBottomOf="@+id/whereToQuestion" />
 
             <Button
                 android:id="@+id/create_button"

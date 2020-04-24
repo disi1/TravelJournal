@@ -15,10 +15,11 @@
     <string name="journey">Journey</string>
 
     // Experiences strings
+    <string name="experience">Experience</string>
     <string name="create_experience">Create Experience</string>
     <string name="new_experience">New Experience</string>
     <string name="create_experience_button">Create</string>
-    <string name="add_experience_name">Add experience name (Optional)</string>
+    <string name="add_experience_name">Add experience name</string>
     <string name="where_to">Where to?</string>
     <string name="defaultNumberOfMemories">0 memories</string>
     <string name="new_memory">New memory</string>

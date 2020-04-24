@@ -10,21 +10,17 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
-import com.example.traveljournal.databinding.FragmentExperienceBinding
 import com.example.traveljournal.databinding.FragmentNewExperienceBinding
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import kotlinx.android.synthetic.main.fragment_experience.*
-import kotlinx.android.synthetic.main.fragment_new_experience.*
 import java.util.*
 
 class NewExperienceFragment: Fragment(), PlaceSelectionListener {

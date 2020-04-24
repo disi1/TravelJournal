@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="experienceDetailsViewModel"
+            type="com.example.traveljournal.experienceDetails.ExperienceDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".experienceDetails.ExperienceDetailsFragment">
+
+<!--        <TextView-->
+<!--            android:id="@+id/numberOfMemoriesTextView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/experienceNameTextView"-->
+<!--            tools:text="@string/defaultNumberOfMemories" />-->
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/experience_details_nested_scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/add_memory_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/experience_image"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    app:experienceImage="@{experienceDetailsViewModel.experience}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_default="percent"
+                    app:layout_constraintHeight_percent="0.30"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_default="percent"
+                    app:layout_constraintWidth_percent="1"
+                    tools:src="@drawable/ic_undraw_experience" />
+
+                <TextView
+                    android:id="@+id/experience_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textStyle="bold"
+                    app:experienceName="@{experienceDetailsViewModel.experience}"
+                    app:layout_constraintBottom_toTopOf="@+id/experience_place_name"
+                    app:layout_constraintEnd_toEndOf="@+id/experience_image"
+                    app:layout_constraintStart_toStartOf="@+id/experience_image"
+                    tools:text="Outdoor Swimming" />
+
+                <TextView
+                    android:id="@+id/experience_place_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:experiencePlaceName="@{experienceDetailsViewModel.experience}"
+                    app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
+                    app:layout_constraintEnd_toEndOf="@+id/experience_image"
+                    app:layout_constraintStart_toStartOf="@+id/experience_image"
+                    tools:text="Lake Zürich"/>
+
+                <TextView
+                    android:id="@+id/experience_place_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:experiencePlaceAddress="@{experienceDetailsViewModel.experience}"
+                    app:layout_constraintBottom_toBottomOf="@+id/experience_image"
+                    app:layout_constraintEnd_toEndOf="@+id/experience_image"
+                    app:layout_constraintStart_toStartOf="@+id/experience_image"
+                    tools:text="Lake Zürich, Switzerland" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/experience_description_text_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/experienceDescription"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experience_image" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/memories_list"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experience_description_text_input" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/add_memory_button"
+            style="@style/TravelButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/new_memory"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

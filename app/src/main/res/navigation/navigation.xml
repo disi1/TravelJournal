@@ -54,6 +54,9 @@
             app:destination="@id/new_experience_destination"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"/>
+        <action
+            android:id="@+id/action_journey_details_destination_to_experience_details_destination"
+            app:destination="@id/experience_details_destination" />
     </fragment>
 
     <fragment
@@ -66,6 +69,22 @@
             app:argType="long" />
         <action
             android:id="@+id/action_new_experience_destination_to_journey_details_destination"
+            app:destination="@id/journey_details_destination"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/journey_details_destination"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/experience_details_destination"
+        android:name="com.example.traveljournal.experienceDetails.ExperienceDetailsFragment"
+        android:label="fragment_experience_details"
+        tools:layout="@layout/fragment_experience_details">
+        <argument
+            android:name="experienceKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_experience_details_destination_to_journey_details_destination"
             app:destination="@id/journey_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"

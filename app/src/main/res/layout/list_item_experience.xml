@@ -7,11 +7,15 @@
         <variable
             name="experience"
             type="com.example.traveljournal.database.Experience" />
+        <variable
+            name="clickListener"
+            type="com.example.traveljournal.journeyDetails.ExperienceListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(experience)}">
 
         <ImageView
             android:id="@+id/experience_image"
