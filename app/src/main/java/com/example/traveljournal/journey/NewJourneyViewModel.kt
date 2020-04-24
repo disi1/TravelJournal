@@ -13,7 +13,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import kotlinx.coroutines.*
 
 class NewJourneyViewModel (
-        private val journeyKey: Long = 0L,
+//        private val journeyKey: Long = 0L,
         val database: TravelDatabaseDao) : ViewModel() {
 
     val selectedPlaceName = MutableLiveData<String>()
@@ -40,13 +40,19 @@ class NewJourneyViewModel (
 
     fun onCreateJourney() {
         uiScope.launch {
-            withContext(Dispatchers.IO) {
-                val journey = database.getJourney(journeyKey) ?: return@withContext
-                journey.placeName = selectedPlaceName.value.toString()
-                journey.placeAddress = selectedPlaceAddress.value.toString()
-                database.updateJourney(journey)
-            }
+            val journey = Journey()
+            journey.placeName = selectedPlaceName.value.toString()
+            journey.placeAddress = selectedPlaceAddress.value.toString()
+
+            insertJourney(journey)
+
             _navigateToJourneys.value = true
+        }
+    }
+
+    private suspend fun insertJourney(journey: Journey) {
+        withContext(Dispatchers.IO) {
+            database.insertJourney(journey)
         }
     }
 

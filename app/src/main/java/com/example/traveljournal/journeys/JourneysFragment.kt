@@ -68,11 +68,11 @@ class JourneysFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer { journey ->
-            journey?.let {
+        journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
                 this.findNavController().navigate(
                     JourneysFragmentDirections
-                        .actionJourneysDestinationToNewJourneyDestination(journey.journeyId))
+                        .actionJourneysDestinationToNewJourneyDestination())
                 journeysViewModel.doneNavigating()
             }
         })

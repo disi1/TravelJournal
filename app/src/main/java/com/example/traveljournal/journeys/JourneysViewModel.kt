@@ -1,11 +1,9 @@
 package com.example.traveljournal.journeys
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
@@ -17,8 +15,6 @@ class JourneysViewModel(
     private var viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    private var newJourney = MutableLiveData<Journey?>()
 
     val journeys = database.getAllJourneys()
 
@@ -37,60 +33,22 @@ class JourneysViewModel(
         _showSnackBarEventJourneyDeleted.value = false
     }
 
-    private val _navigateToNewJourney = MutableLiveData<Journey>()
+    private val _navigateToNewJourney = MutableLiveData<Boolean?>()
 
-    val navigateToNewJourney: LiveData<Journey>
+    val navigateToNewJourney: LiveData<Boolean?>
         get() = _navigateToNewJourney
 
     fun doneNavigating() {
         _navigateToNewJourney.value = null
     }
 
-    init {
-        initializeJourney()
-    }
-
-    private fun initializeJourney() {
-        uiScope.launch {
-            newJourney.value = getLatestJourneyFromDatabase()
-        }
-    }
-
-    private suspend fun getLatestJourneyFromDatabase(): Journey? {
-        return withContext(Dispatchers.IO) {
-            var journey = database.getLatestJourney()
-            if(journey?.placeName != "") {
-                journey = null
-            }
-            journey
-        }
-    }
-
-    /**
-     * Executes when the NEW JOURNEY button is clicked
-     */
     fun onNewJourney() {
-        uiScope.launch {
-            val journey = Journey()
-            insert(journey)
-            newJourney.value = getLatestJourneyFromDatabase()
-
-            val currentJourney = newJourney.value ?: return@launch
-            _navigateToNewJourney.value = currentJourney
-        }
-    }
-
-    private suspend fun insert(journey: Journey) {
-        withContext(Dispatchers.IO) {
-            database.insertJourney(journey)
-        }
+        _navigateToNewJourney.value = true
     }
 
     fun onClear() {
         uiScope.launch {
             clear()
-            newJourney.value = null
-
             _showSnackbarEvent.value = true
         }
     }
@@ -116,11 +74,6 @@ class JourneysViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
     private val _navigateToJourneyDetails = MutableLiveData<Long>()
     val navigateToJourneyDetails
         get() = _navigateToJourneyDetails
@@ -133,4 +86,8 @@ class JourneysViewModel(
         _navigateToJourneyDetails.value = null
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }

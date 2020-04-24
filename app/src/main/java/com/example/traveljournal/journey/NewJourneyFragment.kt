@@ -37,11 +37,12 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         val application = requireNotNull(this.activity).application
 
-        val arguments = NewJourneyFragmentArgs.fromBundle(arguments!!)
+//        val arguments = NewJourneyFragmentArgs.fromBundle(arguments!!)
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
-        val viewModelFactory = NewJourneyViewModelFactory(arguments.journeyKey, dataSource)
+//        val viewModelFactory = NewJourneyViewModelFactory(arguments.journeyKey, dataSource)
+        val viewModelFactory = NewJourneyViewModelFactory(dataSource)
 
         newJourneyViewModel =
             ViewModelProviders.of(
@@ -70,7 +71,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
         autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
-        clearButton?.setOnClickListener { view: View? ->
+        clearButton?.setOnClickListener {
             autocompleteFragment.setText("")
             newJourneyViewModel.selectedPlaceName.value = null
             newJourneyViewModel.selectedPlaceAddress.value = null

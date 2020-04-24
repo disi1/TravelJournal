@@ -38,7 +38,6 @@ class NewExperienceViewModel (
             experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
             experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
             insertExperience(experience)
-            Log.i("XP", "Experience: " + experience.toString())
             _navigateToJourneyDetails.value = journeyKey
         }
     }

@@ -76,7 +76,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
         autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
-        clearButton?.setOnClickListener { view: View? ->
+        clearButton?.setOnClickListener {
             autocompleteFragment.setText("")
             newExperienceViewModel.selectedExperiencePlaceName.value = null
             newExperienceViewModel.selectedExperiencePlaceAddress.value = null
