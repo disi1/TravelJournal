@@ -38,5 +38,8 @@
     <string name="describeMemory">Describe your memory</string>
     <string name="clear_all">Clear all</string>
     <string name="clear_all_experiences">Clear all experiences</string>
+    <string name="journey_details">Journey Details</string>
+    <string name="experience_details">Experience Details</string>
+    <string name="experience_updated_message">Your experience has been updated.</string>
 
 </resources>

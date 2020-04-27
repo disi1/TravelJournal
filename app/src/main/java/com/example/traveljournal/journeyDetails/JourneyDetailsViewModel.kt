@@ -23,13 +23,13 @@ class JourneyDetailsViewModel(
 
     val experiences = database.getAllExperiencesFromJourney(journeyKey)
 
-    private var _showSnackbarEventExpDeleted = MutableLiveData<Boolean>()
+    private var _showSnackbarEventExperiencesDeleted = MutableLiveData<Boolean>()
 
-    val showSnackbarEventExpDeleted: LiveData<Boolean>
-        get() = _showSnackbarEventExpDeleted
+    val showSnackbarEventExperiencesDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventExperiencesDeleted
 
-    fun doneShowingSnackbarExpDeleted() {
-        _showSnackbarEventExpDeleted.value = false
+    fun doneShowingSnackbarExperienceDeleted() {
+        _showSnackbarEventExperiencesDeleted.value = false
     }
 
     fun getJourney() = journey
@@ -74,7 +74,7 @@ class JourneyDetailsViewModel(
         uiScope.launch {
             clearExperiences(journeyKey)
 
-            _showSnackbarEventExpDeleted.value = true
+            _showSnackbarEventExperiencesDeleted.value = true
         }
     }
 

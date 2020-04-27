@@ -58,8 +58,6 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
             }
         })
 
-//        setHasOptionsMenu(true)
-
         if (!Places.isInitialized()) {
             this.context?.let { Places.initialize(it, getString(R.string.apiKey), Locale.US) }
         }
@@ -79,21 +77,6 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         return binding.root
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater?.inflate(R.menu.create_journey_menu, menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val id = item.getItemId()
-//
-//        if (id == R.id.createJourneyButton) {
-//            Toast.makeText(this.context, "Item Clicked", Toast.LENGTH_LONG).show()
-//            return true
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {

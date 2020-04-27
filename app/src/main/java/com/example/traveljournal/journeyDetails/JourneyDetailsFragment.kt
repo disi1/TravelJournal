@@ -1,16 +1,13 @@
 package com.example.traveljournal.journeyDetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneyDetailsBinding
@@ -23,7 +20,7 @@ class JourneyDetailsFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey_details)
 
         val binding: FragmentJourneyDetailsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_journey_details, container, false
@@ -76,7 +73,7 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
-        journeyDetailsViewModel.showSnackbarEventExpDeleted.observe(viewLifecycleOwner, Observer {
+        journeyDetailsViewModel.showSnackbarEventExperiencesDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
                     activity!!.findViewById(android.R.id.content),
@@ -84,7 +81,7 @@ class JourneyDetailsFragment: Fragment() {
                         journeyDetailsViewModel.getJourney().value?.placeName),
                         Snackbar.LENGTH_SHORT
                     ).show()
-                journeyDetailsViewModel.doneShowingSnackbarExpDeleted()
+                journeyDetailsViewModel.doneShowingSnackbarExperienceDeleted()
             }
         })
 

@@ -20,6 +20,9 @@ data class Experience(
     @ColumnInfo(name = "experience_place_address")
     var experiencePlaceAddress: String = "",
 
+    @ColumnInfo(name = "experience_description")
+    var experienceDescription: String = "",
+
     @ColumnInfo(name = "journey_host_id")
     var journeyHostId: Long
 )

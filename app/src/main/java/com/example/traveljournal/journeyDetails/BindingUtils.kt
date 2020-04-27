@@ -33,3 +33,10 @@ fun ImageView.setExperienceImage(item: Experience?) {
         setImageResource(R.drawable.ic_undraw_experience)
     }
 }
+
+@BindingAdapter("experienceDescription")
+fun TextView.setExperienceDescription(item: Experience?) {
+    item?.let {
+        text = item.experienceDescription
+    }
+}

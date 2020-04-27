@@ -1,13 +1,9 @@
 package com.example.traveljournal.experienceDetails
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.traveljournal.database.Experience
-import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 class ExperienceDetailsViewModel(
     private val experienceKey: Long = 0L,
@@ -26,6 +22,33 @@ class ExperienceDetailsViewModel(
     }
 
     fun getExperience() = experience
+
+    val experienceDescription = MutableLiveData<String>()
+
+    private var _showSnackbarEventExpUpdated = MutableLiveData<Boolean>()
+
+    val showSnackbarEventExperienceUpdated: LiveData<Boolean>
+        get() = _showSnackbarEventExpUpdated
+
+    fun doneShowingSnackbarExperienceUpdated() {
+        _showSnackbarEventExpUpdated.value = false
+    }
+
+    fun onUpdateExperience() {
+        uiScope.launch {
+            val oldExperience = experience.value ?: return@launch
+            oldExperience.experienceDescription = experienceDescription.value.toString()
+            updateExperience(oldExperience)
+
+            _showSnackbarEventExpUpdated.value = true
+        }
+    }
+
+    private suspend fun updateExperience(experience: Experience) {
+        withContext(Dispatchers.IO) {
+            database.updateExperience(experience)
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()

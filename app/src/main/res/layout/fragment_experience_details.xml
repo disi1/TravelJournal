@@ -84,6 +84,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
                     app:experiencePlaceAddress="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toBottomOf="@+id/experience_image"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
@@ -98,6 +99,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:hint="@string/experienceDescription"
+                    app:experienceDescription="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/experience_image" />
@@ -114,19 +116,36 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/experience_description_text_input" />
+<!--                android:nestedScrollingEnabled="false"-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/update_experience_button"
+            style="@style/TravelButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{() -> experienceDetailsViewModel.onUpdateExperience()}"
+            android:text="Update"
+            app:layout_constraintBaseline_toBaselineOf="@+id/add_memory_button"
+            app:layout_constraintEnd_toStartOf="@+id/add_memory_button"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:id="@+id/add_memory_button"
             style="@style/TravelButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/new_memory"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@+id/update_experience_button"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
