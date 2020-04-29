@@ -17,6 +17,8 @@ class ExperienceDetailsViewModel(
 
     private val experience = MediatorLiveData<Experience>()
 
+    val memories = database.getAllMemoriesFromExperience(experienceKey)
+
     init {
         experience.addSource(database.getExperienceWithId(experienceKey), experience::setValue)
     }
@@ -32,6 +34,18 @@ class ExperienceDetailsViewModel(
 
     fun doneShowingSnackbarExperienceUpdated() {
         _showSnackbarEventExpUpdated.value = false
+    }
+
+    private val _navigateToNewMemory = MutableLiveData<Long>()
+    val navigateToNewMemory: LiveData<Long>
+        get() = _navigateToNewMemory
+
+    fun doneNavigatingToNewMemory() {
+        _navigateToNewMemory.value = null
+    }
+
+    fun onNewMemory() {
+        _navigateToNewMemory.value = experienceKey
     }
 
     fun onUpdateExperience() {

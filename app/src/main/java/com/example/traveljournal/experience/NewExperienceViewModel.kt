@@ -10,8 +10,8 @@ import kotlinx.coroutines.*
 
 class NewExperienceViewModel (
     private val journeyKey: Long = 0L,
-//    private val experienceKey: Long = 0L,
-    val database: TravelDatabaseDao): ViewModel() {
+    val database: TravelDatabaseDao
+): ViewModel() {
 
     val selectedExperiencePlaceName = MutableLiveData<String>()
 
@@ -37,7 +37,9 @@ class NewExperienceViewModel (
             experience.experienceName = experienceName.value.toString()
             experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
             experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
+
             insertExperience(experience)
+
             _navigateToJourneyDetails.value = journeyKey
         }
     }

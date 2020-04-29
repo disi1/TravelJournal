@@ -53,15 +53,34 @@ interface TravelDatabaseDao {
     @Delete
     fun deleteExperience(experience: Experience)
 
-    @Query("SELECT * FROM experience_table ORDER BY experienceId DESC")
-    fun getAllExperiences(): LiveData<List<Experience>>
-
     @Query("SELECT * FROM experience_table WHERE journey_host_id = :key ORDER BY experienceId DESC")
     fun getAllExperiencesFromJourney(key: Long): LiveData<List<Experience>>
 
-    @Query("SELECT * FROM experience_table ORDER BY experienceId DESC LIMIT 1")
-    fun getLatestExperience(): Experience?
-
     @Query("SELECT * from experience_table WHERE experienceId = :key")
     fun getExperienceWithId(key: Long): LiveData<Experience>
+
+    // Methods for using the Memory class with Room
+    @Insert
+    fun insertMemory(memory: Memory)
+
+    @Update
+    fun updateMemory(memory: Memory)
+
+    @Query("SELECT * from memory_table WHERE memoryId = :key")
+    fun getMemory(key: Long): Memory
+
+    @Query("DELETE FROM memory_table")
+    fun clearMemories()
+
+    @Query("DELETE FROM memory_table WHERE experience_host_id = :key")
+    fun clearAllMemoriesFromExperience(key: Long)
+
+    @Delete
+    fun deleteMemory(memory: Memory)
+
+    @Query("SELECT * FROM memory_table WHERE experience_host_id = :key ORDER BY memoryId DESC")
+    fun getAllMemoriesFromExperience(key: Long): LiveData<List<Memory>>
+
+    @Query("SELECT * from memory_table WHERE memoryId = :key")
+    fun getMemoryWithId(key: Long): LiveData<Memory>
 }

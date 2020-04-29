@@ -31,7 +31,7 @@
     <string name="experience_example">e.g. Brukenthal Museum / BärenPark</string>
 
     // Memories strings
-    <string name="create_memory">Create memory</string>
+    <string name="create_memory">Create Memory</string>
     <string name="create_memory_button">Create</string>
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
@@ -41,5 +41,6 @@
     <string name="journey_details">Journey Details</string>
     <string name="experience_details">Experience Details</string>
     <string name="experience_updated_message">Your experience has been updated.</string>
+    <string name="memory_date">Click here to choose a date</string>
 
 </resources>

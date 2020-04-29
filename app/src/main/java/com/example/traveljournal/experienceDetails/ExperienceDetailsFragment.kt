@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
@@ -43,6 +44,15 @@ class ExperienceDetailsFragment : Fragment() {
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
 
+        val adapter = MemoryAdapter()
+        binding.memoriesList.adapter = adapter
+
+        experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
+            }
+        })
+
         binding.experienceDescriptionTextInput.afterTextChanged { experienceDescription ->
             experienceDetailsViewModel.experienceDescription.value = experienceDescription
         }
@@ -55,6 +65,14 @@ class ExperienceDetailsFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
                 experienceDetailsViewModel.doneShowingSnackbarExperienceUpdated()
+            }
+        })
+
+        experienceDetailsViewModel.navigateToNewMemory.observe(viewLifecycleOwner, Observer { experienceKey ->
+            experienceKey?.let {
+                this.findNavController().navigate(
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToNewMemoryDestination(experienceKey))
+                experienceDetailsViewModel.doneNavigatingToNewMemory()
             }
         })
 

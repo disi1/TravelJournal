@@ -89,6 +89,24 @@
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_experience_details_destination_to_new_memory_destination"
+            app:destination="@id/new_memory_destination" />
+    </fragment>
+    <fragment
+        android:id="@+id/new_memory_destination"
+        android:name="com.example.traveljournal.memory.NewMemoryFragment"
+        android:label="fragment_new_memory"
+        tools:layout="@layout/fragment_new_memory" >
+        <argument
+            android:name="experienceKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_new_memory_destination_to_experience_details_destination"
+            app:destination="@id/experience_details_destination"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/experience_details_destination"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>
