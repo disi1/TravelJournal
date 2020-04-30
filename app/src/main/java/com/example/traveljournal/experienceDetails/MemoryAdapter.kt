@@ -2,31 +2,49 @@ package com.example.traveljournal.experienceDetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.R
-import com.example.traveljournal.TextItemViewHolder
 import com.example.traveljournal.database.Memory
+import com.example.traveljournal.databinding.ListItemMemoryBinding
+import java.text.DateFormat
+import java.util.*
 
-class MemoryAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
+class MemoryAdapter : ListAdapter<Memory, MemoryAdapter.ViewHolder>(MemoryDiffCallback()) {
 
-    var data = listOf<Memory>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextItemViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.text_item_view, parent, false) as TextView
-        return TextItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
     }
 
-    override fun getItemCount() = data.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+    }
 
-    override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
-        val item = data[position]
-        holder.textView.text = item.memoryName.toString()
+    class ViewHolder private constructor(val binding: ListItemMemoryBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Memory) {
+            binding.memory = item
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemMemoryBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
+        }
+    }
+}
+
+class MemoryDiffCallback : DiffUtil.ItemCallback<Memory>() {
+    override fun areItemsTheSame(oldItem: Memory, newItem: Memory): Boolean {
+        return oldItem.memoryId == newItem.memoryId
+    }
+
+    override fun areContentsTheSame(oldItem: Memory, newItem: Memory): Boolean {
+        return oldItem == newItem
     }
 
 }

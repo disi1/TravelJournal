@@ -49,7 +49,7 @@ class ExperienceDetailsFragment : Fragment() {
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

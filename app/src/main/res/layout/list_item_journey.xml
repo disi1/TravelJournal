@@ -15,49 +15,60 @@
             type="com.example.traveljournal.journeys.JourneyLongClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(journey)}">
+        android:orientation="vertical"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
-    <!--        android:onLongClick="@{() -> longClickListener.onLongClick(journey)}">-->
-
-
-        <ImageView
-            android:id="@+id/journey_image"
-            android:layout_width="@dimen/journey_icon_width"
-            android:layout_height="@dimen/journey_icon_height"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:journeyImage="@{journey}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_undraw_destinations"/>
-
-        <TextView
-            android:id="@+id/journey_destination_name"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:journeyDestinationName="@{journey}"
-            app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
-            app:layout_constraintEnd_toEndOf="@+id/journey_image"
-            app:layout_constraintStart_toStartOf="@+id/journey_image"
-            tools:text="Zürich" />
-
-        <TextView
-            android:id="@+id/journey_destination_address"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="9dp"
-            app:journeyDestinationAddress="@{journey}"
-            app:layout_constraintBottom_toBottomOf="@+id/journey_image"
-            app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
-            app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
-            tools:text="Zürich, Switzerland" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:onClick="@{() -> clickListener.onClick(journey)}">
+
+        <!--        android:onLongClick="@{() -> longClickListener.onLongClick(journey)}">-->
+
+
+            <ImageView
+                android:id="@+id/journey_image"
+                android:layout_width="@dimen/journey_icon_width"
+                android:layout_height="@dimen/journey_icon_height"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                app:journeyImage="@{journey}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_undraw_destinations"/>
+
+            <TextView
+                android:id="@+id/journey_destination_name"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                app:journeyDestinationName="@{journey}"
+                app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
+                app:layout_constraintEnd_toEndOf="@+id/journey_image"
+                app:layout_constraintStart_toStartOf="@+id/journey_image"
+                tools:text="Zürich" />
+
+            <TextView
+                android:id="@+id/journey_destination_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:journeyDestinationAddress="@{journey}"
+                app:layout_constraintBottom_toBottomOf="@+id/journey_image"
+                app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
+                app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
+                tools:text="Zürich, Switzerland" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </layout>
