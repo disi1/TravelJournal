@@ -36,6 +36,15 @@ class ExperienceDetailsViewModel(
         _showSnackbarEventExpUpdated.value = false
     }
 
+    private var _showSnackbarEventMemoriesDeleted = MutableLiveData<Boolean>()
+
+    val showSnackbarEventMemoriesDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventMemoriesDeleted
+
+    fun doneShowingSnackbarMemoriesDeleted() {
+        _showSnackbarEventMemoriesDeleted.value = false
+    }
+
     private val _navigateToNewMemory = MutableLiveData<Long>()
     val navigateToNewMemory: LiveData<Long>
         get() = _navigateToNewMemory
@@ -61,6 +70,20 @@ class ExperienceDetailsViewModel(
     private suspend fun updateExperience(experience: Experience) {
         withContext(Dispatchers.IO) {
             database.updateExperience(experience)
+        }
+    }
+
+    fun onClear() {
+        uiScope.launch {
+            clearMemories(experienceKey)
+
+            _showSnackbarEventMemoriesDeleted.value = true
+        }
+    }
+
+    suspend fun clearMemories(experienceKey: Long) {
+        withContext(Dispatchers.IO) {
+            database.clearAllMemoriesFromExperience(experienceKey)
         }
     }
 

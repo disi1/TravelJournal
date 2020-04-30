@@ -81,7 +81,7 @@ class JourneyDetailsFragment: Fragment() {
                         journeyDetailsViewModel.getJourney().value?.placeName),
                         Snackbar.LENGTH_SHORT
                     ).show()
-                journeyDetailsViewModel.doneShowingSnackbarExperienceDeleted()
+                journeyDetailsViewModel.doneShowingSnackbarExperiencesDeleted()
             }
         })
 

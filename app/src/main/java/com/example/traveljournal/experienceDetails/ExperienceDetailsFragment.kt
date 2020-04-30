@@ -4,10 +4,8 @@ package com.example.traveljournal.experienceDetails
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,6 +18,8 @@ import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
 class ExperienceDetailsFragment : Fragment() {
+
+    private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,7 @@ class ExperienceDetailsFragment : Fragment() {
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
         val viewModelFactory = ExperienceDetailsViewModelFactory(arguments.experienceKey, dataSource)
 
-        val experienceDetailsViewModel = ViewModelProviders.of(
+        experienceDetailsViewModel = ViewModelProviders.of(
             this, viewModelFactory).get(ExperienceDetailsViewModel::class.java)
 
         binding.experienceDetailsViewModel = experienceDetailsViewModel
@@ -68,6 +68,18 @@ class ExperienceDetailsFragment : Fragment() {
             }
         })
 
+        experienceDetailsViewModel.showSnackbarEventMemoriesDeleted.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.cleared_memories_message,
+                        experienceDetailsViewModel.getExperience().value?.experienceName),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                experienceDetailsViewModel.doneShowingSnackbarMemoriesDeleted()
+            }
+        })
+
         experienceDetailsViewModel.navigateToNewMemory.observe(viewLifecycleOwner, Observer { experienceKey ->
             experienceKey?.let {
                 this.findNavController().navigate(
@@ -75,6 +87,8 @@ class ExperienceDetailsFragment : Fragment() {
                 experienceDetailsViewModel.doneNavigatingToNewMemory()
             }
         })
+
+        setHasOptionsMenu(true)
 
         return binding.root
     }
@@ -89,5 +103,20 @@ class ExperienceDetailsFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.experience_details_overflow_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if(id == R.id.clear_all_memories_menu) {
+            experienceDetailsViewModel.onClear()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

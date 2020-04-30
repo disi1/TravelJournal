@@ -42,5 +42,7 @@
     <string name="experience_details">Experience Details</string>
     <string name="experience_updated_message">Your experience has been updated.</string>
     <string name="memory_date">Click here to choose a date</string>
+    <string name="clear_all_memories">Clear all memories</string>
+    <string name="cleared_memories_message">All your Memories  from %1$s have been deleted.</string>
 
 </resources>

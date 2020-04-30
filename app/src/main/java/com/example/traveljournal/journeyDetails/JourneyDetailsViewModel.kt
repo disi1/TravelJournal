@@ -28,7 +28,7 @@ class JourneyDetailsViewModel(
     val showSnackbarEventExperiencesDeleted: LiveData<Boolean>
         get() = _showSnackbarEventExperiencesDeleted
 
-    fun doneShowingSnackbarExperienceDeleted() {
+    fun doneShowingSnackbarExperiencesDeleted() {
         _showSnackbarEventExperiencesDeleted.value = false
     }
 
