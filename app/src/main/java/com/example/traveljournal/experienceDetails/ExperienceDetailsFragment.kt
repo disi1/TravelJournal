@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -44,7 +45,9 @@ class ExperienceDetailsFragment : Fragment() {
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
 
-        val adapter = MemoryAdapter()
+        val adapter = MemoryAdapter(MemoryListener {
+            memoryId -> experienceDetailsViewModel.onMemoryClicked(memoryId)
+        })
         binding.memoriesList.adapter = adapter
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
@@ -85,6 +88,14 @@ class ExperienceDetailsFragment : Fragment() {
                 this.findNavController().navigate(
                     ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToNewMemoryDestination(experienceKey))
                 experienceDetailsViewModel.doneNavigatingToNewMemory()
+            }
+        })
+
+        experienceDetailsViewModel.navigateToMemoryDetails.observe(viewLifecycleOwner, Observer { memoryKey ->
+            memoryKey?.let {
+                this.findNavController().navigate(
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToMemoryDetailsFragment(memoryKey))
+                experienceDetailsViewModel.doneNavigatingToMemoryDetails()
             }
         })
 

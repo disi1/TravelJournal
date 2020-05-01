@@ -1,6 +1,5 @@
 package com.example.traveljournal.memory
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,7 @@ class NewMemoryViewModel (
 
     val memoryDescription = MutableLiveData<String>()
 
-    val memoryDate = MutableLiveData<Long>()
+    val memoryTimestamp = MutableLiveData<Long>()
 
     private var viewModelJob = Job()
 
@@ -43,7 +42,7 @@ class NewMemoryViewModel (
         uiScope.launch {
             val memory = Memory(
                 experienceHostId = experienceKey,
-                memoryTimestamp = memoryDate.value!!.toLong())
+                memoryTimestamp = memoryTimestamp.value!!.toLong())
 
             memory.memoryName = memoryName.value.toString()
             memory.memoryDescription = memoryDescription.value.toString()

@@ -22,6 +22,13 @@ fun TextView.setMemoryDate(item: Memory?) {
     }
 }
 
+@BindingAdapter("memoryDescription")
+fun TextView.setMemoryDescription(item: Memory?) {
+    item?.let {
+        text = item.memoryDescription
+    }
+}
+
 @BindingAdapter("memoryImage")
 fun ImageView.setMemoryImage(item: Memory?) {
     item?.let {

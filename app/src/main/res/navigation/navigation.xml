@@ -92,7 +92,11 @@
         <action
             android:id="@+id/action_experience_details_destination_to_new_memory_destination"
             app:destination="@id/new_memory_destination" />
+        <action
+            android:id="@+id/action_experience_details_destination_to_memoryDetailsFragment"
+            app:destination="@id/memory_details_destination" />
     </fragment>
+
     <fragment
         android:id="@+id/new_memory_destination"
         android:name="com.example.traveljournal.memory.NewMemoryFragment"
@@ -106,6 +110,22 @@
             app:destination="@id/experience_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/experience_details_destination"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/memory_details_destination"
+        android:name="com.example.traveljournal.memoryDetails.MemoryDetailsFragment"
+        android:label="fragment_memory_details"
+        tools:layout="@layout/fragment_memory_details">
+        <argument
+            android:name="memoryKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_memoryDetailsFragment_to_experience_details_destination"
+            app:destination="@id/experience_details_destination"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/journey_details_destination"
             app:popUpToInclusive="true"/>
     </fragment>
 

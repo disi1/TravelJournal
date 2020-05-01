@@ -53,7 +53,7 @@ class JourneyDetailsFragment: Fragment() {
             if(it==true) {
                 this.findNavController().navigate(
                     JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToJourneysDestination())
-                journeyDetailsViewModel.doneNavigating()
+                journeyDetailsViewModel.doneNavigatingToJourneys()
             }
         })
 

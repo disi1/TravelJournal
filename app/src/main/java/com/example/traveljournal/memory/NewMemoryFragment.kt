@@ -100,7 +100,7 @@ class NewMemoryFragment: Fragment() {
 
             memoryDateTextView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(c.time))
 
-            newMemoryViewModel.memoryDate.value = c.time.time
+            newMemoryViewModel.memoryTimestamp.value = c.time.time
         }, year, month, day)
         dpd.show()
     }

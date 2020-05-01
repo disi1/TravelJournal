@@ -13,6 +13,7 @@
     <string name="cleared_journeys_message">All your Journeys have been deleted.</string>
     <string name="deleted_journey_message">Journey to %1$s was deleted.</string>
     <string name="journey">Journey</string>
+    <string name="journey_details">Journey Details</string>
 
     // Experiences strings
     <string name="experience">Experience</string>
@@ -29,6 +30,7 @@
     <string name="location">Location:</string>
     <string name="cleared_experiences_message">All your Experiences from %1$s have been deleted.</string>
     <string name="experience_example">e.g. Brukenthal Museum / BärenPark</string>
+    <string name="experience_details">Experience Details</string>
 
     // Memories strings
     <string name="create_memory">Create Memory</string>
@@ -38,11 +40,10 @@
     <string name="describeMemory">Describe your memory</string>
     <string name="clear_all">Clear all</string>
     <string name="clear_all_experiences">Clear all experiences</string>
-    <string name="journey_details">Journey Details</string>
-    <string name="experience_details">Experience Details</string>
     <string name="experience_updated_message">Your experience has been updated.</string>
     <string name="memory_date">Click here to choose a date</string>
     <string name="clear_all_memories">Clear all memories</string>
     <string name="cleared_memories_message">All your Memories  from %1$s have been deleted.</string>
+    <string name="memory_details">Memory Details</string>
 
 </resources>

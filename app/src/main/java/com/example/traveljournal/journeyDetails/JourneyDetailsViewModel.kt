@@ -50,7 +50,7 @@ class JourneyDetailsViewModel(
     val navigateToExperienceDetails
         get() = _navigateToExperienceDetails
 
-    fun doneNavigating() {
+    fun doneNavigatingToJourneys() {
         _navigateToJourneys.value = null
     }
 

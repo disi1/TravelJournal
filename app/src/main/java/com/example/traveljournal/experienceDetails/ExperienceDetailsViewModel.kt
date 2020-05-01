@@ -28,29 +28,35 @@ class ExperienceDetailsViewModel(
     val experienceDescription = MutableLiveData<String>()
 
     private var _showSnackbarEventExpUpdated = MutableLiveData<Boolean>()
-
     val showSnackbarEventExperienceUpdated: LiveData<Boolean>
         get() = _showSnackbarEventExpUpdated
 
-    fun doneShowingSnackbarExperienceUpdated() {
-        _showSnackbarEventExpUpdated.value = false
-    }
-
     private var _showSnackbarEventMemoriesDeleted = MutableLiveData<Boolean>()
-
     val showSnackbarEventMemoriesDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoriesDeleted
-
-    fun doneShowingSnackbarMemoriesDeleted() {
-        _showSnackbarEventMemoriesDeleted.value = false
-    }
 
     private val _navigateToNewMemory = MutableLiveData<Long>()
     val navigateToNewMemory: LiveData<Long>
         get() = _navigateToNewMemory
 
+    private val _navigateToMemoryDetails = MutableLiveData<Long>()
+    val navigateToMemoryDetails
+        get() = _navigateToMemoryDetails
+
+    fun doneShowingSnackbarExperienceUpdated() {
+        _showSnackbarEventExpUpdated.value = false
+    }
+
+    fun doneShowingSnackbarMemoriesDeleted() {
+        _showSnackbarEventMemoriesDeleted.value = false
+    }
+
     fun doneNavigatingToNewMemory() {
         _navigateToNewMemory.value = null
+    }
+
+    fun doneNavigatingToMemoryDetails() {
+        _navigateToMemoryDetails.value = null
     }
 
     fun onNewMemory() {
@@ -71,6 +77,10 @@ class ExperienceDetailsViewModel(
         withContext(Dispatchers.IO) {
             database.updateExperience(experience)
         }
+    }
+
+    fun onMemoryClicked(memoryId: Long) {
+        _navigateToMemoryDetails.value = memoryId
     }
 
     fun onClear() {

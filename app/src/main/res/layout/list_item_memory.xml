@@ -7,6 +7,9 @@
         <variable
             name="memory"
             type="com.example.traveljournal.database.Memory" />
+        <variable
+            name="clickListener"
+            type="com.example.traveljournal.experienceDetails.MemoryListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -14,6 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:cardElevation="2dp"
+        android:onClick="@{() -> clickListener.onClick(memory)}"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
