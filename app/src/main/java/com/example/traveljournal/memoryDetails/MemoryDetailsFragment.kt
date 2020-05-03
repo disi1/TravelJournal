@@ -42,11 +42,19 @@ class MemoryDetailsFragment: Fragment() {
         binding.lifecycleOwner = this
 
         val manager = GridLayoutManager(activity, 3)
+
+        manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (position) {
+                0 -> 3
+                else -> 1
+            }
+        }
+
         binding.memoryPhotosGrid.layoutManager = manager
 
         val adapter = MemoryPhotoGridAdapter(MemoryPhotoListener {
             memoryPhoto ->  memoryDetailsViewModel.onMemoryPhotoClicked(memoryPhoto)
-        })
+        }, memoryDetailsViewModel)
 
         binding.memoryPhotosGrid.adapter = adapter
 

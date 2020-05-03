@@ -55,6 +55,7 @@ class JourneysViewModel(
 
     private suspend fun clear() {
         withContext(Dispatchers.IO) {
+            database.clearPhotos()
             database.clearMemories()
             database.clearExperiences()
             database.clearJourneys()

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="memoryDetailsViewModel"
+            type="com.example.traveljournal.memoryDetails.MemoryDetailsViewModel" />
+    </data>
+
+    <TextView
+        android:id="@+id/memory_description_text_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:memoryDescription="@{memoryDetailsViewModel.memory}"
+        tools:text="Memory description"/>
+</layout>

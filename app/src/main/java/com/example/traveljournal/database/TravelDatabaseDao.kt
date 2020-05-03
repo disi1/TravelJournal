@@ -91,6 +91,9 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_photo_table WHERE photoId = :key")
     fun getMemoryPhoto(key: Long): MemoryPhoto
 
+    @Query("DELETE FROM memory_photo_table")
+    fun clearPhotos()
+
     @Query("DELETE FROM memory_photo_table WHERE memory_host_id = :key")
     fun clearAllPhotosFromMemory(key: Long)
 

@@ -1,5 +1,6 @@
 package com.example.traveljournal.memoryDetails
 
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
