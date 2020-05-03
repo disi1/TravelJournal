@@ -25,7 +25,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/memory_image"
+                android:id="@+id/memory_uploaded_image"
                 android:layout_width="@dimen/experience_icon_width"
                 android:layout_height="@dimen/experience_icon_height"
                 android:layout_marginStart="8dp"

@@ -6,7 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [Journey::class, Experience::class, Memory::class], version = 8, exportSchema = false)
+@Database(entities = [
+    Journey::class,
+    Experience::class,
+    Memory::class,
+    MemoryPhoto::class
+], version = 9, exportSchema = false)
 abstract class TravelDatabase : RoomDatabase() {
 
     abstract val travelDatabaseDao : TravelDatabaseDao

@@ -38,6 +38,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
+                android:scaleType="centerInside"
                 app:journeyImage="@{journey}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

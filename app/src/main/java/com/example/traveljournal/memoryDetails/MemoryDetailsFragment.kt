@@ -1,13 +1,16 @@
 package com.example.traveljournal.memoryDetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
@@ -37,6 +40,21 @@ class MemoryDetailsFragment: Fragment() {
         binding.memoryDetailsViewModel = memoryDetailsViewModel
 
         binding.lifecycleOwner = this
+
+        val manager = GridLayoutManager(activity, 3)
+        binding.memoryPhotosGrid.layoutManager = manager
+
+        val adapter = MemoryPhotoGridAdapter(MemoryPhotoListener {
+            memoryPhoto ->  memoryDetailsViewModel.onMemoryPhotoClicked(memoryPhoto)
+        })
+
+        binding.memoryPhotosGrid.adapter = adapter
+
+        memoryDetailsViewModel.memoryPhotos.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.addHeaderAndSubmitList(it)
+            }
+        })
 
         return binding.root
     }

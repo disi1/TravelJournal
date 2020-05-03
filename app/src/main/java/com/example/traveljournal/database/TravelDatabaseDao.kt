@@ -83,4 +83,17 @@ interface TravelDatabaseDao {
 
     @Query("SELECT * from memory_table WHERE memoryId = :key")
     fun getMemoryWithId(key: Long): LiveData<Memory>
+
+    // Methods for using the MemoryPhoto class with Room
+    @Insert
+    fun insertMemoryPhoto(memoryPhoto: MemoryPhoto)
+
+    @Query("SELECT * FROM memory_photo_table WHERE photoId = :key")
+    fun getMemoryPhoto(key: Long): MemoryPhoto
+
+    @Query("DELETE FROM memory_photo_table WHERE memory_host_id = :key")
+    fun clearAllPhotosFromMemory(key: Long)
+
+    @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
+    fun getAllPhotosFromMemory(key: Long): LiveData<List<MemoryPhoto>>
 }
