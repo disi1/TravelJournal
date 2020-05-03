@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.R
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
+import com.example.traveljournal.databinding.HeaderBinding
 import com.example.traveljournal.databinding.ListItemMemoryPhotoBinding
 import com.example.traveljournal.databinding.TextHeaderBinding
 import kotlinx.coroutines.CoroutineScope
@@ -68,6 +69,9 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
             is TextViewHolder -> {
                 holder.bind(memoryDetailsViewModel)
             }
+            is ImageViewHolder -> {
+                holder.bind(memoryDetailsViewModel)
+            }
         }
     }
 
@@ -90,13 +94,28 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
         }
     }
 
-    class ImageViewHolder(view: View): RecyclerView.ViewHolder(view) {
+//    class ImageViewHolder(view: View): RecyclerView.ViewHolder(view) {
+//        companion object {
+//            fun from(parent: ViewGroup): ImageViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val view = layoutInflater.inflate(R.layout.header, parent, false)
+//
+//                return ImageViewHolder(view)
+//            }
+//        }
+//    }
+
+    class ImageViewHolder(val binding: HeaderBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: MemoryDetailsViewModel) {
+            binding.memoryDetailsViewModel = item
+            binding.executePendingBindings()
+        }
         companion object {
             fun from(parent: ViewGroup): ImageViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.header, parent, false)
+                val binding = HeaderBinding.inflate(layoutInflater, parent, false)
 
-                return ImageViewHolder(view)
+                return ImageViewHolder(binding)
             }
         }
     }

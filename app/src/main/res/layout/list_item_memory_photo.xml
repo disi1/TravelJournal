@@ -24,8 +24,7 @@
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:adjustViewBounds="true"
-            android:padding="2dp"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:memoryImageUrl="@{memoryPhoto}"
             tools:srcCompat="@drawable/ic_img_placeholder"/>
 

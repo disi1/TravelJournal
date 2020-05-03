@@ -44,6 +44,8 @@
     <string name="memory_date">Click here to choose a date</string>
     <string name="clear_all_memories">Clear all memories</string>
     <string name="cleared_memories_message">All your Memories  from %1$s have been deleted.</string>
+    <string name="cleared_memory_photos_message">All your photos from <i>%1$s</i> have been deleted.</string>
     <string name="memory_details">Memory Details</string>
+    <string name="clear_all_memory_photos">Clear all photos</string>
 
 </resources>
