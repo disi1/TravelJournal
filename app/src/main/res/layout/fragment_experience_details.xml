@@ -132,18 +132,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/description_label"/>
 
-<!--                <fragment-->
-<!--                    android:id="@+id/description_dialog_fragment"-->
-<!--                    android:name="com.example.traveljournal.experienceDetails.DescriptionDialogFragment"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="8dp"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:layout_marginEnd="8dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/description_text"/>-->
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/memories_list"
                     android:layout_width="0dp"
@@ -159,21 +147,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/experience_description_text"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--        <Button-->
-<!--            android:id="@+id/update_experience_button"-->
-<!--            style="@style/TravelButtons"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_marginBottom="8dp"-->
-<!--            android:onClick="@{() -> experienceDetailsViewModel.onUpdateExperience()}"-->
-<!--            android:text="Update"-->
-<!--            app:layout_constraintBaseline_toBaselineOf="@+id/add_memory_button"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/add_memory_button"-->
-<!--            app:layout_constraintHorizontal_chainStyle="spread"-->
-<!--            app:layout_constraintStart_toStartOf="parent"/>-->
 
         <Button
             android:id="@+id/add_memory_button"
