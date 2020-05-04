@@ -14,28 +14,13 @@
         android:layout_height="match_parent"
         tools:context=".experienceDetails.ExperienceDetailsFragment">
 
-<!--        <TextView-->
-<!--            android:id="@+id/numberOfMemoriesTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/experienceNameTextView"-->
-<!--            tools:text="@string/defaultNumberOfMemories" />-->
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/experience_details_nested_scrollView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/add_memory_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/add_memory_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/experience_image"
@@ -60,6 +45,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:textStyle="bold"
+                    style="@style/TextStyle"
                     app:experienceName="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_name"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
@@ -73,6 +59,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    style="@style/TextStyle"
                     app:experiencePlaceName="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
@@ -85,24 +72,77 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
+                    style="@style/TextStyle"
                     app:experiencePlaceAddress="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toBottomOf="@+id/experience_image"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toStartOf="@+id/experience_image"
                     tools:text="Lake Zürich, Switzerland" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/experience_description_text_input"
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/experience_description_text_input"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:hint="@string/experienceDescription"-->
+<!--                    app:experienceDescription="@{experienceDetailsViewModel.experience}"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/experience_image" />-->
+
+                <TextView
+                    android:id="@+id/description_label"
+                    style="@style/LabelStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/experienceDescription"
+                    android:text="Description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experience_image"
+                    app:visible="@{experienceDetailsViewModel.descriptionLabelVisible}"/>
+
+                <TextView
+                    android:id="@+id/add_description_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> experienceDetailsViewModel.onDescriptionTextClicked()}"
+                    android:text="Add a description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experience_image"
+                    app:visible="@{experienceDetailsViewModel.addDescriptionLabelVisible}"/>
+
+                <TextView
+                    android:id="@+id/experience_description_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> experienceDetailsViewModel.onDescriptionTextClicked()}"
                     app:experienceDescription="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/experience_image" />
+                    app:layout_constraintTop_toBottomOf="@+id/description_label"/>
+
+<!--                <fragment-->
+<!--                    android:id="@+id/description_dialog_fragment"-->
+<!--                    android:name="com.example.traveljournal.experienceDetails.DescriptionDialogFragment"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/description_text"/>-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/memories_list"
@@ -116,25 +156,24 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@+id/experience_description_text_input"/>
+                    app:layout_constraintTop_toBottomOf="@+id/experience_description_text"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
 
-        <Button
-            android:id="@+id/update_experience_button"
-            style="@style/TravelButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="@{() -> experienceDetailsViewModel.onUpdateExperience()}"
-            android:text="Update"
-            app:layout_constraintBaseline_toBaselineOf="@+id/add_memory_button"
-            app:layout_constraintEnd_toStartOf="@+id/add_memory_button"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"/>
+<!--        <Button-->
+<!--            android:id="@+id/update_experience_button"-->
+<!--            style="@style/TravelButtons"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:onClick="@{() -> experienceDetailsViewModel.onUpdateExperience()}"-->
+<!--            android:text="Update"-->
+<!--            app:layout_constraintBaseline_toBaselineOf="@+id/add_memory_button"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/add_memory_button"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread"-->
+<!--            app:layout_constraintStart_toStartOf="parent"/>-->
 
         <Button
             android:id="@+id/add_memory_button"
@@ -148,6 +187,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"
-            app:layout_constraintStart_toEndOf="@+id/update_experience_button"/>
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

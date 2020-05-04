@@ -1,5 +1,6 @@
 package com.example.traveljournal.experienceDetails
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.TravelDatabaseDao
@@ -27,6 +28,14 @@ class ExperienceDetailsViewModel(
 
     val experienceDescription = MutableLiveData<String>()
 
+    val addDescriptionLabelVisible = Transformations.map(experience) {
+        "" == it.experienceDescription
+    }
+
+    val descriptionLabelVisible = Transformations.map(experience) {
+        "" != it.experienceDescription
+    }
+
     private var _showSnackbarEventExpUpdated = MutableLiveData<Boolean>()
     val showSnackbarEventExperienceUpdated: LiveData<Boolean>
         get() = _showSnackbarEventExpUpdated
@@ -42,6 +51,10 @@ class ExperienceDetailsViewModel(
     private val _navigateToMemoryDetails = MutableLiveData<Long>()
     val navigateToMemoryDetails
         get() = _navigateToMemoryDetails
+
+    private val _openDialogFragment = MutableLiveData<Boolean?>()
+    val openDialogFragment: LiveData<Boolean?>
+        get() = _openDialogFragment
 
     fun doneShowingSnackbarExperienceUpdated() {
         _showSnackbarEventExpUpdated.value = false
@@ -89,6 +102,10 @@ class ExperienceDetailsViewModel(
 
             _showSnackbarEventMemoriesDeleted.value = true
         }
+    }
+
+    fun onDescriptionTextClicked() {
+        _openDialogFragment.value = true
     }
 
     suspend fun clearMemories(experienceKey: Long) {

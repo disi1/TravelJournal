@@ -3,14 +3,16 @@ package com.example.traveljournal.experienceDetails
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -18,10 +20,13 @@ import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlin.concurrent.fixedRateTimer
+import kotlin.math.exp
 
-class ExperienceDetailsFragment : Fragment() {
+class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogListener {
 
     private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
+//    private lateinit var descriptionLabel: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +38,8 @@ class ExperienceDetailsFragment : Fragment() {
             inflater,
             R.layout.fragment_experience_details, container, false
         )
+
+//        descriptionLabel = binding.descriptionLabel
 
         val application = requireNotNull(this.activity).application
         val arguments = ExperienceDetailsFragmentArgs.fromBundle(arguments!!)
@@ -57,9 +64,9 @@ class ExperienceDetailsFragment : Fragment() {
             }
         })
 
-        binding.experienceDescriptionTextInput.afterTextChanged { experienceDescription ->
-            experienceDetailsViewModel.experienceDescription.value = experienceDescription
-        }
+//        binding.experienceDescriptionTextInput.afterTextChanged { experienceDescription ->
+//            experienceDetailsViewModel.experienceDescription.value = experienceDescription
+//        }
 
         experienceDetailsViewModel.showSnackbarEventExperienceUpdated.observe(viewLifecycleOwner, Observer {
             if(it == true) {
@@ -100,6 +107,24 @@ class ExperienceDetailsFragment : Fragment() {
             }
         })
 
+        experienceDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = DescriptionDialogFragment(experienceDetailsViewModel)
+
+                val ft = fragmentManager!!.beginTransaction()
+                val prev = fragmentManager!!.findFragmentByTag("dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "dialog")
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -130,5 +155,15 @@ class ExperienceDetailsFragment : Fragment() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onFinishEditDialog(inputText: String) {
+        if(TextUtils.isEmpty(inputText)) {
+
+        } else {
+            experienceDetailsViewModel.experienceDescription.value = inputText
+            experienceDetailsViewModel.onUpdateExperience()
+//            descriptionLabel.text = "Description"
+        }
     }
 }
