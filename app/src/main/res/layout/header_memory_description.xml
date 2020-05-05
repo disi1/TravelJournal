@@ -14,5 +14,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:memoryDescription="@{memoryDetailsViewModel.memory}"
+        android:paddingBottom="8dp"
         tools:text="Memory description"/>
 </layout>

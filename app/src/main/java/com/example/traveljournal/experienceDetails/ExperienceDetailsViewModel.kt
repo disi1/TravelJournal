@@ -108,6 +108,10 @@ class ExperienceDetailsViewModel(
         _openDialogFragment.value = true
     }
 
+    fun doneShowingDialogFragment() {
+        _openDialogFragment.value = false
+    }
+
     suspend fun clearMemories(experienceKey: Long) {
         withContext(Dispatchers.IO) {
             database.clearAllMemoriesFromExperience(experienceKey)

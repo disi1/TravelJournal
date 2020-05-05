@@ -8,25 +8,24 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlin.concurrent.fixedRateTimer
-import kotlin.math.exp
+
 
 class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogListener {
 
     private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
-//    private lateinit var descriptionLabel: TextView
+    private lateinit var adapter: MemoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +37,6 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
             inflater,
             R.layout.fragment_experience_details, container, false
         )
-
-//        descriptionLabel = binding.descriptionLabel
 
         val application = requireNotNull(this.activity).application
         val arguments = ExperienceDetailsFragmentArgs.fromBundle(arguments!!)
@@ -53,20 +50,24 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
 
-        val adapter = MemoryAdapter(MemoryListener {
+        val manager = LinearLayoutManager(activity)
+        binding.memoriesList.layoutManager = manager
+        adapter = MemoryAdapter(MemoryListener {
             memoryId -> experienceDetailsViewModel.onMemoryClicked(memoryId)
-        })
+        }, experienceDetailsViewModel)
         binding.memoriesList.adapter = adapter
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.submitList(it)
+                adapter.addHeaderAndSubmitList(it)
             }
         })
 
-//        binding.experienceDescriptionTextInput.afterTextChanged { experienceDescription ->
-//            experienceDetailsViewModel.experienceDescription.value = experienceDescription
-//        }
+        experienceDetailsViewModel.experienceDescription.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.notifyItemChanged(0, null)
+            }
+        })
 
         experienceDetailsViewModel.showSnackbarEventExperienceUpdated.observe(viewLifecycleOwner, Observer {
             if(it == true) {
@@ -111,8 +112,8 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
             if(it == true) {
                 val dialogFragment = DescriptionDialogFragment(experienceDetailsViewModel)
 
-                val ft = fragmentManager!!.beginTransaction()
-                val prev = fragmentManager!!.findFragmentByTag("dialog")
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("dialog")
 
                 if (prev != null) {
                     ft.remove(prev)
@@ -128,18 +129,6 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
         setHasOptionsMenu(true)
 
         return binding.root
-    }
-
-    private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-        this.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                afterTextChanged.invoke(s.toString())
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -158,12 +147,8 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
     }
 
     override fun onFinishEditDialog(inputText: String) {
-        if(TextUtils.isEmpty(inputText)) {
-
-        } else {
-            experienceDetailsViewModel.experienceDescription.value = inputText
-            experienceDetailsViewModel.onUpdateExperience()
-//            descriptionLabel.text = "Description"
-        }
+        experienceDetailsViewModel.experienceDescription.value = inputText
+        experienceDetailsViewModel.onUpdateExperience()
+        experienceDetailsViewModel.doneShowingDialogFragment()
     }
 }

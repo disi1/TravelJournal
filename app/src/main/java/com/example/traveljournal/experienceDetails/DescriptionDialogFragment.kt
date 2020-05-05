@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -56,13 +55,12 @@ class DescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetail
     override fun onResume() {
         val window: Window? = dialog!!.window
         val size = Point()
-        // Store dimensions of the screen in `size`
-        val display: Display = window!!.getWindowManager().getDefaultDisplay()
+        val display: Display = window!!.windowManager.defaultDisplay
+
         display.getSize(size)
-        // Set the width of the dialog proportional to 75% of the screen width
-        window!!.setLayout((size.x * 0.75).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout((size.x * 0.75).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
         window.setGravity(Gravity.CENTER)
-        // Call super onResume after sizing
+
         super.onResume()
     }
 

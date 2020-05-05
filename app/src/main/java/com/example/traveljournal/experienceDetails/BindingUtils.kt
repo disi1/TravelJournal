@@ -44,7 +44,7 @@ fun TextView.setVisibility(item: Boolean) {
     item?.let {
         visibility = when (item) {
             true -> View.VISIBLE
-            false -> View.INVISIBLE
+            false -> View.GONE
             else -> throw IllegalArgumentException("Unknown VISIBILITY type: $item")
         }
     }

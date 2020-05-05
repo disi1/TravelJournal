@@ -1,29 +1,22 @@
 package com.example.traveljournal.memoryDetails
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.traveljournal.R
-import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
-import com.example.traveljournal.databinding.HeaderBinding
+import com.example.traveljournal.databinding.HeaderAddMemoryPhotoButtonBinding
+import com.example.traveljournal.databinding.HeaderMemoryDescriptionBinding
 import com.example.traveljournal.databinding.ListItemMemoryPhotoBinding
-import com.example.traveljournal.databinding.TextHeaderBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 import java.lang.ClassCastException
 
-private const val ITEM_VIEW_TYPE_TEXT_HEADER = 0
-private const val ITEM_VIEW_TYPE_HEADER = 1
+private const val ITEM_VIEW_TYPE_DESCRIPTION_HEADER = 0
+private const val ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER = 1
 private const val ITEM_VIEW_TYPE_ITEM = 2
 
 class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryDetailsViewModel: MemoryDetailsViewModel) :
@@ -33,8 +26,8 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_TEXT_HEADER -> TextViewHolder.from(parent)
-            ITEM_VIEW_TYPE_HEADER -> ImageViewHolder.from(parent)
+            ITEM_VIEW_TYPE_DESCRIPTION_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER -> ImageViewHolder.from(parent)
             ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
@@ -42,8 +35,8 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DataItem.TextHeader -> ITEM_VIEW_TYPE_TEXT_HEADER
-            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.DescriptionHeader -> ITEM_VIEW_TYPE_DESCRIPTION_HEADER
+            is DataItem.AddPhotoButtonHeader -> ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER
             is DataItem.MemoryPhotoItem -> ITEM_VIEW_TYPE_ITEM
         }
     }
@@ -51,8 +44,8 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
     fun addHeaderAndSubmitList(list: List<MemoryPhoto>?) {
         adapterScope.launch {
             val items = when(list) {
-                null -> listOf(DataItem.TextHeader) + listOf(DataItem.Header)
-                else -> listOf(DataItem.TextHeader) + listOf(DataItem.Header) + list.map { DataItem.MemoryPhotoItem(it) }
+                null -> listOf(DataItem.DescriptionHeader) + listOf(DataItem.AddPhotoButtonHeader)
+                else -> listOf(DataItem.DescriptionHeader) + listOf(DataItem.AddPhotoButtonHeader) + list.map { DataItem.MemoryPhotoItem(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
@@ -94,18 +87,7 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
         }
     }
 
-//    class ImageViewHolder(view: View): RecyclerView.ViewHolder(view) {
-//        companion object {
-//            fun from(parent: ViewGroup): ImageViewHolder {
-//                val layoutInflater = LayoutInflater.from(parent.context)
-//                val view = layoutInflater.inflate(R.layout.header, parent, false)
-//
-//                return ImageViewHolder(view)
-//            }
-//        }
-//    }
-
-    class ImageViewHolder(val binding: HeaderBinding): RecyclerView.ViewHolder(binding.root) {
+    class ImageViewHolder(val binding: HeaderAddMemoryPhotoButtonBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MemoryDetailsViewModel) {
             binding.memoryDetailsViewModel = item
             binding.executePendingBindings()
@@ -113,14 +95,14 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
         companion object {
             fun from(parent: ViewGroup): ImageViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = HeaderBinding.inflate(layoutInflater, parent, false)
+                val binding = HeaderAddMemoryPhotoButtonBinding.inflate(layoutInflater, parent, false)
 
                 return ImageViewHolder(binding)
             }
         }
     }
 
-    class TextViewHolder(val binding: TextHeaderBinding): RecyclerView.ViewHolder(binding.root) {
+    class TextViewHolder(val binding: HeaderMemoryDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MemoryDetailsViewModel) {
             binding.memoryDetailsViewModel = item
             binding.executePendingBindings()
@@ -129,7 +111,7 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
         companion object {
             fun from(parent: ViewGroup): TextViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = TextHeaderBinding.inflate(layoutInflater, parent, false)
+                val binding = HeaderMemoryDescriptionBinding.inflate(layoutInflater, parent, false)
 
                 return TextViewHolder(binding)
             }
@@ -157,11 +139,11 @@ sealed class  DataItem {
         override val id = memoryPhoto.photoId
     }
 
-    object Header: DataItem() {
+    object AddPhotoButtonHeader: DataItem() {
         override val id = Long.MIN_VALUE
     }
 
-    object TextHeader: DataItem() {
+    object DescriptionHeader: DataItem() {
         override val id = Long.MIN_VALUE
     }
 

@@ -33,13 +33,11 @@
             android:id="@+id/memory_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:gravity="right"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memory_image"
+            app:layout_constraintBottom_toTopOf="@+id/memory_name"
+            app:layout_constraintEnd_toEndOf="@+id/memory_name"
+            app:layout_constraintStart_toStartOf="@+id/memory_name"
             app:memoryDate="@{memoryDetailsViewModel.memory}"
             tools:text="June 28, 2020" />
 
@@ -51,25 +49,24 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memory_date"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            app:layout_constraintEnd_toEndOf="@+id/memory_image"
+            app:layout_constraintStart_toStartOf="@+id/memory_image"
             app:memoryName="@{memoryDetailsViewModel.memory}"
             tools:text="Outdoor Swimming for the first time" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/memory_photos_grid"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memory_name"
-            tools:itemCount="4"
-            tools:listitem="@layout/list_item_memory_photo" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/memory_photos_grid"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/memory_image"
+                tools:itemCount="4"
+                tools:listitem="@layout/list_item_memory_photo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
