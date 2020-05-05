@@ -26,7 +26,7 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_DESCRIPTION_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_DESCRIPTION_HEADER -> DescriptionHeaderViewHolder.from(parent)
             ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER -> ImageViewHolder.from(parent)
             ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
@@ -59,7 +59,7 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
                 val memoryPhotoItem = getItem(position) as DataItem.MemoryPhotoItem
                 holder.bind(memoryPhotoItem.memoryPhoto, clickListener)
             }
-            is TextViewHolder -> {
+            is DescriptionHeaderViewHolder -> {
                 holder.bind(memoryDetailsViewModel)
             }
             is ImageViewHolder -> {
@@ -102,18 +102,18 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
         }
     }
 
-    class TextViewHolder(val binding: HeaderMemoryDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
+    class DescriptionHeaderViewHolder(val binding: HeaderMemoryDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MemoryDetailsViewModel) {
             binding.memoryDetailsViewModel = item
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup): TextViewHolder {
+            fun from(parent: ViewGroup): DescriptionHeaderViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = HeaderMemoryDescriptionBinding.inflate(layoutInflater, parent, false)
 
-                return TextViewHolder(binding)
+                return DescriptionHeaderViewHolder(binding)
             }
         }
     }

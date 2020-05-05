@@ -41,7 +41,6 @@
             style="@style/TextStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> experienceDetailsViewModel.onDescriptionTextClicked()}"
             app:experienceDescription="@{experienceDetailsViewModel.experience}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

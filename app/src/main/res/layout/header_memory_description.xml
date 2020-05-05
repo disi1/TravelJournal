@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -9,11 +9,44 @@
             type="com.example.traveljournal.memoryDetails.MemoryDetailsViewModel" />
     </data>
 
-    <TextView
-        android:id="@+id/memory_description_text_header"
-        android:layout_width="fill_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:memoryDescription="@{memoryDetailsViewModel.memory}"
-        android:paddingBottom="8dp"
-        tools:text="Memory description"/>
+        android:onClick="@{() -> memoryDetailsViewModel.onDescriptionTextClicked()}"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/memory_description_label"
+            style="@style/LabelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_icon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/edit_text_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_edit_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_description_label"
+            app:layout_constraintStart_toEndOf="@+id/memory_description_label"
+            app:layout_constraintTop_toTopOf="@+id/memory_description_label" />
+
+        <TextView
+            android:id="@+id/memory_description_text"
+            style="@style/TextStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memory_description_label"
+            app:memoryDescription="@{memoryDetailsViewModel.memory}"
+            tools:text="Memory description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

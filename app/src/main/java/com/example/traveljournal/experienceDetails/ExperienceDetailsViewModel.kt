@@ -28,18 +28,6 @@ class ExperienceDetailsViewModel(
 
     val experienceDescription = MutableLiveData<String>()
 
-    val addDescriptionLabelVisible = Transformations.map(experience) {
-        "" == it.experienceDescription
-    }
-
-    val descriptionLabelVisible = Transformations.map(experience) {
-        "" != it.experienceDescription
-    }
-
-    private var _showSnackbarEventExpUpdated = MutableLiveData<Boolean>()
-    val showSnackbarEventExperienceUpdated: LiveData<Boolean>
-        get() = _showSnackbarEventExpUpdated
-
     private var _showSnackbarEventMemoriesDeleted = MutableLiveData<Boolean>()
     val showSnackbarEventMemoriesDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoriesDeleted
@@ -56,10 +44,6 @@ class ExperienceDetailsViewModel(
     val openDialogFragment: LiveData<Boolean?>
         get() = _openDialogFragment
 
-    fun doneShowingSnackbarExperienceUpdated() {
-        _showSnackbarEventExpUpdated.value = false
-    }
-
     fun doneShowingSnackbarMemoriesDeleted() {
         _showSnackbarEventMemoriesDeleted.value = false
     }
@@ -72,6 +56,10 @@ class ExperienceDetailsViewModel(
         _navigateToMemoryDetails.value = null
     }
 
+    fun doneShowingDialogFragment() {
+        _openDialogFragment.value = false
+    }
+
     fun onNewMemory() {
         _navigateToNewMemory.value = experienceKey
     }
@@ -81,8 +69,6 @@ class ExperienceDetailsViewModel(
             val oldExperience = experience.value ?: return@launch
             oldExperience.experienceDescription = experienceDescription.value.toString()
             updateExperience(oldExperience)
-
-            _showSnackbarEventExpUpdated.value = true
         }
     }
 
@@ -106,10 +92,6 @@ class ExperienceDetailsViewModel(
 
     fun onDescriptionTextClicked() {
         _openDialogFragment.value = true
-    }
-
-    fun doneShowingDialogFragment() {
-        _openDialogFragment.value = false
     }
 
     suspend fun clearMemories(experienceKey: Long) {

@@ -27,6 +27,8 @@ class MemoryDetailsViewModel(
 
     val memoryPhotos = database.getAllPhotosFromMemory(memoryKey)
 
+    val memoryDescription = MutableLiveData<String>()
+
     private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
@@ -35,8 +37,16 @@ class MemoryDetailsViewModel(
     val showSnackbarEventMemoryPhotosDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoryPhotosDeleted
 
+    private val _openDialogFragment = MutableLiveData<Boolean?>()
+    val openDialogFragment: LiveData<Boolean?>
+        get() = _openDialogFragment
+
     fun doneShowingSnackbarMemoryPhotosDeleted() {
         _showSnackbarEventMemoryPhotosDeleted.value = false
+    }
+
+    fun doneShowingDialogFragment() {
+        _openDialogFragment.value = false
     }
 
     init {
@@ -44,6 +54,20 @@ class MemoryDetailsViewModel(
     }
 
     fun getMemory() = memory
+
+    fun onUpdateMemory() {
+        uiScope.launch {
+            val oldMemory = memory.value ?: return@launch
+            oldMemory.memoryDescription = memoryDescription.value.toString()
+            updateMemory(oldMemory)
+        }
+    }
+
+    private suspend fun updateMemory(memory: Memory) {
+        withContext(Dispatchers.IO) {
+            database.updateMemory(memory)
+        }
+    }
 
     fun onCreateMemoryPhoto() {
         uiScope.launch {
@@ -66,6 +90,10 @@ class MemoryDetailsViewModel(
 
     fun onNewMemoryPhotoClicked() {
         _initiateImageImportFromGallery.value = true
+    }
+
+    fun onDescriptionTextClicked() {
+        _openDialogFragment.value = true
     }
 
     fun onClear() {

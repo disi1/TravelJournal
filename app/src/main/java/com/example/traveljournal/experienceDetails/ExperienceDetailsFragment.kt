@@ -2,12 +2,7 @@ package com.example.traveljournal.experienceDetails
 
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
-import android.util.Log
 import android.view.*
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,14 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
 
-class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogListener {
+class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragment.DialogListener {
 
     private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
     private lateinit var adapter: MemoryAdapter
@@ -69,17 +63,6 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
             }
         })
 
-        experienceDetailsViewModel.showSnackbarEventExperienceUpdated.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(R.string.experience_updated_message),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                experienceDetailsViewModel.doneShowingSnackbarExperienceUpdated()
-            }
-        })
-
         experienceDetailsViewModel.showSnackbarEventMemoriesDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
@@ -110,7 +93,7 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
 
         experienceDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = DescriptionDialogFragment(experienceDetailsViewModel)
+                val dialogFragment = ExperienceDescriptionDialogFragment(experienceDetailsViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
                 val prev = parentFragmentManager.findFragmentByTag("dialog")
@@ -150,5 +133,6 @@ class ExperienceDetailsFragment : Fragment(), DescriptionDialogFragment.DialogLi
         experienceDetailsViewModel.experienceDescription.value = inputText
         experienceDetailsViewModel.onUpdateExperience()
         experienceDetailsViewModel.doneShowingDialogFragment()
+//        adapter.notifyItemChanged(0, null)
     }
 }

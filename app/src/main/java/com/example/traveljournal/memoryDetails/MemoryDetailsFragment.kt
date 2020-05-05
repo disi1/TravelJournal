@@ -3,14 +3,10 @@ package com.example.traveljournal.memoryDetails
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,7 +18,7 @@ import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 
-class MemoryDetailsFragment: Fragment() {
+class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogListener {
     private lateinit var memoryDetailsViewModel: MemoryDetailsViewModel
 
     override fun onCreateView(
@@ -67,6 +63,12 @@ class MemoryDetailsFragment: Fragment() {
 
         binding.memoryPhotosGrid.adapter = adapter
 
+        memoryDetailsViewModel.memoryDescription.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.notifyItemChanged(0, null)
+            }
+        })
+
         memoryDetailsViewModel.memoryPhotos.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.addHeaderAndSubmitList(it)
@@ -88,6 +90,24 @@ class MemoryDetailsFragment: Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
                 memoryDetailsViewModel.doneShowingSnackbarMemoryPhotosDeleted()
+            }
+        })
+
+        memoryDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = MemoryDescriptionDialogFragment(memoryDetailsViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "dialog")
             }
         })
 
@@ -136,5 +156,11 @@ class MemoryDetailsFragment: Fragment() {
             memoryDetailsViewModel.photoSrcUri.value = data?.data.toString()
             memoryDetailsViewModel.onCreateMemoryPhoto()
         }
+    }
+
+    override fun onFinishEditDialog(inputText: String) {
+        memoryDetailsViewModel.memoryDescription.value = inputText
+        memoryDetailsViewModel.onUpdateMemory()
+        memoryDetailsViewModel.doneShowingDialogFragment()
     }
 }

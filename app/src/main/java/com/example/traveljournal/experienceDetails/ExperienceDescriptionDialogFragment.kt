@@ -11,7 +11,7 @@ import com.example.traveljournal.databinding.FragmentDialogExperienceDescription
 import com.google.android.material.textfield.TextInputEditText
 
 
-class DescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
+class ExperienceDescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
 
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var doneButton: Button
@@ -59,6 +59,7 @@ class DescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetail
 
         display.getSize(size)
         window.setLayout((size.x * 0.75).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout((size.y * 0.50).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
         window.setGravity(Gravity.CENTER)
 
         super.onResume()
