@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/journeys_destination"
         android:name="com.example.traveljournal.journeys.JourneysFragment"
-        android:label="fragment_journeys"
-        tools:layout="@layout/fragment_journeys" >
+        android:label="@string/my_journeys"
+        tools:layout="@layout/fragment_journeys">
         <action
             android:id="@+id/action_journeys_destination_to_new_journey_destination"
             app:destination="@id/new_journey_destination"
@@ -25,8 +25,8 @@
     <fragment
         android:id="@+id/new_journey_destination"
         android:name="com.example.traveljournal.journey.NewJourneyFragment"
-        android:label="fragment_new_journey"
-        tools:layout="@layout/fragment_new_journey" >
+        android:label="@string/create_journey"
+        tools:layout="@layout/fragment_new_journey">
         <action
             android:id="@+id/action_new_journey_destination_to_journeys_destination"
             app:destination="@id/journeys_destination"
@@ -38,8 +38,8 @@
     <fragment
         android:id="@+id/journey_details_destination"
         android:name="com.example.traveljournal.journeyDetails.JourneyDetailsFragment"
-        android:label="fragment_journey_details"
-        tools:layout="@layout/fragment_journey_details" >
+        android:label="@string/journey_details"
+        tools:layout="@layout/fragment_journey_details">
         <argument
             android:name="journeyKey"
             app:argType="long" />
@@ -53,7 +53,7 @@
             android:id="@+id/action_journey_details_destination_to_new_experience_destination"
             app:destination="@id/new_experience_destination"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"/>
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
         <action
             android:id="@+id/action_journey_details_destination_to_experience_details_destination"
             app:destination="@id/experience_details_destination" />
@@ -62,7 +62,7 @@
     <fragment
         android:id="@+id/new_experience_destination"
         android:name="com.example.traveljournal.experience.NewExperienceFragment"
-        android:label="fragment_new_experience"
+        android:label="@string/create_experience"
         tools:layout="@layout/fragment_new_experience">
         <argument
             android:name="journeyKey"
@@ -72,13 +72,13 @@
             app:destination="@id/journey_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/experience_details_destination"
         android:name="com.example.traveljournal.experienceDetails.ExperienceDetailsFragment"
-        android:label="fragment_experience_details"
+        android:label="@string/experience_details"
         tools:layout="@layout/fragment_experience_details">
         <argument
             android:name="experienceKey"
@@ -88,7 +88,7 @@
             app:destination="@id/journey_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_experience_details_destination_to_new_memory_destination"
             app:destination="@id/new_memory_destination" />
@@ -100,8 +100,8 @@
     <fragment
         android:id="@+id/new_memory_destination"
         android:name="com.example.traveljournal.memory.NewMemoryFragment"
-        android:label="fragment_new_memory"
-        tools:layout="@layout/fragment_new_memory" >
+        android:label="@string/create_memory"
+        tools:layout="@layout/fragment_new_memory">
         <argument
             android:name="experienceKey"
             app:argType="long" />
@@ -110,13 +110,13 @@
             app:destination="@id/experience_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/experience_details_destination"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/memory_details_destination"
         android:name="com.example.traveljournal.memoryDetails.MemoryDetailsFragment"
-        android:label="fragment_memory_details"
+        android:label="@string/memory_details"
         tools:layout="@layout/fragment_memory_details">
         <argument
             android:name="memoryKey"
@@ -126,7 +126,7 @@
             app:destination="@id/experience_details_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

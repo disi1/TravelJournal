@@ -25,4 +25,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="EmptyListsHintStyle" parent = "Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:paddingBottom">32dp</item>
+    </style>
+
 </resources>

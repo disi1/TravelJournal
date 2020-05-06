@@ -42,15 +42,44 @@ class JourneysFragment : Fragment() {
         binding.journeysViewModel = journeysViewModel
         
         val manager = GridLayoutManager(activity, 2)
+        manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (position) {
+                0 -> 2
+                else -> 1
+            }
+        }
         binding.journeysList.layoutManager = manager
 
         val adapter = JourneyAdapter(
             JourneyListener {
                 journeyId -> journeysViewModel.onJourneyClicked(journeyId)},
             JourneyLongClickListener {
-//                journey ->  Toast.makeText(context, journey.placeName, Toast.LENGTH_LONG).show()})
-                    journey ->  Toast.makeText(context, "Journey long-clicked", Toast.LENGTH_LONG).show()})
+                    journey ->  Toast.makeText(context, "Journey long-clicked", Toast.LENGTH_LONG).show()},
+            journeysViewModel)
         binding.journeysList.adapter = adapter
+        binding.lifecycleOwner = this
+
+        journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.addHeaderAndSubmitList(it)
+                if(it.isNotEmpty()) {
+                    manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int) = when (position) {
+                            0 -> 1
+                            else -> 1
+                        }
+                    }
+                } else {
+                    manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int) = when (position) {
+                            0 -> 2
+                            else -> 1
+                        }
+                    }
+                }
+            }
+        })
+
 
         journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journey ->
             journey?.let {
@@ -59,14 +88,6 @@ class JourneysFragment : Fragment() {
                 journeysViewModel.onJourneyDetailsNavigated()
             }
         })
-
-        journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.submitList(it)
-            }
-        })
-
-        binding.lifecycleOwner = this
 
         journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer {
             if(it == true) {

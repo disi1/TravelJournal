@@ -18,6 +18,7 @@
             android:id="@+id/memory_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
@@ -29,6 +30,18 @@
             app:memoryImage="@{memoryDetailsViewModel.memory}"
             tools:src="@drawable/ic_undraw_memory" />
 
+        <ImageView
+            android:id="@+id/gradient"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_custom_gradient"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/memory_date"/>
+
         <TextView
             android:id="@+id/memory_date"
             style="@style/TextStyle"
@@ -36,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="right"
+            android:paddingTop="32dp"
             app:layout_constraintBottom_toTopOf="@+id/memory_name"
             app:layout_constraintEnd_toEndOf="@+id/memory_name"
             app:layout_constraintStart_toStartOf="@+id/memory_name"
