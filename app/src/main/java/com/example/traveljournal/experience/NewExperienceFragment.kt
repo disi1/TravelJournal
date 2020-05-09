@@ -69,7 +69,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
         autocompleteFragment!!.setHint(getString(R.string.experience_example))
-        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener {

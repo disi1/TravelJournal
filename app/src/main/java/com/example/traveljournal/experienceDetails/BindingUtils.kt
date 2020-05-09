@@ -41,7 +41,7 @@ fun ImageView.setMemoryImage(item: Memory?) {
 
 @BindingAdapter("visible")
 fun TextView.setVisibility(item: Boolean) {
-    item?.let {
+    item.let {
         visibility = when (item) {
             true -> View.VISIBLE
             false -> View.GONE

@@ -37,7 +37,7 @@ class ExperienceDetailsViewModel(
         get() = _navigateToNewMemory
 
     private val _navigateToMemoryDetails = MutableLiveData<Long>()
-    val navigateToMemoryDetails
+    val navigateToMemoryDetails: LiveData<Long>
         get() = _navigateToMemoryDetails
 
     private val _openDialogFragment = MutableLiveData<Boolean?>()

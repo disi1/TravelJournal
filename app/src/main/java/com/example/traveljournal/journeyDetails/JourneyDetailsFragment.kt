@@ -49,14 +49,6 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
-        journeyDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it==true) {
-                this.findNavController().navigate(
-                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToJourneysDestination())
-                journeyDetailsViewModel.doneNavigatingToJourneys()
-            }
-        })
-
         journeyDetailsViewModel.navigateToNewExperience.observe(viewLifecycleOwner, Observer { journeyKey ->
             journeyKey?.let {
                 this.findNavController().navigate(

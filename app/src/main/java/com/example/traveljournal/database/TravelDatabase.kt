@@ -15,13 +15,16 @@ import androidx.room.TypeConverters
 abstract class TravelDatabase : RoomDatabase() {
 
     abstract val travelDatabaseDao : TravelDatabaseDao
+
     companion object{
+
         @Volatile
         private var INSTANCE: TravelDatabase? = null
 
         fun getInstance(context: Context) : TravelDatabase {
             synchronized(this){
                 var instance = INSTANCE
+
                 if(instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
@@ -32,6 +35,7 @@ abstract class TravelDatabase : RoomDatabase() {
                         .build()
                     INSTANCE = instance
                 }
+
                 return instance
             }
         }

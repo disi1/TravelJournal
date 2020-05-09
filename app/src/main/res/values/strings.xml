@@ -15,6 +15,13 @@
     <string name="journey">Journey</string>
     <string name="journey_details">Journey Details</string>
     <string name="empty_journey_list_hint">Start by adding a journey</string>
+    <string name="delete_all_data">Delete all data</string>
+    <string name="data_backed_up">Your data has been backed up.</string>
+    <string name="data_restored">Your data has been restore.</string>
+    <string name="backup_to">Backing up to</string>
+    <string name="select_folder">Select folder</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
 
     // Experiences strings
     <string name="experience">Experience</string>
@@ -40,7 +47,6 @@
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
     <string name="describeMemory">Describe your memory</string>
-    <string name="clear_all">Clear all</string>
     <string name="clear_all_experiences">Clear all experiences</string>
     <string name="experience_updated_message">Your experience has been updated.</string>
     <string name="memory_date">Click here to choose a date</string>
@@ -51,5 +57,7 @@
     <string name="clear_all_memory_photos">Clear all photos</string>
     <string name="cancel">Cancel</string>
     <string name="description">Description</string>
+    <string name="restore_from">Restoring from</string>
+    <string name="restore_warning">app will restart</string>
 
 </resources>

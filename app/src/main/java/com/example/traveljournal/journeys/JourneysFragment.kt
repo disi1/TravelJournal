@@ -1,21 +1,32 @@
 package com.example.traveljournal.journeys
 
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.PermissionChecker
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.traveljournal.JourneysActivity
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 import com.google.android.material.snackbar.Snackbar
 
+
+private const val DATABASE_NAME = "travel_history_database"
 
 class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
@@ -59,6 +70,8 @@ class JourneysFragment : Fragment() {
         binding.journeysList.adapter = adapter
         binding.lifecycleOwner = this
 
+        val backupPath = context!!.getExternalFilesDir(null)!!.path + "/Backup/"
+
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.addHeaderAndSubmitList(it)
@@ -79,7 +92,6 @@ class JourneysFragment : Fragment() {
                 }
             }
         })
-
 
         journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journey ->
             journey?.let {
@@ -120,6 +132,103 @@ class JourneysFragment : Fragment() {
             }
         })
 
+        journeysViewModel.openBackupDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = BackupDialogFragment(journeysViewModel, backupPath)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("backup_dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "backup_dialog")
+            }
+        })
+
+        journeysViewModel.openRestoreDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = RestoreDialogFragment(journeysViewModel, backupPath)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("backup_dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "backup_dialog")
+            }
+        })
+
+        journeysViewModel.launchBackupMechanism.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (PermissionChecker.checkSelfPermission(
+                            context!!,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) == PermissionChecker.PERMISSION_DENIED
+                    ) {
+                        val permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+                        requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
+                    } else {
+                        journeysViewModel.backup(context!!, backupPath)
+                        journeysViewModel.onBackupMechanismDone()
+                    }
+                }
+            }
+        })
+
+        journeysViewModel.launchRestoreMechanism.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (PermissionChecker.checkSelfPermission(
+                            context!!,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) == PermissionChecker.PERMISSION_DENIED
+                    ) {
+                        val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                        requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
+                    } else {
+                        journeysViewModel.restore(context!!, backupPath)
+                        journeysViewModel.onRestoreMechanismDone()
+                        triggerRestart(context!!)
+                    }
+                }
+            }
+        })
+
+        journeysViewModel.showSnackBarEventDataBackedUp.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.data_backed_up),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                journeysViewModel.doneShowingSnackbarDataBackedUp()
+            }
+        })
+
+        journeysViewModel.showSnackBarEventDataRestored.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.data_restored),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                journeysViewModel.doneShowingSnackbarDataRestored()
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -133,12 +242,39 @@ class JourneysFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.clear_all_menu) {
+        if(id == R.id.delete_all_data_menu) {
             journeysViewModel.onClear()
             return true
         }
 
+        if(id == R.id.backup_data_menu) {
+            journeysViewModel.onBackupButtonClicked()
+            return true
+        }
+
+        if(id == R.id.restore_data_menu) {
+            journeysViewModel.onRestoreButtonClicked()
+            return true
+        }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun triggerRestart(context: Context) {
+        val intent = Intent(context, JourneysActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        if (context is Activity) {
+            context.finish()
+        }
+        Runtime.getRuntime().exit(0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == 9990) {
+            journeysViewModel.onBackupButtonClicked()
+        }
     }
 
 //    private fun setRecyclerViewItemTouchListener(journey: Journey) {

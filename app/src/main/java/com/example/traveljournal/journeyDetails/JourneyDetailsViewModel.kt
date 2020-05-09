@@ -1,5 +1,11 @@
 package com.example.traveljournal.journeyDetails
 
+import android.os.Environment
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import android.graphics.pdf.PdfDocument.PageInfo
+import androidx.core.content.contentValuesOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
+import java.io.File
 
 class JourneyDetailsViewModel(
     private val journeyKey: Long = 0L,
@@ -38,10 +45,6 @@ class JourneyDetailsViewModel(
         journey.addSource(database.getJourneyWithId(journeyKey), journey::setValue)
     }
 
-    private val _navigateToJourneys = MutableLiveData<Boolean?>()
-    val navigateToJourneys: LiveData<Boolean?>
-        get() = _navigateToJourneys
-
     private val _navigateToNewExperience = MutableLiveData<Long>()
     val navigateToNewExperience: LiveData<Long>
         get() = _navigateToNewExperience
@@ -49,10 +52,6 @@ class JourneyDetailsViewModel(
     private val _navigateToExperienceDetails = MutableLiveData<Long>()
     val navigateToExperienceDetails
         get() = _navigateToExperienceDetails
-
-    fun doneNavigatingToJourneys() {
-        _navigateToJourneys.value = null
-    }
 
     fun doneNavigatingToNewExperience() {
         _navigateToNewExperience.value = null
@@ -82,10 +81,6 @@ class JourneyDetailsViewModel(
         withContext(Dispatchers.IO) {
             database.clearAllExperiencesFromJourney(journeyKey)
         }
-    }
-
-    fun onClose() {
-        _navigateToJourneys.value = true
     }
 
     override fun onCleared() {

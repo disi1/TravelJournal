@@ -1,8 +1,8 @@
 package com.example.traveljournal.journeys
 
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.ClassCastException
 
 private const val ITEM_VIEW_TYPE_EMPTY_LIST_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
