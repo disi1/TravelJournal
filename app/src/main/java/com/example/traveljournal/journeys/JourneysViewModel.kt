@@ -1,13 +1,7 @@
 package com.example.traveljournal.journeys
 
-import android.Manifest
 import android.app.Application
 import android.content.Context
-import android.os.Build
-import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.PermissionChecker
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -168,20 +162,19 @@ class JourneysViewModel(
         val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
         val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
 
-        val backupDbDir = backupPath
-        val file = File(backupDbDir)
+        val file = File(backupPath)
         if (!file.exists()) {
             file.mkdirs()
         }
 
-        val dbFileExternalPath = backupDbDir + DATABASE_NAME
-        val dbShmFileExternalPath = backupDbDir + DATABASE_NAME + "-shm"
-        val dbWalFileExternalPath = backupDbDir + DATABASE_NAME + "-wal"
+        val dbFileExternalPath = backupPath + DATABASE_NAME
+        val dbShmFileExternalPath = backupPath + DATABASE_NAME + "-shm"
+        val dbWalFileExternalPath = backupPath + DATABASE_NAME + "-wal"
 
         try {
-            copyFromTo(dbFilePath, dbFileExternalPath)
-            copyFromTo(dbShmFilePath, dbShmFileExternalPath)
-            copyFromTo(dbWalFilePath, dbWalFileExternalPath)
+            copyFile(dbFilePath, dbFileExternalPath)
+            copyFile(dbShmFilePath, dbShmFileExternalPath)
+            copyFile(dbWalFilePath, dbWalFileExternalPath)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -199,9 +192,9 @@ class JourneysViewModel(
         val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
 
         try {
-            copyFromTo(dbFileExternalPath, dbFilePath)
-            copyFromTo(dbShmFileExternalPath, dbShmFilePath)
-            copyFromTo(dbWalFileExternalPath, dbWalFilePath)
+            copyFile(dbFileExternalPath, dbFilePath)
+            copyFile(dbShmFileExternalPath, dbShmFilePath)
+            copyFile(dbWalFileExternalPath, dbWalFilePath)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -209,7 +202,7 @@ class JourneysViewModel(
         _showSnackBarEventDataRestored.value = true
     }
 
-    private fun copyFromTo(fromPath: String, toPath: String) {
+    private fun copyFile(fromPath: String, toPath: String) {
         val inStream = File(fromPath).inputStream()
         val outStream = FileOutputStream(toPath)
         inStream.use { input ->
@@ -217,6 +210,9 @@ class JourneysViewModel(
                 input.copyTo(output)
             }
         }
+
+        inStream.close()
+        outStream.close()
     }
 
     override fun onCleared() {

@@ -1,6 +1,7 @@
 package com.example.traveljournal.memoryDetails
 
-import android.content.Intent
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,10 @@ import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+
 
 class MemoryDetailsViewModel(
     private val memoryKey: Long = 0L,
@@ -104,10 +109,36 @@ class MemoryDetailsViewModel(
         }
     }
 
-    suspend fun clearMemoryPhotos(memoryKey: Long) {
+    private suspend fun clearMemoryPhotos(memoryKey: Long) {
         withContext(Dispatchers.IO) {
             database.clearAllPhotosFromMemory(memoryKey)
         }
+    }
+
+    fun backupPhoto(srcFile: File, destFile: File, backupPhotoPath: String) {
+        if (!File(backupPhotoPath).exists()) {
+            File(backupPhotoPath).mkdirs()
+        }
+
+        try {
+            copyFile(srcFile, destFile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun copyFile(srcFile: File, destFile: File) {
+        val inStream = FileInputStream(srcFile)
+        val outStream = FileOutputStream(destFile)
+
+        inStream.use { input ->
+            outStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        inStream.close()
+        outStream.close()
     }
 
     override fun onCleared() {

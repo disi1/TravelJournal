@@ -58,6 +58,6 @@
     <string name="cancel">Cancel</string>
     <string name="description">Description</string>
     <string name="restore_from">Restoring from</string>
-    <string name="restore_warning">app will restart</string>
+    <string name="restore_warning">App will restart</string>
 
 </resources>

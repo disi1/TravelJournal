@@ -5,12 +5,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PermissionChecker.*
-import androidx.core.content.contentValuesOf
+import androidx.core.content.PermissionChecker.PERMISSION_DENIED
+import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,9 +21,11 @@ import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
 
 class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogListener {
     private lateinit var memoryDetailsViewModel: MemoryDetailsViewModel
+    private lateinit var backupPhotoPath: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +68,8 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         }, memoryDetailsViewModel)
 
         binding.memoryPhotosGrid.adapter = adapter
+
+        backupPhotoPath = context!!.getExternalFilesDir(null)!!.path + "/Backup/" + "Media/"
 
         memoryDetailsViewModel.memoryDescription.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -149,6 +154,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.type = "image/*"
         startActivityForResult(intent, 9990)
     }
@@ -156,9 +162,31 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9990) {
-            memoryDetailsViewModel.photoSrcUri.value = data?.data.toString()
+            val srcFile = getRealPath(data)
+            val destFile = File(backupPhotoPath, srcFile.name)
+
+            memoryDetailsViewModel.backupPhoto(srcFile, destFile, backupPhotoPath)
+            memoryDetailsViewModel.photoSrcUri.value = destFile.toString()
             memoryDetailsViewModel.onCreateMemoryPhoto()
         }
+    }
+
+    private fun getRealPath(data: Intent?): File {
+        val selectedImage = data?.data
+        val cursor = context!!.contentResolver.query(
+            selectedImage!!,
+            arrayOf(MediaStore.Images.ImageColumns.DATA),
+            null,
+            null,
+            null
+        )
+        cursor!!.moveToFirst()
+
+        val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+        val selectedImagePath = cursor.getString(idx)
+        cursor.close()
+
+        return File(selectedImagePath)
     }
 
     override fun onFinishEditDialog(inputText: String) {
