@@ -56,6 +56,8 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
             journeysViewModel.onZipFiles(getBackupPath(context!!), zipBackupFile)
 
             backUpDataToEmail(zipBackupFile, context!!)
+
+            dismiss()
         }
 
         journeysViewModel.openBackupMethodsDialogFragment.observe(viewLifecycleOwner, Observer {

@@ -37,11 +37,8 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         val application = requireNotNull(this.activity).application
 
-//        val arguments = NewJourneyFragmentArgs.fromBundle(arguments!!)
-
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
-//        val viewModelFactory = NewJourneyViewModelFactory(arguments.journeyKey, dataSource)
         val viewModelFactory = NewJourneyViewModelFactory(dataSource)
 
         newJourneyViewModel =

@@ -68,13 +68,23 @@
             app:layout_constraintStart_toEndOf="@+id/warning_icon"
             app:layout_constraintTop_toBottomOf="@+id/backup_path_text" />
 
+        <ImageView
+            android:id="@+id/help_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_help_outline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <Button
-            android:id="@+id/select_folder_button"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/select_folder"
+            android:text="@string/cancel"
             app:layout_constraintBaseline_toBaselineOf="@+id/restore_button"
             app:layout_constraintEnd_toStartOf="@+id/restore_button"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -90,7 +100,7 @@
             android:text="@string/restore"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/select_folder_button"
+            app:layout_constraintStart_toEndOf="@+id/cancel_button"
             app:layout_constraintTop_toBottomOf="@+id/warning_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

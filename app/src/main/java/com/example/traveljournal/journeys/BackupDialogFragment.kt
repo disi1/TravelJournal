@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogBackupBinding
 
-class BackupDialogFragment(val journeysViewModel: JourneysViewModel, val backupPath: String): DialogFragment() {
+class BackupDialogFragment(val journeysViewModel: JourneysViewModel, private val backupPath: String): DialogFragment() {
 
     private lateinit var cancelButton: Button
     private lateinit var backupButton: Button
@@ -46,7 +46,7 @@ class BackupDialogFragment(val journeysViewModel: JourneysViewModel, val backupP
         }
 
         cancelButton.setOnClickListener {
-//            journeysViewModel.doneShowingBackupDialogFragment()
+            journeysViewModel.doneShowingBackupMethodsDialogFragment()
             dismiss()
         }
     }

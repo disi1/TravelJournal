@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
+import com.example.traveljournal.getBackupPath
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -69,7 +70,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         binding.memoryPhotosGrid.adapter = adapter
 
-        backupPhotoPath = context!!.getExternalFilesDir(null)!!.path + "/Backup/" + "Media/"
+        backupPhotoPath = getBackupPath(context!!) + "Media/"
 
         memoryDetailsViewModel.memoryDescription.observe(viewLifecycleOwner, Observer {
             it?.let {

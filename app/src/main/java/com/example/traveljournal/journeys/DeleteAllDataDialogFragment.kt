@@ -7,20 +7,21 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.databinding.FragmentDialogRestoreBinding
+import com.example.traveljournal.databinding.FragmentDialogDeleteAllDataBinding
 
-class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backupPath: String):DialogFragment() {
+class DeleteAllDataDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment() {
+
+    private lateinit var deleteButton: Button
     private lateinit var cancelButton: Button
-    private lateinit var restoreButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDialogRestoreBinding = DataBindingUtil.inflate(
+        val binding: FragmentDialogDeleteAllDataBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_dialog_restore,
+            R.layout.fragment_dialog_delete_all_data,
             container,
             false
         )
@@ -28,8 +29,7 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backup
         binding.journeysViewModel = journeysViewModel
 
         cancelButton = binding.cancelButton
-        restoreButton = binding.restoreButton
-        binding.backupPathText.text = backupPath
+        deleteButton = binding.deleteButton
 
         return binding.root
     }
@@ -37,14 +37,12 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backup
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        restoreButton.setOnClickListener {
-            journeysViewModel.onDialogRestoreButtonClicked()
-            journeysViewModel.doneShowingRestoreDialogFragment()
+        deleteButton.setOnClickListener {
+            journeysViewModel.onClear()
             dismiss()
         }
 
         cancelButton.setOnClickListener {
-            journeysViewModel.doneShowingRestoreDialogFragment()
             dismiss()
         }
     }

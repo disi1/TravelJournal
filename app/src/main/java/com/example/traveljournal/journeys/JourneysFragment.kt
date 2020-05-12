@@ -8,9 +8,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -253,6 +256,12 @@ class JourneysFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.journeys_overflow_menu, menu)
+
+        val deleteAllDataMenu = menu.findItem(R.id.delete_all_data_menu)
+        val spannableString = SpannableString(deleteAllDataMenu.title.toString())
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
+        deleteAllDataMenu.title = spannableString
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -260,7 +269,20 @@ class JourneysFragment : Fragment() {
         val id = item.itemId
 
         if(id == R.id.delete_all_data_menu) {
-            journeysViewModel.onClear()
+            val dialogFragment = DeleteAllDataDialogFragment(journeysViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "backup_methods_dialog")
+            
             return true
         }
 
