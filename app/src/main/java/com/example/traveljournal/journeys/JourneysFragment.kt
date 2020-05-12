@@ -5,22 +5,20 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker
-import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.traveljournal.JourneysActivity
-import com.example.traveljournal.R
+import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 import com.google.android.material.snackbar.Snackbar
@@ -132,12 +130,12 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.openBackupDialogFragment.observe(viewLifecycleOwner, Observer {
+        journeysViewModel.openBackupMethodsDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = BackupDialogFragment(journeysViewModel, backupPath)
+                val dialogFragment = BackupMethodsDialogFragment(journeysViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("backup_dialog")
+                val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
 
                 if (prev != null) {
                     ft.remove(prev)
@@ -146,16 +144,34 @@ class JourneysFragment : Fragment() {
 
                 dialogFragment.setTargetFragment(this, 300)
 
-                dialogFragment.show(ft, "backup_dialog")
+                dialogFragment.show(ft, "backup_methods_dialog")
+            }
+        })
+
+        journeysViewModel.openLocalStorageBackupDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = BackupDialogFragment(journeysViewModel, getBackupPath(context!!))
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("local_storage_backup_dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "local_storage_backup_dialog")
             }
         })
 
         journeysViewModel.openRestoreDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = RestoreDialogFragment(journeysViewModel, backupPath)
+                val dialogFragment = RestoreDialogFragment(journeysViewModel, getBackupPath(context!!))
 
                 val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("backup_dialog")
+                val prev = parentFragmentManager.findFragmentByTag("restore_dialog")
 
                 if (prev != null) {
                     ft.remove(prev)
@@ -164,11 +180,11 @@ class JourneysFragment : Fragment() {
 
                 dialogFragment.setTargetFragment(this, 300)
 
-                dialogFragment.show(ft, "backup_dialog")
+                dialogFragment.show(ft, "restore_dialog")
             }
         })
 
-        journeysViewModel.launchBackupMechanism.observe(viewLifecycleOwner, Observer {
+        journeysViewModel.launchLocalStorageBackupMechanism.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (PermissionChecker.checkSelfPermission(
@@ -180,7 +196,7 @@ class JourneysFragment : Fragment() {
 
                         requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
                     } else {
-                        journeysViewModel.backup(context!!, backupPath)
+                        journeysViewModel.localStorageBackup(context!!, getBackupPath(context!!))
                         journeysViewModel.onBackupMechanismDone()
                     }
                 }
@@ -215,6 +231,7 @@ class JourneysFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
                 journeysViewModel.doneShowingSnackbarDataBackedUp()
+
             }
         })
 

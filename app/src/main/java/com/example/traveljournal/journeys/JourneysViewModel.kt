@@ -8,8 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 private const val DATABASE_NAME = "travel_history_database"
 
@@ -47,24 +48,32 @@ class JourneysViewModel(
     val navigateToJourneyDetails: LiveData<Long>
         get() = _navigateToJourneyDetails
 
-    private val _launchBackupMechanism = MutableLiveData<Boolean?>()
-    val launchBackupMechanism: LiveData<Boolean?>
-        get() = _launchBackupMechanism
+    private val _launchLocalStorageBackupMechanism = MutableLiveData<Boolean?>()
+    val launchLocalStorageBackupMechanism: LiveData<Boolean?>
+        get() = _launchLocalStorageBackupMechanism
 
     private val _launchRestoreMechanism = MutableLiveData<Boolean?>()
     val launchRestoreMechanism: LiveData<Boolean?>
         get() = _launchRestoreMechanism
 
-    private val _openBackupDialogFragment = MutableLiveData<Boolean?>()
-    val openBackupDialogFragment: LiveData<Boolean?>
-        get() = _openBackupDialogFragment
+    private val _openBackupMethodsDialogFragment = MutableLiveData<Boolean?>()
+    val openBackupMethodsDialogFragment: LiveData<Boolean?>
+        get() = _openBackupMethodsDialogFragment
+
+    private val _openLocalStorageBackupDialogFragment = MutableLiveData<Boolean?>()
+    val openLocalStorageBackupDialogFragment: LiveData<Boolean?>
+        get() = _openLocalStorageBackupDialogFragment
 
     private val _openRestoreDialogFragment = MutableLiveData<Boolean?>()
     val openRestoreDialogFragment: LiveData<Boolean?>
         get() = _openRestoreDialogFragment
 
-    fun doneShowingBackupDialogFragment() {
-        _openBackupDialogFragment.value = false
+    fun doneShowingBackupMethodsDialogFragment() {
+        _openBackupMethodsDialogFragment.value = false
+    }
+
+    fun doneShowingLocalStorageBackupDialogFragment() {
+        _openLocalStorageBackupDialogFragment.value = false
     }
 
     fun doneShowingRestoreDialogFragment() {
@@ -88,7 +97,7 @@ class JourneysViewModel(
     }
 
     fun onBackupMechanismDone() {
-        _launchBackupMechanism.value = false
+        _launchLocalStorageBackupMechanism.value = false
     }
 
     fun onRestoreMechanismDone() {
@@ -142,11 +151,15 @@ class JourneysViewModel(
     }
 
     fun onBackupButtonClicked() {
-        _openBackupDialogFragment.value = true
+        _openBackupMethodsDialogFragment.value = true
     }
 
-    fun onDialogBackupButtonClicked() {
-        _launchBackupMechanism.value = true
+    fun onLocalStorageBackupDialogOkButtonClicked() {
+        _launchLocalStorageBackupMechanism.value = true
+    }
+
+    fun onDialogBackupMethodsLocalStorageClicked() {
+        _openLocalStorageBackupDialogFragment.value = true
     }
 
     fun onRestoreButtonClicked() {
@@ -157,7 +170,7 @@ class JourneysViewModel(
         _launchRestoreMechanism.value = true
     }
 
-    fun backup(context: Context, backupPath: String) {
+    fun localStorageBackup(context: Context, backupPath: String) {
         val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
         val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
         val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
@@ -213,6 +226,57 @@ class JourneysViewModel(
 
         inStream.close()
         outStream.close()
+    }
+
+    fun onZipFiles(directory: String, zipFile: String) {
+        val sourceFile = File(directory)
+
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { it ->
+            it.use {
+                zipFiles(it, sourceFile, "")
+            }
+        }
+    }
+
+    private fun zipFiles(zipOut: ZipOutputStream, sourceFile: File, parentDirPath: String) {
+        val data = ByteArray(2048)
+
+        for(f in sourceFile.listFiles()!!) {
+            if(f.isDirectory) {
+                val entry = ZipEntry(f.name + File.separator)
+                entry.time = f.lastModified()
+                entry.isDirectory
+                entry.size = f.length()
+
+                zipOut.putNextEntry(entry)
+
+                zipFiles(zipOut, f, f.name)
+            } else {
+
+                if (!f.name.contains(".zip")) {
+                    FileInputStream(f).use { fi ->
+                        BufferedInputStream(fi).use { origin ->
+                            val path = parentDirPath + File.separator + f.name
+                            val entry = ZipEntry(path)
+                            entry.time = f.lastModified()
+                            entry.isDirectory
+                            entry.size = f.length()
+                            zipOut.putNextEntry(entry)
+                            while (true) {
+                                val readBytes = origin.read(data)
+                                if (readBytes == -1) {
+                                    break
+                                }
+                                zipOut.write(data, 0, readBytes)
+                            }
+                        }
+                    }
+                } else {
+                    zipOut.closeEntry()
+                    zipOut.close()
+                }
+            }
+        }
     }
 
     override fun onCleared() {

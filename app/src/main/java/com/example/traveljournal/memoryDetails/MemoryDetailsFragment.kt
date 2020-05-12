@@ -91,6 +91,9 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         memoryDetailsViewModel.showSnackbarEventMemoryPhotosDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
+
+
+
                 Snackbar.make(
                     activity!!.findViewById(android.R.id.content),
                     getString(R.string.cleared_memory_photos_message,

@@ -95,10 +95,10 @@ class NewMemoryFragment: Fragment() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, thisYear, thisMonth, thisDay ->
+        val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
             c[thisYear, thisMonth] = thisDay
 
-            memoryDateTextView.setText(DateFormat.getDateInstance(DateFormat.LONG).format(c.time))
+            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(c.time)
 
             newMemoryViewModel.memoryTimestamp.value = c.time.time
         }, year, month, day)

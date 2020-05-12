@@ -1,6 +1,5 @@
 package com.example.traveljournal.memoryDetails
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -111,7 +110,17 @@ class MemoryDetailsViewModel(
 
     private suspend fun clearMemoryPhotos(memoryKey: Long) {
         withContext(Dispatchers.IO) {
+            deletePhotosFromBackup()
             database.clearAllPhotosFromMemory(memoryKey)
+        }
+    }
+
+    private fun deletePhotosFromBackup() {
+        memoryPhotos.value?.forEach {
+            val fileToDelete = File(it.photoSrcUri)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
         }
     }
 
@@ -120,10 +129,12 @@ class MemoryDetailsViewModel(
             File(backupPhotoPath).mkdirs()
         }
 
-        try {
-            copyFile(srcFile, destFile)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if(!destFile.exists()) {
+            try {
+                copyFile(srcFile, destFile)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

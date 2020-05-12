@@ -13,7 +13,6 @@ import java.io.File
 fun setMemoryImage(imageView: ImageView, item: MemoryPhoto?) {
     item?.let {
         val imageUri = item.photoSrcUri.toUri()
-        val  fileExists = File(imageUri.toString()).exists()
         Glide.with(imageView.context)
             .load(File(imageUri.path))
             .into(imageView)
