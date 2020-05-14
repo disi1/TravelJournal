@@ -14,19 +14,6 @@
         android:layout_height="match_parent"
         tools:context=".journey.NewJourneyFragment">
 
-        <TextView
-            android:id="@+id/whereQuestion"
-            style="@style/TextStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/where_question"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/journey_image" />
-
         <ImageView
             android:id="@+id/journey_image"
             android:layout_width="0dp"
@@ -56,11 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/whereQuestion" />
+            app:layout_constraintTop_toBottomOf="@+id/journey_image" />
 
         <Button
             android:id="@+id/create_button"

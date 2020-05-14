@@ -1,4 +1,4 @@
-package com.example.traveljournal.journeys
+package com.example.traveljournal.experienceDetails
 
 import android.graphics.Point
 import android.os.Bundle
@@ -7,30 +7,30 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.databinding.FragmentDialogBackupBinding
+import com.example.traveljournal.databinding.FragmentDialogDeleteAllExperiencesBinding
+import com.example.traveljournal.databinding.FragmentDialogDeleteAllMemoriesBinding
 
-class BackupDialogFragment(val journeysViewModel: JourneysViewModel, private val backupPath: String): DialogFragment() {
+class DeleteAllMemoriesDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
 
+    private lateinit var deleteButton: Button
     private lateinit var cancelButton: Button
-    private lateinit var backupButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDialogBackupBinding = DataBindingUtil.inflate(
+        val binding: FragmentDialogDeleteAllMemoriesBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_dialog_backup,
+            R.layout.fragment_dialog_delete_all_memories,
             container,
             false
         )
 
-        binding.journeysViewModel = journeysViewModel
+        binding.experienceDetailsViewModel = experienceDetailsViewModel
 
         cancelButton = binding.cancelButton
-        backupButton = binding.backupButton
-        binding.backupPathText.text = backupPath
+        deleteButton = binding.deleteButton
 
         return binding.root
     }
@@ -43,15 +43,12 @@ class BackupDialogFragment(val journeysViewModel: JourneysViewModel, private val
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        backupButton.setOnClickListener {
-            journeysViewModel.onLocalStorageBackupDialogOkButtonClicked()
-            journeysViewModel.doneShowingLocalStorageBackupDialogFragment()
-            journeysViewModel.doneShowingBackupMethodsDialogFragment()
+        deleteButton.setOnClickListener {
+            experienceDetailsViewModel.onClear()
             dismiss()
         }
 
         cancelButton.setOnClickListener {
-            journeysViewModel.doneShowingBackupMethodsDialogFragment()
             dismiss()
         }
     }

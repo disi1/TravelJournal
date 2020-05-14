@@ -2,9 +2,12 @@ package com.example.traveljournal.journeyDetails
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.example.traveljournal.R
 import com.example.traveljournal.database.Experience
+import java.io.File
 
 @BindingAdapter("experienceName")
 fun TextView.setExperienceName(item: Experience?) {
@@ -28,9 +31,16 @@ fun TextView.setExperiencePlaceAddress(item: Experience?) {
 }
 
 @BindingAdapter("experienceImage")
-fun ImageView.setExperienceImage(item: Experience?) {
+fun setExperienceImage(imageView: ImageView, item: Experience?) {
     item?.let {
-        setImageResource(R.drawable.ic_undraw_experience)
+        if(item.coverPhotoSrcUri == "") {
+            imageView.setImageResource(R.drawable.ic_undraw_experience)
+        } else {
+            val imageUri = item.coverPhotoSrcUri.toUri()
+            Glide.with(imageView.context)
+                .load(File(imageUri.path!!))
+                .into(imageView)
+        }
     }
 }
 

@@ -5,7 +5,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
@@ -25,9 +24,6 @@ import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 import com.google.android.material.snackbar.Snackbar
-
-
-private const val DATABASE_NAME = "travel_history_database"
 
 class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
@@ -282,7 +278,7 @@ class JourneysFragment : Fragment() {
             dialogFragment.setTargetFragment(this, 300)
 
             dialogFragment.show(ft, "backup_methods_dialog")
-            
+
             return true
         }
 

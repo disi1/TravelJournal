@@ -20,6 +20,9 @@ data class Memory (
     @ColumnInfo(name = "memory_timestamp")
     var memoryTimestamp: Long,
 
+    @ColumnInfo(name = "cover_photo_src_uri")
+    var coverPhotoSrcUri: String = "",
+
     @ColumnInfo(name = "experience_host_id")
     var experienceHostId: Long
 )

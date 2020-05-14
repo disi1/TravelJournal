@@ -16,7 +16,7 @@ interface TravelDatabaseDao {
     fun getJourney(key: Long): Journey
 
     @Query("DELETE FROM journey_table")
-    fun clearJourneys()
+    fun deleteJourneys()
 
     @Delete
     fun deleteJourney(journey: Journey)
@@ -44,11 +44,14 @@ interface TravelDatabaseDao {
     @Query("SELECT * from experience_table WHERE experienceId = :key")
     fun getExperience(key: Long): Experience
 
+    @Query("SELECT * FROM experience_table ORDER BY experienceId DESC")
+    fun getAllExperiences(): LiveData<List<Experience>>
+
     @Query("DELETE FROM experience_table")
-    fun clearExperiences()
+    fun deleteExperiences()
 
     @Query("DELETE FROM experience_table WHERE journey_host_id = :key")
-    fun clearAllExperiencesFromJourney(key: Long)
+    fun deleteAllExperiencesFromJourney(key: Long)
 
     @Delete
     fun deleteExperience(experience: Experience)
@@ -69,11 +72,14 @@ interface TravelDatabaseDao {
     @Query("SELECT * from memory_table WHERE memoryId = :key")
     fun getMemory(key: Long): Memory
 
+    @Query("SELECT * FROM memory_table ORDER BY memoryId DESC")
+    fun getAllMemories(): LiveData<List<Memory>>
+
     @Query("DELETE FROM memory_table")
-    fun clearMemories()
+    fun deleteMemories()
 
     @Query("DELETE FROM memory_table WHERE experience_host_id = :key")
-    fun clearAllMemoriesFromExperience(key: Long)
+    fun deleteAllMemoriesFromExperience(key: Long)
 
     @Delete
     fun deleteMemory(memory: Memory)
@@ -91,11 +97,14 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_photo_table WHERE photoId = :key")
     fun getMemoryPhoto(key: Long): MemoryPhoto
 
+    @Query("SELECT * FROM memory_photo_table ORDER BY photoId DESC")
+    fun getAllMemoryPhotos(): LiveData<List<MemoryPhoto>>
+
     @Query("DELETE FROM memory_photo_table")
-    fun clearPhotos()
+    fun deletePhotos()
 
     @Query("DELETE FROM memory_photo_table WHERE memory_host_id = :key")
-    fun clearAllPhotosFromMemory(key: Long)
+    fun deleteAllPhotosFromMemory(key: Long)
 
     @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
     fun getAllPhotosFromMemory(key: Long): LiveData<List<MemoryPhoto>>

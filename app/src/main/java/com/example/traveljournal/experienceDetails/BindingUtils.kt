@@ -4,10 +4,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
 import com.example.traveljournal.R
 import com.example.traveljournal.database.Memory
+import java.io.File
 import java.text.DateFormat
 import java.util.*
 
@@ -33,9 +36,16 @@ fun TextView.setMemoryDescription(item: Memory?) {
 }
 
 @BindingAdapter("memoryImage")
-fun ImageView.setMemoryImage(item: Memory?) {
+fun setMemoryImage(imageView: ImageView, item: Memory?) {
     item?.let {
-        setImageResource(R.drawable.ic_undraw_memory)
+        if(item.coverPhotoSrcUri == "") {
+            imageView.setImageResource(R.drawable.ic_undraw_memory)
+        } else {
+            val imageUri = item.coverPhotoSrcUri.toUri()
+            Glide.with(imageView.context)
+                .load(File(imageUri.path!!))
+                .into(imageView)
+        }
     }
 }
 

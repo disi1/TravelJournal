@@ -1,6 +1,5 @@
 package com.example.traveljournal.memoryDetails
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,8 +9,6 @@ import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 
 class MemoryDetailsViewModel(
@@ -33,9 +30,15 @@ class MemoryDetailsViewModel(
 
     val memoryDescription = MutableLiveData<String>()
 
+    val coverPhotoSrcUri = MutableLiveData<String>()
+
     private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
+
+    private var _initiateCoverImageImportFromGallery = MutableLiveData<Boolean?>()
+    val initiateCoverImageImportFromGallery: LiveData<Boolean?>
+        get() = _initiateCoverImageImportFromGallery
 
     private var _showSnackbarEventMemoryPhotosDeleted = MutableLiveData<Boolean>()
     val showSnackbarEventMemoryPhotosDeleted: LiveData<Boolean>
@@ -53,16 +56,38 @@ class MemoryDetailsViewModel(
         _openDialogFragment.value = false
     }
 
+    fun doneImportingImageFromGallery() {
+        _initiateImageImportFromGallery.value = null
+    }
+
+    fun doneImportingCoverImageFromGallery() {
+        _initiateCoverImageImportFromGallery.value = null
+    }
+
     init {
         memory.addSource(database.getMemoryWithId(memoryKey), memory::setValue)
     }
 
     fun getMemory() = memory
 
+    fun onChangeCoverPhotoClicked() {
+        _initiateCoverImageImportFromGallery.value = true
+    }
+
+    fun onCoverPhotoChanged() {
+        if(memory.value?.coverPhotoSrcUri != "") {
+            val fileToDelete = File(memory.value?.coverPhotoSrcUri!!)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
+        }
+    }
+
     fun onUpdateMemory() {
         uiScope.launch {
             val oldMemory = memory.value ?: return@launch
             oldMemory.memoryDescription = memoryDescription.value.toString()
+            oldMemory.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateMemory(oldMemory)
         }
     }
@@ -111,7 +136,7 @@ class MemoryDetailsViewModel(
     private suspend fun clearMemoryPhotos(memoryKey: Long) {
         withContext(Dispatchers.IO) {
             deletePhotosFromBackup()
-            database.clearAllPhotosFromMemory(memoryKey)
+            database.deleteAllPhotosFromMemory(memoryKey)
         }
     }
 
@@ -122,34 +147,6 @@ class MemoryDetailsViewModel(
                 fileToDelete.delete()
             }
         }
-    }
-
-    fun backupPhoto(srcFile: File, destFile: File, backupPhotoPath: String) {
-        if (!File(backupPhotoPath).exists()) {
-            File(backupPhotoPath).mkdirs()
-        }
-
-        if(!destFile.exists()) {
-            try {
-                copyFile(srcFile, destFile)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun copyFile(srcFile: File, destFile: File) {
-        val inStream = FileInputStream(srcFile)
-        val outStream = FileOutputStream(destFile)
-
-        inStream.use { input ->
-            outStream.use { output ->
-                input.copyTo(output)
-            }
-        }
-
-        inStream.close()
-        outStream.close()
     }
 
     override fun onCleared() {

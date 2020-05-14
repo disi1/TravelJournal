@@ -1,9 +1,18 @@
 package com.example.traveljournal.experienceDetails
 
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,15 +20,21 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.traveljournal.R
+import com.example.traveljournal.backupPhoto
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
+import com.example.traveljournal.getBackupPath
+import com.example.traveljournal.getRealPath
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
+import kotlin.math.exp
 
 
 class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragment.DialogListener {
 
     private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
     private lateinit var adapter: MemoryAdapter
+    private lateinit var backupPhotoPath: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +58,8 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
+
+        backupPhotoPath = getBackupPath(context!!) + "Media/"
 
         val manager = LinearLayoutManager(activity)
         binding.memoriesList.layoutManager = manager
@@ -109,6 +126,12 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
+        experienceDetailsViewModel.initiateImageImportFromGallery.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                requestStoragePermission()
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -116,23 +139,85 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.experience_details_overflow_menu, menu)
+
+        val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_memories_menu)
+        val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
+        deleteAllExperiencesMenu.title = spannableString
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.clear_all_memories_menu) {
-            experienceDetailsViewModel.onClear()
+        if(id == R.id.delete_all_memories_menu) {
+            val dialogFragment = DeleteAllMemoriesDialogFragment(experienceDetailsViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "backup_methods_dialog")
+
             return true
         }
+
+        if(id == R.id.change_experience_cover_photo_menu) {
+            experienceDetailsViewModel.onChangeCoverPhotoClicked()
+        }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun requestStoragePermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PermissionChecker.checkSelfPermission(
+                    context!!,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PermissionChecker.PERMISSION_DENIED
+            ) {
+                val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                requestPermissions(permission, 9999)
+            } else {
+                pickImageFromGallery()
+            }
+        }
+    }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.type = "image/*"
+        startActivityForResult(intent, 9999)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == 9999) {
+            val srcFile = getRealPath(data, context!!)
+            val destFile = File(backupPhotoPath, srcFile.name)
+
+
+            backupPhoto(srcFile, destFile, backupPhotoPath)
+            experienceDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
+            experienceDetailsViewModel.onCoverPhotoChanged()
+            experienceDetailsViewModel.doneImportingImageFromGallery()
+            experienceDetailsViewModel.onUpdateExperience()
+        }
     }
 
     override fun onFinishEditDialog(inputText: String) {
         experienceDetailsViewModel.experienceDescription.value = inputText
         experienceDetailsViewModel.onUpdateExperience()
         experienceDetailsViewModel.doneShowingDialogFragment()
-//        adapter.notifyItemChanged(0, null)
     }
 }

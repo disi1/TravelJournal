@@ -1,10 +1,10 @@
 package com.example.traveljournal.experienceDetails
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
+import java.io.File
 
 class ExperienceDetailsViewModel(
     private val experienceKey: Long = 0L,
@@ -17,6 +17,8 @@ class ExperienceDetailsViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val experience = MediatorLiveData<Experience>()
+
+    val coverPhotoSrcUri = MutableLiveData<String>()
 
     val memories = database.getAllMemoriesFromExperience(experienceKey)
 
@@ -44,8 +46,16 @@ class ExperienceDetailsViewModel(
     val openDialogFragment: LiveData<Boolean?>
         get() = _openDialogFragment
 
+    private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
+    val initiateImageImportFromGallery: LiveData<Boolean?>
+        get() = _initiateImageImportFromGallery
+
     fun doneShowingSnackbarMemoriesDeleted() {
         _showSnackbarEventMemoriesDeleted.value = false
+    }
+
+    fun doneImportingImageFromGallery() {
+        _initiateImageImportFromGallery.value = null
     }
 
     fun doneNavigatingToNewMemory() {
@@ -64,10 +74,24 @@ class ExperienceDetailsViewModel(
         _navigateToNewMemory.value = experienceKey
     }
 
+    fun onChangeCoverPhotoClicked() {
+        _initiateImageImportFromGallery.value = true
+    }
+
+    fun onCoverPhotoChanged() {
+        if(experience.value?.coverPhotoSrcUri != "") {
+            val fileToDelete = File(experience.value?.coverPhotoSrcUri!!)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
+        }
+    }
+
     fun onUpdateExperience() {
         uiScope.launch {
             val oldExperience = experience.value ?: return@launch
             oldExperience.experienceDescription = experienceDescription.value.toString()
+            oldExperience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateExperience(oldExperience)
         }
     }
@@ -96,7 +120,7 @@ class ExperienceDetailsViewModel(
 
     suspend fun clearMemories(experienceKey: Long) {
         withContext(Dispatchers.IO) {
-            database.clearAllMemoriesFromExperience(experienceKey)
+            database.deleteAllMemoriesFromExperience(experienceKey)
         }
     }
 

@@ -62,7 +62,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
-        autocompleteFragment!!.setHint(getString(R.string.destination_example))
+        autocompleteFragment!!.setHint(getString(R.string.where_question))
         autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)

@@ -121,10 +121,38 @@ class JourneysViewModel(
 
     private suspend fun clear() {
         withContext(Dispatchers.IO) {
-            database.clearPhotos()
-            database.clearMemories()
-            database.clearExperiences()
-            database.clearJourneys()
+            journeys.value?.forEach {
+                val fileToDelete = File(it.coverPhotoSrcUri)
+                if(fileToDelete.exists()) {
+                    fileToDelete.delete()
+                }
+            }
+
+            database.getAllExperiences().value?.forEach{
+                val fileToDelete = File(it.coverPhotoSrcUri)
+                if(fileToDelete.exists()) {
+                    fileToDelete.delete()
+                }
+            }
+
+            database.getAllMemories().value?.forEach{
+                val fileToDelete = File(it.coverPhotoSrcUri)
+                if(fileToDelete.exists()) {
+                    fileToDelete.delete()
+                }
+            }
+
+            database.getAllMemoryPhotos().value?.forEach {
+                val fileToDelete = File(it.photoSrcUri)
+                if(fileToDelete.exists()) {
+                    fileToDelete.delete()
+                }
+            }
+
+            database.deletePhotos()
+            database.deleteMemories()
+            database.deleteExperiences()
+            database.deleteJourneys()
         }
     }
 

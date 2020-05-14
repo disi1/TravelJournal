@@ -13,5 +13,8 @@ data class Journey(
     var placeName: String = "",
 
     @ColumnInfo(name = "place_address")
-    var placeAddress: String = ""
+    var placeAddress: String = "",
+
+    @ColumnInfo(name = "cover_photo_src_uri")
+    var coverPhotoSrcUri: String = ""
 )

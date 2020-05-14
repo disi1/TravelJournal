@@ -1,11 +1,5 @@
 package com.example.traveljournal.journeyDetails
 
-import android.os.Environment
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.pdf.PdfDocument
-import android.graphics.pdf.PdfDocument.PageInfo
-import androidx.core.content.contentValuesOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +21,8 @@ class JourneyDetailsViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val journey = MediatorLiveData<Journey>()
+
+    val coverPhotoSrcUri = MutableLiveData<String>()
 
     val experiences = database.getAllExperiencesFromJourney(journeyKey)
 
@@ -53,8 +49,16 @@ class JourneyDetailsViewModel(
     val navigateToExperienceDetails
         get() = _navigateToExperienceDetails
 
+    private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
+    val initiateImageImportFromGallery: LiveData<Boolean?>
+        get() = _initiateImageImportFromGallery
+
     fun doneNavigatingToNewExperience() {
         _navigateToNewExperience.value = null
+    }
+
+    fun doneImportingImageFromGallery() {
+        _initiateImageImportFromGallery.value = null
     }
 
     fun doneNavigatingToExperienceDetails() {
@@ -69,6 +73,33 @@ class JourneyDetailsViewModel(
         _navigateToExperienceDetails.value = experienceId
     }
 
+    fun onChangeCoverPhotoClicked() {
+        _initiateImageImportFromGallery.value = true
+    }
+
+    fun onCoverPhotoChanged() {
+        if(journey.value?.coverPhotoSrcUri != "") {
+            val fileToDelete = File(journey.value?.coverPhotoSrcUri!!)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
+        }
+    }
+
+    fun onUpdateJourney() {
+        uiScope.launch {
+            val oldJourney = journey.value ?: return@launch
+            oldJourney.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
+            updateJourney(oldJourney)
+        }
+    }
+
+    private suspend fun updateJourney(journey: Journey) {
+        withContext(Dispatchers.IO) {
+            database.updateJourney(journey)
+        }
+    }
+
     fun onClear() {
         uiScope.launch {
             clearExperiences(journeyKey)
@@ -77,9 +108,9 @@ class JourneyDetailsViewModel(
         }
     }
 
-    suspend fun clearExperiences(journeyKey: Long) {
+    private suspend fun clearExperiences(journeyKey: Long) {
         withContext(Dispatchers.IO) {
-            database.clearAllExperiencesFromJourney(journeyKey)
+            database.deleteAllExperiencesFromJourney(journeyKey)
         }
     }
 
