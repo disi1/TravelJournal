@@ -17,7 +17,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/add_memory_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +36,8 @@
                     app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent="1"
 					app:experienceImage="@{experienceDetailsViewModel.experience}"
-                    tools:src="@drawable/ic_undraw_experience" />
+                    android:onClick="@{() -> experienceDetailsViewModel.onExperienceCoverClicked()}"
+                    tools:src="@drawable/ic_undraw_experience"/>
 
                 <ImageView
                     android:id="@+id/gradient"
@@ -109,18 +110,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/add_memory_button"
-            style="@style/TravelButtons"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/new_memory_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/new_memory"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

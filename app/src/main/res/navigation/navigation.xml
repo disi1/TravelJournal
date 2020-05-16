@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/journeys_destination"
         android:name="com.example.traveljournal.journeys.JourneysFragment"
-        android:label="@string/my_journeys"
         tools:layout="@layout/fragment_journeys">
         <action
             android:id="@+id/action_journeys_destination_to_new_journey_destination"

@@ -22,12 +22,13 @@
         app:cardElevation="2dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="10dp"
+        android:longClickable="true"
+        android:onClick="@{() -> clickListener.onClick(journey)}"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:onClick="@{() -> clickListener.onClick(journey)}">
+            android:layout_height="match_parent">
 
         <!--        android:onLongClick="@{() -> longClickListener.onLongClick(journey)}">-->
 

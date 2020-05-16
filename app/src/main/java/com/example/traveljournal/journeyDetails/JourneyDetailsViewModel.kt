@@ -53,6 +53,10 @@ class JourneyDetailsViewModel(
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
 
+    private val _openCoverPhotoDialogFragment = MutableLiveData<Boolean?>()
+    val openCoverPhotoDialogFragment: LiveData<Boolean?>
+        get() = _openCoverPhotoDialogFragment
+
     fun doneNavigatingToNewExperience() {
         _navigateToNewExperience.value = null
     }
@@ -98,6 +102,14 @@ class JourneyDetailsViewModel(
         withContext(Dispatchers.IO) {
             database.updateJourney(journey)
         }
+    }
+
+    fun onCloseJourneyCoverDialog() {
+        _openCoverPhotoDialogFragment.value = false
+    }
+
+    fun onJourneyCoverClicked() {
+        _openCoverPhotoDialogFragment.value = true
     }
 
     fun onClear() {

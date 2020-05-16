@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -75,6 +76,42 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         backupPhotoPath = getBackupPath(context!!) + "Media/"
 
+        memoryDetailsViewModel.openPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val dialogFragment = MemoryPhotoDialogFragment(it, memoryDetailsViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("photoDialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "photoDialog")
+            }
+        })
+
+        memoryDetailsViewModel.openCoverPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val dialogFragment = MemoryCoverDialogFragment(memoryDetailsViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("photoDialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "photoDialog")
+            }
+        })
+
         memoryDetailsViewModel.memoryDescription.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.notifyItemChanged(0, null)
@@ -101,9 +138,6 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         memoryDetailsViewModel.showSnackbarEventMemoryPhotosDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-
-
-
                 Snackbar.make(
                     activity!!.findViewById(android.R.id.content),
                     getString(R.string.cleared_memory_photos_message,
@@ -114,7 +148,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             }
         })
 
-        memoryDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
+        memoryDetailsViewModel.openDescriptionDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 val dialogFragment = MemoryDescriptionDialogFragment(memoryDetailsViewModel)
 
@@ -169,10 +203,6 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             return true
         }
 
-        if(id == R.id.change_memory_cover_photo_menu) {
-            memoryDetailsViewModel.onChangeCoverPhotoClicked()
-        }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -221,13 +251,13 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             memoryDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
             memoryDetailsViewModel.onCoverPhotoChanged()
             memoryDetailsViewModel.doneImportingCoverImageFromGallery()
-            memoryDetailsViewModel.onUpdateMemory()
+            memoryDetailsViewModel.onUpdateMemoryCoverPhoto()
         }
     }
 
     override fun onFinishEditDialog(inputText: String) {
         memoryDetailsViewModel.memoryDescription.value = inputText
-        memoryDetailsViewModel.onUpdateMemory()
-        memoryDetailsViewModel.doneShowingDialogFragment()
+        memoryDetailsViewModel.onUpdateMemoryDescription()
+        memoryDetailsViewModel.doneShowingDescriptionDialogFragment()
     }
 }

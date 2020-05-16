@@ -50,6 +50,10 @@ class ExperienceDetailsViewModel(
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
 
+    private val _openCoverPhotoDialogFragment = MutableLiveData<Boolean?>()
+    val openCoverPhotoDialogFragment: LiveData<Boolean?>
+        get() = _openCoverPhotoDialogFragment
+
     fun doneShowingSnackbarMemoriesDeleted() {
         _showSnackbarEventMemoriesDeleted.value = false
     }
@@ -87,10 +91,17 @@ class ExperienceDetailsViewModel(
         }
     }
 
-    fun onUpdateExperience() {
+    fun onUpdateExperienceDescription() {
         uiScope.launch {
             val oldExperience = experience.value ?: return@launch
             oldExperience.experienceDescription = experienceDescription.value.toString()
+            updateExperience(oldExperience)
+        }
+    }
+
+    fun onUpdateExperienceCoverPhoto() {
+        uiScope.launch {
+            val oldExperience = experience.value ?: return@launch
             oldExperience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateExperience(oldExperience)
         }
@@ -116,6 +127,14 @@ class ExperienceDetailsViewModel(
 
     fun onDescriptionTextClicked() {
         _openDialogFragment.value = true
+    }
+
+    fun onExperienceCoverClicked() {
+        _openCoverPhotoDialogFragment.value = true
+    }
+
+    fun onCloseExperienceCoverDialog() {
+        _openCoverPhotoDialogFragment.value = false
     }
 
     suspend fun clearMemories(experienceKey: Long) {

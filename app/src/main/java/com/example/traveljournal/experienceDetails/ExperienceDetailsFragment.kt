@@ -132,6 +132,24 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
+        experienceDetailsViewModel.openCoverPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val dialogFragment = ExperienceCoverDialogFragment(experienceDetailsViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("photoDialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "photoDialog")
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -167,10 +185,6 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             dialogFragment.show(ft, "backup_methods_dialog")
 
             return true
-        }
-
-        if(id == R.id.change_experience_cover_photo_menu) {
-            experienceDetailsViewModel.onChangeCoverPhotoClicked()
         }
 
         return super.onOptionsItemSelected(item)
@@ -211,13 +225,13 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             experienceDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
             experienceDetailsViewModel.onCoverPhotoChanged()
             experienceDetailsViewModel.doneImportingImageFromGallery()
-            experienceDetailsViewModel.onUpdateExperience()
+            experienceDetailsViewModel.onUpdateExperienceCoverPhoto()
         }
     }
 
     override fun onFinishEditDialog(inputText: String) {
         experienceDetailsViewModel.experienceDescription.value = inputText
-        experienceDetailsViewModel.onUpdateExperience()
+        experienceDetailsViewModel.onUpdateExperienceDescription()
         experienceDetailsViewModel.doneShowingDialogFragment()
     }
 }

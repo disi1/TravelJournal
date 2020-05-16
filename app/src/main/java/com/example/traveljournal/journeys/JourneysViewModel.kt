@@ -174,6 +174,10 @@ class JourneysViewModel(
         _navigateToJourneyDetails.value = id
     }
 
+    fun onJourneyLongClicked(journey: Journey) {
+
+    }
+
     fun onJourneyDetailsNavigated() {
         _navigateToJourneyDetails.value = null
     }

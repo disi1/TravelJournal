@@ -19,7 +19,8 @@
 
         <activity
             android:name=".JourneysActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustNothing">
+<!--            android:theme="@style/AppTheme.ActionBar.Transparent">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

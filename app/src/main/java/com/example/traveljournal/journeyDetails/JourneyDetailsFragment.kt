@@ -99,6 +99,24 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
+        journeyDetailsViewModel.openCoverPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val dialogFragment = JourneyCoverDialogFragment(journeyDetailsViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("photoDialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "photoDialog")
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -134,10 +152,6 @@ class JourneyDetailsFragment: Fragment() {
             dialogFragment.show(ft, "backup_methods_dialog")
 
             return true
-        }
-
-        if(id == R.id.change_journey_cover_photo_menu) {
-            journeyDetailsViewModel.onChangeCoverPhotoClicked()
         }
 
         return super.onOptionsItemSelected(item)

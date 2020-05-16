@@ -44,16 +44,24 @@ class MemoryDetailsViewModel(
     val showSnackbarEventMemoryPhotosDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoryPhotosDeleted
 
-    private val _openDialogFragment = MutableLiveData<Boolean?>()
-    val openDialogFragment: LiveData<Boolean?>
-        get() = _openDialogFragment
+    private val _openDescriptionDialogFragment = MutableLiveData<Boolean?>()
+    val openDescriptionDialogFragment: LiveData<Boolean?>
+        get() = _openDescriptionDialogFragment
+
+    private val _openPhotoDialogFragment = MutableLiveData<MemoryPhoto?>()
+    val openPhotoDialogFragment: LiveData<MemoryPhoto?>
+        get() = _openPhotoDialogFragment
+
+    private val _openCoverPhotoDialogFragment = MutableLiveData<Boolean?>()
+    val openCoverPhotoDialogFragment: LiveData<Boolean?>
+        get() = _openCoverPhotoDialogFragment
 
     fun doneShowingSnackbarMemoryPhotosDeleted() {
         _showSnackbarEventMemoryPhotosDeleted.value = false
     }
 
-    fun doneShowingDialogFragment() {
-        _openDialogFragment.value = false
+    fun doneShowingDescriptionDialogFragment() {
+        _openDescriptionDialogFragment.value = false
     }
 
     fun doneImportingImageFromGallery() {
@@ -83,10 +91,17 @@ class MemoryDetailsViewModel(
         }
     }
 
-    fun onUpdateMemory() {
+    fun onUpdateMemoryDescription() {
         uiScope.launch {
             val oldMemory = memory.value ?: return@launch
             oldMemory.memoryDescription = memoryDescription.value.toString()
+            updateMemory(oldMemory)
+        }
+    }
+
+    fun onUpdateMemoryCoverPhoto() {
+        uiScope.launch {
+            val oldMemory = memory.value ?: return@launch
             oldMemory.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateMemory(oldMemory)
         }
@@ -114,7 +129,7 @@ class MemoryDetailsViewModel(
     }
 
     fun onMemoryPhotoClicked(memoryPhoto: MemoryPhoto) {
-
+        _openPhotoDialogFragment.value = memoryPhoto
     }
 
     fun onNewMemoryPhotoClicked() {
@@ -122,7 +137,19 @@ class MemoryDetailsViewModel(
     }
 
     fun onDescriptionTextClicked() {
-        _openDialogFragment.value = true
+        _openDescriptionDialogFragment.value = true
+    }
+
+    fun onMemoryCoverClicked() {
+        _openCoverPhotoDialogFragment.value = true
+    }
+
+    fun onCloseMemoryCoverDialog() {
+        _openCoverPhotoDialogFragment.value = false
+    }
+
+    fun onCloseMemoryPhotoDialog() {
+        _openPhotoDialogFragment.value = null
     }
 
     fun onClear() {

@@ -28,7 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:memoryImage="@{memoryDetailsViewModel.memory}"
-            tools:src="@drawable/ic_undraw_memory" />
+            android:onClick="@{() -> memoryDetailsViewModel.onMemoryCoverClicked()}"
+            tools:src="@drawable/ic_undraw_memory"/>
 
         <ImageView
             android:id="@+id/gradient"

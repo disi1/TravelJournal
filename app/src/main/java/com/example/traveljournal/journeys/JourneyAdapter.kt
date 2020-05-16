@@ -1,6 +1,7 @@
 package com.example.traveljournal.journeys
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
@@ -30,7 +31,7 @@ class JourneyAdapter(
         return when(viewType) {
             ITEM_VIEW_TYPE_EMPTY_LIST_HEADER -> EmptyListHeaderViewHolder.from(parent)
             ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
-            else -> throw ClassCastException("Unknown viewType ${viewType}")
+            else -> throw ClassCastException("Unknown viewType: $viewType")
         }
     }
 
@@ -118,12 +119,12 @@ class JourneyListener(val clickListener: (journeyId: Long) -> Unit) {
     fun onClick(journey: Journey) = clickListener(journey.journeyId)
 }
 
-//class JourneyLongClickListener(val longClickListener: (journey: Journey) -> Unit) {
-//    fun onLongClick(journey: Journey) = longClickListener(journey)
-//}
-class JourneyLongClickListener(val longClickListener: (Boolean) -> Unit) {
-    fun onLongClick(boolean: Boolean) = longClickListener(boolean)
+class JourneyLongClickListener(val longClickListener: (journey: Journey) -> Unit) {
+    fun onLongClick(journey: Journey) = longClickListener(journey)
 }
+//class JourneyLongClickListener(val longClickListener: (Boolean) -> Unit) {
+//    fun onLongClick(boolean: Boolean) = longClickListener(boolean)
+//}
 
 sealed class DataItem {
     data class JourneyItem(val journey: Journey): DataItem() {

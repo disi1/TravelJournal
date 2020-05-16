@@ -28,7 +28,8 @@
             app:journeyImage="@{journeyDetailsViewModel.journey}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-			tools:background="@drawable/ic_undraw_destinations"/>
+			android:onClick="@{() -> journeyDetailsViewModel.onJourneyCoverClicked()}"
+            tools:background="@drawable/ic_undraw_destinations"/>
 
         <ImageView
             android:id="@+id/gradient"
@@ -78,25 +79,22 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/new_experience_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/journey_image"
             tools:listitem="@layout/list_item_experience"/>
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/new_experience_button"
-            style="@style/TravelButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"
-            android:text="@string/new_experience"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/experiences_list" />
+            android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

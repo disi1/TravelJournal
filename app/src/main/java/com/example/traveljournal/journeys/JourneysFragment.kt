@@ -30,7 +30,7 @@ class JourneysFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_journeys)
+//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_journeys)
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentJourneysBinding = DataBindingUtil.inflate(
