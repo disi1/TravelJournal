@@ -2,10 +2,9 @@ package com.example.traveljournal
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.provider.MediaStore
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,5 +72,23 @@ private fun copyFile(srcFile: File, destFile: File) {
 
     inStream.close()
     outStream.close()
+}
+
+fun saveBitmap(bitmapImage: Bitmap, imageName: String, backupPhotoPath: String): String {
+    if (!File(backupPhotoPath).exists()) {
+        File(backupPhotoPath).mkdirs()
+    }
+
+    val imageFile = File(backupPhotoPath, imageName)
+    if(!imageFile.exists()) {
+        try {
+            val outStream = FileOutputStream(imageFile)
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outStream)
+            outStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    return imageFile.toString()
 }
 

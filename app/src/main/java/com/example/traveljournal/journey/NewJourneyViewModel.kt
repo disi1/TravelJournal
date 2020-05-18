@@ -20,6 +20,10 @@ class NewJourneyViewModel (
 
     val selectedPlaceAddress = MutableLiveData<String>()
 
+    val coverPhotoSrcUri = MutableLiveData<String>()
+
+    val coverPhotoAttributions = MutableLiveData<String>()
+
     private var viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -30,9 +34,16 @@ class NewJourneyViewModel (
     }
 
     private val _navigateToJourneys = MutableLiveData<Boolean?>()
-
     val navigateToJourneys: LiveData<Boolean?>
         get() = _navigateToJourneys
+
+    private val _bitmapCoverLoaded = MutableLiveData<Boolean?>()
+    val bitmapCoverLoaded: LiveData<Boolean?>
+        get() = _bitmapCoverLoaded
+
+    fun onBitmapCoverLoaded() {
+        _bitmapCoverLoaded.value = true
+    }
 
     fun doneNavigating() {
         _navigateToJourneys.value = null
@@ -41,6 +52,8 @@ class NewJourneyViewModel (
     fun onCreateJourney() {
         uiScope.launch {
             val journey = Journey()
+            journey.coverPhotoAttributions = coverPhotoAttributions.value.toString()
+            journey.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             journey.placeName = selectedPlaceName.value.toString()
             journey.placeAddress = selectedPlaceAddress.value.toString()
 

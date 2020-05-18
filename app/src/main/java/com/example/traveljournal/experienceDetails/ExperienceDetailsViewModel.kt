@@ -102,6 +102,7 @@ class ExperienceDetailsViewModel(
     fun onUpdateExperienceCoverPhoto() {
         uiScope.launch {
             val oldExperience = experience.value ?: return@launch
+            oldExperience.coverPhotoAttributions = ""
             oldExperience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateExperience(oldExperience)
         }

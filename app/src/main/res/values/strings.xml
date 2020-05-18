@@ -27,6 +27,7 @@
     <string name="delete_all_experiences_question">Are you sure you want to delete all experiences and associated data?</string>
     <string name="delete">Delete</string>
     <string name="delete_confirmation">DELETE CONFIRMATION</string>
+    <string name="credits_to">Credits to %1$s</string>
 
     // Experiences strings
     <string name="experience">Experience</string>

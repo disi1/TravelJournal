@@ -1,10 +1,13 @@
 package com.example.traveljournal.experienceDetails
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -28,7 +31,13 @@ class ExperienceCoverDialogFragment(val experienceDetailsViewModel: ExperienceDe
             false
         )
 
+        if(experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions == "") {
+            binding.creditsText.visibility = TextView.GONE
+        }
+
         binding.experienceDetailsViewModel = experienceDetailsViewModel
+        binding.creditsText.text = HtmlCompat.fromHtml(getString(R.string.credits_to, experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
         changeCoverPhotoButton = binding.changeCoverButton
         closeCoverPhotoDialogButton = binding.closeCoverPhotoButton
 

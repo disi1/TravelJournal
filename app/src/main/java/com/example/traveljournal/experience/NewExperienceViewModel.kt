@@ -19,6 +19,10 @@ class NewExperienceViewModel (
 
     val experienceName = MutableLiveData<String>()
 
+    val coverPhotoSrcUri = MutableLiveData<String>()
+
+    val coverPhotoAttributions = MutableLiveData<String>()
+
     private var viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -31,9 +35,19 @@ class NewExperienceViewModel (
         _navigateToJourneyDetails.value = null
     }
 
+    private val _bitmapCoverLoaded = MutableLiveData<Boolean?>()
+    val bitmapCoverLoaded: LiveData<Boolean?>
+        get() = _bitmapCoverLoaded
+
+    fun onBitmapCoverLoaded() {
+        _bitmapCoverLoaded.value = true
+    }
+
     fun onCreateExperience() {
         uiScope.launch {
             val experience = Experience(journeyHostId = journeyKey)
+            experience.coverPhotoAttributions = coverPhotoAttributions.value.toString()
+            experience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             experience.experienceName = experienceName.value.toString()
             experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
             experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()

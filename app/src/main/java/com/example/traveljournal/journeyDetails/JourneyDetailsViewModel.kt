@@ -93,6 +93,7 @@ class JourneyDetailsViewModel(
     fun onUpdateJourney() {
         uiScope.launch {
             val oldJourney = journey.value ?: return@launch
+            oldJourney.coverPhotoAttributions = ""
             oldJourney.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateJourney(oldJourney)
         }

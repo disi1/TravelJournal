@@ -21,10 +21,10 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_undraw_destinations"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".40"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="1"
             tools:ignore="ContentDescription"
@@ -60,6 +60,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/credits_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:shadowColor="@android:color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/journey_image"
+            app:layout_constraintStart_toStartOf="@+id/journey_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
