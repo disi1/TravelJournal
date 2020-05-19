@@ -9,9 +9,13 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
@@ -28,19 +32,17 @@ import com.google.android.material.snackbar.Snackbar
 class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_journeys)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_journeys)
 
-        // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentJourneysBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_journeys, container, false)
 
-        // get a reference to the application that this fragment is attached to, to pass in to the ViewModelFactory provider
         val application = requireNotNull(this.activity).application
 
-        // get a reference to the data source via a reference to the Dao
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
         val viewModelFactory = JourneysViewModelFactory(dataSource, application)
@@ -48,45 +50,49 @@ class JourneysFragment : Fragment() {
         journeysViewModel = ViewModelProviders.of(this, viewModelFactory).get(JourneysViewModel::class.java)
 
         binding.journeysViewModel = journeysViewModel
-        
+        binding.lifecycleOwner = this
+
         val manager = GridLayoutManager(activity, 2)
-        manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int) = when (position) {
-                0 -> 2
-                else -> 1
-            }
-        }
         binding.journeysList.layoutManager = manager
 
         val adapter = JourneyAdapter(
+            journeysViewModel.journeys.value,
             JourneyListener {
-                journeyId -> journeysViewModel.onJourneyClicked(journeyId)},
+                    journeyId -> journeysViewModel.onJourneyClicked(journeyId)},
             JourneyLongClickListener {
-                    journey ->  Toast.makeText(context, "Journey long-clicked", Toast.LENGTH_LONG).show()},
-            journeysViewModel)
+//                journey ->  Toast.makeText(context, journey.placeName, Toast.LENGTH_LONG).show()})
+                    journey ->  Toast.makeText(context, "Journey long-clicked", Toast.LENGTH_LONG).show()})
+
         binding.journeysList.adapter = adapter
-        binding.lifecycleOwner = this
 
         val backupPath = context!!.getExternalFilesDir(null)!!.path + "/Backup/"
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.addHeaderAndSubmitList(it)
-                if(it.isNotEmpty()) {
-                    manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
-                        override fun getSpanSize(position: Int) = when (position) {
-                            0 -> 1
-                            else -> 1
-                        }
-                    }
-                } else {
-                    manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
-                        override fun getSpanSize(position: Int) = when (position) {
-                            0 -> 2
-                            else -> 1
-                        }
-                    }
+                if(adapter.journeysList == null) {
+                    adapter.journeysList = it
                 }
+                adapter.submitList(it)
+                if(it.isNotEmpty()) {
+                    binding.imageView.visibility = ConstraintLayout.GONE
+                    binding.searchView.visibility = ConstraintLayout.VISIBLE
+                } else {
+                    binding.imageView.visibility = ConstraintLayout.VISIBLE
+                    binding.searchView.visibility = ConstraintLayout.GONE
+                }
+            }
+        })
+
+        binding.searchView.isFocusable = false
+
+        binding.searchView.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
             }
         })
 

@@ -115,7 +115,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
             bitmapCover = it.bitmap
             newJourneyViewModel.onBitmapCoverLoaded()
-            val savedBitmapPath = saveBitmap(bitmapCover, "${p0.name}_${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+            val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
             newJourneyViewModel.coverPhotoSrcUri.value = savedBitmapPath
             newJourneyViewModel.coverPhotoAttributions.value = attributions
 
