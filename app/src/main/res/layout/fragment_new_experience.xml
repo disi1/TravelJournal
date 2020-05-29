@@ -32,7 +32,6 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/experience_name_edit_text"
-                style="@style/TextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -45,7 +44,6 @@
 
             <TextView
                 android:id="@+id/whereToQuestion"
-                style="@style/TextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -77,7 +75,6 @@
 
             <Button
                 android:id="@+id/create_button"
-                style="@style/TravelButtons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

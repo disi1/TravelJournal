@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.*
@@ -59,6 +58,14 @@ class JourneyDetailsFragment: Fragment() {
 
         backupPhotoPath = getBackupPath(context!!) + "Media/"
 
+        journeyDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController().navigate(
+                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToJourneysDestination())
+                journeyDetailsViewModel.doneNavigatingToJourneys()
+            }
+        })
+
         journeyDetailsViewModel.experiences.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
@@ -90,6 +97,18 @@ class JourneyDetailsFragment: Fragment() {
                         Snackbar.LENGTH_SHORT
                     ).show()
                 journeyDetailsViewModel.doneShowingSnackbarExperiencesDeleted()
+            }
+        })
+
+        journeyDetailsViewModel.showSnackbarEventJourneyDeleted.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.journey_deleted,
+                        journeyDetailsViewModel.getJourney().value?.placeName),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                journeyDetailsViewModel.doneShowingSnackbarJourneyDeleted()
             }
         })
 
@@ -126,9 +145,14 @@ class JourneyDetailsFragment: Fragment() {
         inflater.inflate(R.menu.journey_details_overflow_menu, menu)
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_experiences_menu)
-        val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
-        deleteAllExperiencesMenu.title = spannableString
+        val spannabledeleteAllExperiencesMenuString = SpannableString(deleteAllExperiencesMenu.title.toString())
+        spannabledeleteAllExperiencesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannabledeleteAllExperiencesMenuString.length, 0)
+        deleteAllExperiencesMenu.title = spannabledeleteAllExperiencesMenuString
+
+        val deleteJourneyMenu = menu.findItem(R.id.delete_journey_menu)
+        val spannabledeleteJourneyMenuString = SpannableString(deleteJourneyMenu.title.toString())
+        spannabledeleteJourneyMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannabledeleteJourneyMenuString.length, 0)
+        deleteJourneyMenu.title = spannabledeleteJourneyMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -140,7 +164,7 @@ class JourneyDetailsFragment: Fragment() {
             val dialogFragment = DeleteAllExperiencesDialogFragment(journeyDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
-            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
+            val prev = parentFragmentManager.findFragmentByTag("delete_all_experiences_dialog")
 
             if (prev != null) {
                 ft.remove(prev)
@@ -149,7 +173,25 @@ class JourneyDetailsFragment: Fragment() {
 
             dialogFragment.setTargetFragment(this, 300)
 
-            dialogFragment.show(ft, "backup_methods_dialog")
+            dialogFragment.show(ft, "delete_all_experiences_dialog")
+
+            return true
+        }
+
+        if(id == R.id.delete_journey_menu) {
+            val dialogFragment = DeleteJourneyDialogFragment(journeyDetailsViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("delete_journey_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "delete_journey_dialog")
 
             return true
         }
@@ -186,9 +228,8 @@ class JourneyDetailsFragment: Fragment() {
         if(resultCode == Activity.RESULT_OK && requestCode == 9000) {
             val srcFile = getRealPath(data, context!!)
             val destFile = File(backupPhotoPath, srcFile.name)
-
-
             backupPhoto(srcFile, destFile, backupPhotoPath)
+
             journeyDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
             journeyDetailsViewModel.onCoverPhotoChanged()
             journeyDetailsViewModel.doneImportingImageFromGallery()

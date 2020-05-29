@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/delete_journey_menu"
+        android:title="@string/delete_journey"/>
+    <item
         android:id="@+id/delete_all_experiences_menu"
         android:title="@string/clear_all_experiences"/>
 </menu>

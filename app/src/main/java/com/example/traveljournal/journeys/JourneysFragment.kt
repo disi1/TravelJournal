@@ -5,16 +5,15 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.TypedArray
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
+import android.util.TypedValue
 import android.view.*
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
@@ -24,9 +23,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.traveljournal.*
+import com.example.traveljournal.JourneysActivity
+import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
+import com.example.traveljournal.getBackupPath
 import com.google.android.material.snackbar.Snackbar
 
 class JourneysFragment : Fragment() {
@@ -58,10 +59,9 @@ class JourneysFragment : Fragment() {
         val adapter = JourneyAdapter(
             journeysViewModel.journeys.value,
             JourneyListener {
-                    journeyId -> journeysViewModel.onJourneyClicked(journeyId)},
-            JourneyLongClickListener {
-//                journey ->  Toast.makeText(context, journey.placeName, Toast.LENGTH_LONG).show()})
-                    journey ->  Toast.makeText(context, "Journey long-clicked", Toast.LENGTH_LONG).show()})
+                    journeyId -> journeysViewModel.onJourneyClicked(journeyId)
+            }
+        )
 
         binding.journeysList.adapter = adapter
 
@@ -121,17 +121,6 @@ class JourneysFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
                 journeysViewModel.doneShowingSnackbar()
-            }
-        })
-
-        journeysViewModel.showSnackBarEventJourneyDeleted.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(R.string.deleted_journey_message, "Honolulu"),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                journeysViewModel.doneShowingSnackbarJourneyDeleted()
             }
         })
 
@@ -261,7 +250,7 @@ class JourneysFragment : Fragment() {
 
         val deleteAllDataMenu = menu.findItem(R.id.delete_all_data_menu)
         val spannableString = SpannableString(deleteAllDataMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannableString.length, 0)
         deleteAllDataMenu.title = spannableString
 
         super.onCreateOptionsMenu(menu, inflater)

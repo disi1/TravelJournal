@@ -30,7 +30,7 @@ fun getCurrentDateAndTime(): String {
 
 fun getRealPath(data: Intent?, context: Context): File {
     val selectedImage = data?.data
-    val cursor = context!!.contentResolver.query(
+    val cursor = context.contentResolver.query(
         selectedImage!!,
         arrayOf(MediaStore.Images.ImageColumns.DATA),
         null,

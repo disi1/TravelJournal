@@ -56,6 +56,14 @@ class MemoryDetailsViewModel(
     val openCoverPhotoDialogFragment: LiveData<Boolean?>
         get() = _openCoverPhotoDialogFragment
 
+    private val _memoryPhotoDeleted = MutableLiveData<Boolean?>()
+    val memoryPhotoDeleted: LiveData<Boolean?>
+        get() = _memoryPhotoDeleted
+
+    fun doneDeletingMemoryPhoto() {
+        _memoryPhotoDeleted.value = null
+    }
+
     fun doneShowingSnackbarMemoryPhotosDeleted() {
         _showSnackbarEventMemoryPhotosDeleted.value = false
     }
@@ -152,18 +160,32 @@ class MemoryDetailsViewModel(
         _openPhotoDialogFragment.value = null
     }
 
-    fun onClear() {
+    fun onDeleteMemoryPhotos() {
         uiScope.launch {
-            clearMemoryPhotos(memoryKey)
+            deleteMemoryPhotos(memoryKey)
 
             _showSnackbarEventMemoryPhotosDeleted.value = true
         }
     }
 
-    private suspend fun clearMemoryPhotos(memoryKey: Long) {
+    private suspend fun deleteMemoryPhotos(memoryKey: Long) {
         withContext(Dispatchers.IO) {
             deletePhotosFromBackup()
             database.deleteAllPhotosFromMemory(memoryKey)
+        }
+    }
+
+    fun onDeleteMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        uiScope.launch {
+            deleteMemoryPhoto(memoryPhoto)
+            _memoryPhotoDeleted.value = true
+        }
+    }
+
+    private suspend fun deleteMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        withContext(Dispatchers.IO) {
+            deletePhotoFromBackup(memoryPhoto)
+            database.deleteMemoryPhotoWithId(memoryPhoto.photoId)
         }
     }
 
@@ -173,6 +195,13 @@ class MemoryDetailsViewModel(
             if(fileToDelete.exists()) {
                 fileToDelete.delete()
             }
+        }
+    }
+
+    private fun deletePhotoFromBackup(memoryPhoto: MemoryPhoto) {
+        val fileToDelete = File(memoryPhoto.photoSrcUri)
+        if(fileToDelete.exists()) {
+            fileToDelete.delete()
         }
     }
 

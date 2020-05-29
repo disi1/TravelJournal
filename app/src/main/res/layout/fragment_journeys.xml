@@ -38,7 +38,7 @@
             app:queryBackground="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:queryHint="Search Journeys"/>
+            app:queryHint="@string/search_journeys"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/journeys_list"
@@ -60,10 +60,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="20dp"
+            android:layout_margin="18dp"
             android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add_icon_slim"
+            app:tint="@android:color/white"
             android:onClick="@{() -> journeysViewModel.onNewJourney()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

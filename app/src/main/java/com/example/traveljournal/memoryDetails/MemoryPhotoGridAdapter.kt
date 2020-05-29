@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.database.MemoryPhoto
-import com.example.traveljournal.databinding.HeaderAddMemoryPhotoButtonBinding
 import com.example.traveljournal.databinding.HeaderMemoryDescriptionBinding
 import com.example.traveljournal.databinding.ListItemMemoryPhotoBinding
 import kotlinx.coroutines.CoroutineScope
@@ -16,8 +15,7 @@ import kotlinx.coroutines.withContext
 import java.lang.ClassCastException
 
 private const val ITEM_VIEW_TYPE_DESCRIPTION_HEADER = 0
-private const val ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER = 1
-private const val ITEM_VIEW_TYPE_ITEM = 2
+private const val ITEM_VIEW_TYPE_ITEM = 1
 
 class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryDetailsViewModel: MemoryDetailsViewModel) :
         ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryPhotoDiffCallback()) {
@@ -27,7 +25,6 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_DESCRIPTION_HEADER -> DescriptionHeaderViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER -> ImageViewHolder.from(parent)
             ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
@@ -36,7 +33,6 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.DescriptionHeader -> ITEM_VIEW_TYPE_DESCRIPTION_HEADER
-            is DataItem.AddPhotoButtonHeader -> ITEM_VIEW_TYPE_ADD_PHOTO_BUTTON_HEADER
             is DataItem.MemoryPhotoItem -> ITEM_VIEW_TYPE_ITEM
         }
     }
@@ -44,8 +40,8 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
     fun addHeaderAndSubmitList(list: List<MemoryPhoto>?) {
         adapterScope.launch {
             val items = when(list) {
-                null -> listOf(DataItem.DescriptionHeader) + listOf(DataItem.AddPhotoButtonHeader)
-                else -> listOf(DataItem.DescriptionHeader) + listOf(DataItem.AddPhotoButtonHeader) + list.map { DataItem.MemoryPhotoItem(it) }
+                null -> listOf(DataItem.DescriptionHeader)
+                else -> listOf(DataItem.DescriptionHeader) + list.map { DataItem.MemoryPhotoItem(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
@@ -60,9 +56,6 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
                 holder.bind(memoryPhotoItem.memoryPhoto, clickListener)
             }
             is DescriptionHeaderViewHolder -> {
-                holder.bind(memoryDetailsViewModel)
-            }
-            is ImageViewHolder -> {
                 holder.bind(memoryDetailsViewModel)
             }
         }
@@ -83,21 +76,6 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemMemoryPhotoBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
-            }
-        }
-    }
-
-    class ImageViewHolder(val binding: HeaderAddMemoryPhotoButtonBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MemoryDetailsViewModel) {
-            binding.memoryDetailsViewModel = item
-            binding.executePendingBindings()
-        }
-        companion object {
-            fun from(parent: ViewGroup): ImageViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = HeaderAddMemoryPhotoButtonBinding.inflate(layoutInflater, parent, false)
-
-                return ImageViewHolder(binding)
             }
         }
     }
@@ -137,10 +115,6 @@ class MemoryPhotoListener(val clickListener: (memoryPhoto: MemoryPhoto) -> Unit)
 sealed class  DataItem {
     data class MemoryPhotoItem(val memoryPhoto: MemoryPhoto): DataItem(){
         override val id = memoryPhoto.photoId
-    }
-
-    object AddPhotoButtonHeader: DataItem() {
-        override val id = Long.MIN_VALUE
     }
 
     object DescriptionHeader: DataItem() {

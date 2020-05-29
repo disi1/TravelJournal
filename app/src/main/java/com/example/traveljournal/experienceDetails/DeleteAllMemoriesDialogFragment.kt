@@ -44,7 +44,7 @@ class DeleteAllMemoriesDialogFragment(val experienceDetailsViewModel: Experience
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            experienceDetailsViewModel.onClear()
+            experienceDetailsViewModel.onDeleteMemories()
             dismiss()
         }
 

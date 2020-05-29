@@ -1,4 +1,4 @@
-package com.example.traveljournal.journeyDetails
+package com.example.traveljournal.experienceDetails
 
 import android.graphics.Point
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.databinding.FragmentDialogDeleteAllExperiencesBinding
+import com.example.traveljournal.databinding.FragmentDialogDeleteExperienceBinding
 
-class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel): DialogFragment() {
+class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: Button
@@ -19,17 +19,18 @@ class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDet
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDialogDeleteAllExperiencesBinding = DataBindingUtil.inflate(
+        val binding: FragmentDialogDeleteExperienceBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_dialog_delete_all_experiences,
+            R.layout.fragment_dialog_delete_experience,
             container,
             false
         )
 
-        binding.journeyDetailsViewModel = journeyDetailsViewModel
-
-        cancelButton = binding.cancelButton
+        binding.deleteExperienceQuestion.text = getString(R.string.delete_experience_question,
+            experienceDetailsViewModel.getExperience().value?.experienceName
+        )
         deleteButton = binding.deleteButton
+        cancelButton = binding.cancelButton
 
         return binding.root
     }
@@ -43,7 +44,7 @@ class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDet
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            journeyDetailsViewModel.onDeleteExperiences()
+            experienceDetailsViewModel.onDeleteExperience()
             dismiss()
         }
 

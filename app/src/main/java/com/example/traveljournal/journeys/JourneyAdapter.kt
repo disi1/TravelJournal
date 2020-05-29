@@ -15,11 +15,8 @@ import java.util.*
 
 class JourneyAdapter(
     var journeysList: List<Journey>?,
-    val clickListener: JourneyListener,
-    val longClickListener: JourneyLongClickListener
+    val clickListener: JourneyListener
 ): ListAdapter<Journey, JourneyAdapter.ViewHolder>(JourneyDiffCallback()), Filterable {
-
-//    @TODO longClickListener for RecyclerView items does not work
 
     var journeysFilteredList: List<Journey>?
 
@@ -32,18 +29,16 @@ class JourneyAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, clickListener, longClickListener)
+        holder.bind(getItem(position)!!, clickListener)
     }
 
     class ViewHolder private constructor(val binding: ListItemJourneyBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Journey,
-            clickListener: JourneyListener,
-            longClickListener: JourneyLongClickListener
+            clickListener: JourneyListener
         ) {
             binding.journey = item
             binding.clickListener = clickListener
-            binding.longClickListener = longClickListener
             binding.executePendingBindings()
         }
 
@@ -101,11 +96,4 @@ class JourneyDiffCallback: DiffUtil.ItemCallback<Journey>() {
 
 class JourneyListener(val clickListener: (journeyId: Long) -> Unit) {
     fun onClick(journey: Journey) = clickListener(journey.journeyId)
-}
-
-//class JourneyLongClickListener(val longClickListener: (journey: Journey) -> Unit) {
-//    fun onLongClick(journey: Journey) = longClickListener(journey)
-//}
-class JourneyLongClickListener(val longClickListener: (Boolean) -> Unit) {
-    fun onLongClick(boolean: Boolean) = longClickListener(boolean)
 }

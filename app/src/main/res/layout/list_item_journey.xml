@@ -10,9 +10,6 @@
         <variable
             name="clickListener"
             type="com.example.traveljournal.journeys.JourneyListener" />
-        <variable
-            name="longClickListener"
-            type="com.example.traveljournal.journeys.JourneyLongClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -22,16 +19,12 @@
         app:cardElevation="2dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="10dp"
-        android:longClickable="true"
         android:onClick="@{() -> clickListener.onClick(journey)}"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-        <!--        android:onLongClick="@{() -> longClickListener.onLongClick(journey)}">-->
-
 
             <ImageView
                 android:id="@+id/journey_image"
@@ -76,7 +69,6 @@
                 style="@style/TextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 app:journeyDestinationAddress="@{journey}"
                 app:layout_constraintBottom_toBottomOf="@+id/journey_image"

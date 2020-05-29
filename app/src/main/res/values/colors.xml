@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
     <color name="transparent">@android:color/transparent</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
@@ -7,4 +8,16 @@
 
     <color name="white_text_color">#f0f0f0</color>
     <color name="button_color">#00574B</color>
+    -->
+    <color name="errorColor">#CF6679</color>
+    <color name="colorPrimary">#546e7a</color>
+    <color name="primaryLightColor">#819ca9</color>
+    <color name="colorPrimaryDark">#29434e</color>
+    <color name="button_color">#00b8d4</color>
+    <color name="colorAccent">#62ebff</color>
+    <color name="secondaryDarkColor">#0088a3</color>
+    <color name="white_text_color">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="primaryColor">#03a9f4</color>
+
 </resources>

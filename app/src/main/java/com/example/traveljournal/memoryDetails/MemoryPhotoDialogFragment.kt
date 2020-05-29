@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.ImageButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.example.traveljournal.R
 import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.databinding.FragmentDialogMemoryPhotoBinding
@@ -30,19 +31,38 @@ class MemoryPhotoDialogFragment(val memoryPhoto: MemoryPhoto, val memoryDetailsV
         closePhotoButton = binding.closePhotoButton
         deletePhotoButton = binding.deletePhotoButton
 
+        memoryDetailsViewModel.memoryPhotoDeleted.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                dismiss()
+                memoryDetailsViewModel.doneDeletingMemoryPhoto()
+            }
+        })
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        deletePhotoButton.setOnClickListener {
-
-        }
-
         closePhotoButton.setOnClickListener {
             memoryDetailsViewModel.onCloseMemoryPhotoDialog()
             dismiss()
+        }
+
+        deletePhotoButton.setOnClickListener {
+            val dialogFragment = DeletePhotoDialogFragment(memoryPhoto, memoryDetailsViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("delete_photo_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "delete_photo_dialog")
         }
     }
 

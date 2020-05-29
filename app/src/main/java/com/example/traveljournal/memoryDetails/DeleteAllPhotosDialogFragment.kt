@@ -26,8 +26,6 @@ class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsVie
             false
         )
 
-        binding.memoryDetailsViewModel = memoryDetailsViewModel
-
         cancelButton = binding.cancelButton
         deleteButton = binding.deleteButton
 
@@ -43,7 +41,7 @@ class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsVie
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            memoryDetailsViewModel.onClear()
+            memoryDetailsViewModel.onDeleteMemoryPhotos()
             dismiss()
         }
 

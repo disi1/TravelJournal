@@ -1,4 +1,4 @@
-package com.example.traveljournal.journeyDetails
+package com.example.traveljournal.memoryDetails
 
 import android.graphics.Point
 import android.os.Bundle
@@ -7,9 +7,10 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.databinding.FragmentDialogDeleteAllExperiencesBinding
+import com.example.traveljournal.database.MemoryPhoto
+import com.example.traveljournal.databinding.FragmentDialogDeletePhotoBinding
 
-class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel): DialogFragment() {
+class DeletePhotoDialogFragment(val memoryPhoto: MemoryPhoto, val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: Button
@@ -19,14 +20,12 @@ class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDet
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDialogDeleteAllExperiencesBinding = DataBindingUtil.inflate(
+        val binding: FragmentDialogDeletePhotoBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_dialog_delete_all_experiences,
+            R.layout.fragment_dialog_delete_photo,
             container,
             false
         )
-
-        binding.journeyDetailsViewModel = journeyDetailsViewModel
 
         cancelButton = binding.cancelButton
         deleteButton = binding.deleteButton
@@ -43,7 +42,7 @@ class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDet
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            journeyDetailsViewModel.onDeleteExperiences()
+            memoryDetailsViewModel.onDeleteMemoryPhoto(memoryPhoto)
             dismiss()
         }
 

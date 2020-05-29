@@ -34,6 +34,10 @@ class ExperienceDetailsViewModel(
     val showSnackbarEventMemoriesDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoriesDeleted
 
+    private var _showSnackbarEventExperienceDeleted = MutableLiveData<Boolean>()
+    val showSnackbarEventExperienceDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventExperienceDeleted
+
     private val _navigateToNewMemory = MutableLiveData<Long>()
     val navigateToNewMemory: LiveData<Long>
         get() = _navigateToNewMemory
@@ -41,6 +45,10 @@ class ExperienceDetailsViewModel(
     private val _navigateToMemoryDetails = MutableLiveData<Long>()
     val navigateToMemoryDetails: LiveData<Long>
         get() = _navigateToMemoryDetails
+
+    private val _navigateToJourneyDetails = MutableLiveData<Long>()
+    val navigateToJourneyDetails: LiveData<Long>
+        get() = _navigateToJourneyDetails
 
     private val _openDialogFragment = MutableLiveData<Boolean?>()
     val openDialogFragment: LiveData<Boolean?>
@@ -58,6 +66,10 @@ class ExperienceDetailsViewModel(
         _showSnackbarEventMemoriesDeleted.value = false
     }
 
+    fun doneShowingSnackbarExperienceDeleted() {
+        _showSnackbarEventExperienceDeleted.value = false
+    }
+
     fun doneImportingImageFromGallery() {
         _initiateImageImportFromGallery.value = null
     }
@@ -68,6 +80,10 @@ class ExperienceDetailsViewModel(
 
     fun doneNavigatingToMemoryDetails() {
         _navigateToMemoryDetails.value = null
+    }
+
+    fun doneNavigatingToJourneyDetails() {
+        _navigateToJourneyDetails.value = null
     }
 
     fun doneShowingDialogFragment() {
@@ -118,14 +134,6 @@ class ExperienceDetailsViewModel(
         _navigateToMemoryDetails.value = memoryId
     }
 
-    fun onClear() {
-        uiScope.launch {
-            clearMemories(experienceKey)
-
-            _showSnackbarEventMemoriesDeleted.value = true
-        }
-    }
-
     fun onDescriptionTextClicked() {
         _openDialogFragment.value = true
     }
@@ -138,9 +146,37 @@ class ExperienceDetailsViewModel(
         _openCoverPhotoDialogFragment.value = false
     }
 
-    suspend fun clearMemories(experienceKey: Long) {
+    fun onDeleteMemories() {
+        uiScope.launch {
+            deleteMemories(experienceKey)
+
+            _showSnackbarEventMemoriesDeleted.value = true
+        }
+    }
+
+    private suspend fun deleteMemories(experienceKey: Long) {
         withContext(Dispatchers.IO) {
+            val attachedMemories = database.getAllMemoriesFromExperience(experienceKey)
+            attachedMemories.value?.forEach { memory ->
+                database.deleteAllPhotosFromMemory(memory.memoryId)
+            }
             database.deleteAllMemoriesFromExperience(experienceKey)
+        }
+    }
+
+    fun onDeleteExperience() {
+        uiScope.launch {
+            experience.value?.experienceId?.let { deleteMemories(it) }
+            deleteExperience()
+
+            _showSnackbarEventExperienceDeleted.value = true
+            _navigateToJourneyDetails.value = experience.value?.journeyHostId
+        }
+    }
+
+    private suspend fun deleteExperience() {
+        withContext(Dispatchers.IO) {
+            experience.value?.let { database.deleteExperience(it) }
         }
     }
 

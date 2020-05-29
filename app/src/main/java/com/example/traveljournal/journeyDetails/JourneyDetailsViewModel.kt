@@ -27,19 +27,22 @@ class JourneyDetailsViewModel(
     val experiences = database.getAllExperiencesFromJourney(journeyKey)
 
     private var _showSnackbarEventExperiencesDeleted = MutableLiveData<Boolean>()
-
     val showSnackbarEventExperiencesDeleted: LiveData<Boolean>
         get() = _showSnackbarEventExperiencesDeleted
 
-    fun doneShowingSnackbarExperiencesDeleted() {
-        _showSnackbarEventExperiencesDeleted.value = false
-    }
+    private var _showSnackbarEventJourneyDeleted = MutableLiveData<Boolean>()
+    val showSnackbarEventJourneyDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventJourneyDeleted
 
     fun getJourney() = journey
 
     init {
         journey.addSource(database.getJourneyWithId(journeyKey), journey::setValue)
     }
+
+    private val _navigateToJourneys = MutableLiveData<Boolean?>()
+    val navigateToJourneys: LiveData<Boolean?>
+        get() = _navigateToJourneys
 
     private val _navigateToNewExperience = MutableLiveData<Long>()
     val navigateToNewExperience: LiveData<Long>
@@ -57,6 +60,10 @@ class JourneyDetailsViewModel(
     val openCoverPhotoDialogFragment: LiveData<Boolean?>
         get() = _openCoverPhotoDialogFragment
 
+    fun doneNavigatingToJourneys() {
+        _navigateToJourneys.value = null
+    }
+
     fun doneNavigatingToNewExperience() {
         _navigateToNewExperience.value = null
     }
@@ -67,6 +74,14 @@ class JourneyDetailsViewModel(
 
     fun doneNavigatingToExperienceDetails() {
         _navigateToExperienceDetails.value = null
+    }
+
+    fun doneShowingSnackbarExperiencesDeleted() {
+        _showSnackbarEventExperiencesDeleted.value = false
+    }
+
+    fun doneShowingSnackbarJourneyDeleted() {
+        _showSnackbarEventJourneyDeleted.value = false
     }
 
     fun onNewExperience() {
@@ -113,17 +128,41 @@ class JourneyDetailsViewModel(
         _openCoverPhotoDialogFragment.value = true
     }
 
-    fun onClear() {
+    fun onDeleteExperiences() {
         uiScope.launch {
-            clearExperiences(journeyKey)
+            deleteExperiences(journeyKey)
 
             _showSnackbarEventExperiencesDeleted.value = true
         }
     }
 
-    private suspend fun clearExperiences(journeyKey: Long) {
+    private suspend fun deleteExperiences(journeyKey: Long) {
         withContext(Dispatchers.IO) {
+            val attachedExperiences = database.getAllExperiencesFromJourney(journeyKey)
+            attachedExperiences.value?.forEach { experience ->
+                val attachedMemories = database.getAllMemoriesFromExperience(experience.experienceId)
+                attachedMemories.value?.forEach { memory ->
+                    database.deleteAllPhotosFromMemory(memory.memoryId)
+                }
+                database.deleteAllMemoriesFromExperience(experience.experienceId)
+            }
             database.deleteAllExperiencesFromJourney(journeyKey)
+        }
+    }
+
+    fun onDeleteJourney() {
+        uiScope.launch {
+            journey.value?.journeyId?.let { deleteExperiences(it) }
+            deleteJourney()
+
+            _showSnackbarEventJourneyDeleted.value = true
+            _navigateToJourneys.value = true
+        }
+    }
+
+    private suspend fun deleteJourney() {
+        withContext(Dispatchers.IO) {
+            journey.value?.let { database.deleteJourney(it) }
         }
     }
 

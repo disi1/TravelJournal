@@ -113,26 +113,28 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
         val photoMetadata = p0.photoMetadatas?.get(0)
         Log.i("nef", "metadata: $photoMetadata")
-        attributions = photoMetadata?.attributions!!
+        attributions = photoMetadata?.attributions.toString()
 
-        val photoRequest = FetchPhotoRequest.builder(photoMetadata).build()
+        val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
 
         val placesClient = Places.createClient(this.context!!)
 
-        placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
+        if (photoRequest != null) {
+            placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
 
-            val backupPhotoPath = getBackupPath(context!!) + "Media/"
+                val backupPhotoPath = getBackupPath(context!!) + "Media/"
 
-            bitmapCover = it.bitmap
-            newExperienceViewModel.onBitmapCoverLoaded()
-            val savedBitmapPath = saveBitmap(bitmapCover, "${p0.name}_${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
-            newExperienceViewModel.coverPhotoSrcUri.value = savedBitmapPath
-            newExperienceViewModel.coverPhotoAttributions.value = attributions
+                bitmapCover = it.bitmap
+                newExperienceViewModel.onBitmapCoverLoaded()
+                val savedBitmapPath = saveBitmap(bitmapCover, "${p0.name}_${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+                newExperienceViewModel.coverPhotoSrcUri.value = savedBitmapPath
+                newExperienceViewModel.coverPhotoAttributions.value = attributions
 
-        }.addOnFailureListener { exception ->
-            if (exception is ApiException) {
-                val statusCode = exception.statusCode
-                Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+            }.addOnFailureListener { exception ->
+                if (exception is ApiException) {
+                    val statusCode = exception.statusCode
+                    Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+                }
             }
         }
 

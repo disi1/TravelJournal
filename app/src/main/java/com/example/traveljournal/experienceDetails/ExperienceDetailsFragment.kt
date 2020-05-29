@@ -92,6 +92,26 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
+        experienceDetailsViewModel.showSnackbarEventExperienceDeleted.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                Snackbar.make(
+                    activity!!.findViewById(android.R.id.content),
+                    getString(R.string.experience_deleted,
+                        experienceDetailsViewModel.getExperience().value?.experienceName),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                experienceDetailsViewModel.doneShowingSnackbarExperienceDeleted()
+            }
+        })
+
+        experienceDetailsViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, androidx.lifecycle.Observer { journeyKey ->
+            journeyKey?.let {
+                this.findNavController().navigate(
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneyDetailsDestination(journeyKey))
+                experienceDetailsViewModel.doneNavigatingToJourneyDetails()
+            }
+        })
+
         experienceDetailsViewModel.navigateToNewMemory.observe(viewLifecycleOwner, Observer { experienceKey ->
             experienceKey?.let {
                 this.findNavController().navigate(
@@ -158,10 +178,15 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.experience_details_overflow_menu, menu)
 
-        val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_memories_menu)
-        val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
-        deleteAllExperiencesMenu.title = spannableString
+        val deleteAllMemoriesMenu = menu.findItem(R.id.delete_all_memories_menu)
+        val spannableDeleteAllMemoriesMenuString = SpannableString(deleteAllMemoriesMenu.title.toString())
+        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, android.R.color.holo_red_light)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
+        deleteAllMemoriesMenu.title = spannableDeleteAllMemoriesMenuString
+
+        val deleteExperienceMenu = menu.findItem(R.id.delete_experience_menu)
+        val spannableDeleteExperienceMenuString = SpannableString(deleteExperienceMenu.title.toString())
+        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, android.R.color.holo_red_light)), 0, spannableDeleteExperienceMenuString.length, 0)
+        deleteExperienceMenu.title = spannableDeleteExperienceMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -173,7 +198,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             val dialogFragment = DeleteAllMemoriesDialogFragment(experienceDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
-            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
+            val prev = parentFragmentManager.findFragmentByTag("delete_all_memories_dialog")
 
             if (prev != null) {
                 ft.remove(prev)
@@ -182,7 +207,25 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
             dialogFragment.setTargetFragment(this, 300)
 
-            dialogFragment.show(ft, "backup_methods_dialog")
+            dialogFragment.show(ft, "delete_all_memories_dialog")
+
+            return true
+        }
+
+        if(id == R.id.delete_experience_menu) {
+            val dialogFragment = DeleteExperienceDialogFragment(experienceDetailsViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("delete_experience_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "delete_experience_dialog")
 
             return true
         }

@@ -176,7 +176,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_memory_photos_menu)
         val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.colorAccent)), 0, spannableString.length, 0)
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannableString.length, 0)
         deleteAllExperiencesMenu.title = spannableString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -237,17 +237,21 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val srcFile = getRealPath(data, context!!)
-        val destFile = File(backupPhotoPath, srcFile.name)
-        backupPhoto(srcFile, destFile, backupPhotoPath)
+        if(resultCode == Activity.RESULT_OK && requestCode == 9990 && data != null) {
+            val srcFile = getRealPath(data, context!!)
+            val destFile = File(backupPhotoPath, srcFile.name)
+            backupPhoto(srcFile, destFile, backupPhotoPath)
 
-        if(resultCode == Activity.RESULT_OK && requestCode == 9990) {
             memoryDetailsViewModel.photoSrcUri.value = destFile.toString()
             memoryDetailsViewModel.onCreateMemoryPhoto()
             memoryDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(resultCode == Activity.RESULT_OK && requestCode == 9900) {
+        if(resultCode == Activity.RESULT_OK && requestCode == 9900 && data != null) {
+            val srcFile = getRealPath(data, context!!)
+            val destFile = File(backupPhotoPath, srcFile.name)
+            backupPhoto(srcFile, destFile, backupPhotoPath)
+
             memoryDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
             memoryDetailsViewModel.onCoverPhotoChanged()
             memoryDetailsViewModel.doneImportingCoverImageFromGallery()
