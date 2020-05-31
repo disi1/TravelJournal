@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
 <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
 <!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
@@ -14,11 +14,6 @@
         <item name="colorAccent">@color/button_color</item>
         <item name="colorControlHighlight">@color/button_color</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="LabelStyle" parent = "Widget.AppCompat.TextView">

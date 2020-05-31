@@ -40,7 +40,10 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
+//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         val binding: FragmentExperienceDetailsBinding = DataBindingUtil.inflate(
             inflater,
@@ -48,7 +51,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         )
 
         val application = requireNotNull(this.activity).application
-        val arguments = ExperienceDetailsFragmentArgs.fromBundle(arguments!!)
+        val arguments = ExperienceDetailsFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
         val viewModelFactory = ExperienceDetailsViewModelFactory(arguments.experienceKey, dataSource)
@@ -59,7 +62,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
 
-        backupPhotoPath = getBackupPath(context!!) + "Media/"
+        backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
         val manager = LinearLayoutManager(activity)
         binding.memoriesList.layoutManager = manager
@@ -83,7 +86,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         experienceDetailsViewModel.showSnackbarEventMemoriesDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.cleared_memories_message,
                         experienceDetailsViewModel.getExperience().value?.experienceName),
                     Snackbar.LENGTH_SHORT
@@ -95,7 +98,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         experienceDetailsViewModel.showSnackbarEventExperienceDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.experience_deleted,
                         experienceDetailsViewModel.getExperience().value?.experienceName),
                     Snackbar.LENGTH_SHORT
@@ -180,12 +183,12 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         val deleteAllMemoriesMenu = menu.findItem(R.id.delete_all_memories_menu)
         val spannableDeleteAllMemoriesMenuString = SpannableString(deleteAllMemoriesMenu.title.toString())
-        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, android.R.color.holo_red_light)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
+        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), android.R.color.holo_red_light)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
         deleteAllMemoriesMenu.title = spannableDeleteAllMemoriesMenuString
 
         val deleteExperienceMenu = menu.findItem(R.id.delete_experience_menu)
         val spannableDeleteExperienceMenuString = SpannableString(deleteExperienceMenu.title.toString())
-        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, android.R.color.holo_red_light)), 0, spannableDeleteExperienceMenuString.length, 0)
+        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), android.R.color.holo_red_light)), 0, spannableDeleteExperienceMenuString.length, 0)
         deleteExperienceMenu.title = spannableDeleteExperienceMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -237,7 +240,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PermissionChecker.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PermissionChecker.PERMISSION_DENIED
             ) {
@@ -260,7 +263,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9999) {
-            val srcFile = getRealPath(data, context!!)
+            val srcFile = getRealPath(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
 
 

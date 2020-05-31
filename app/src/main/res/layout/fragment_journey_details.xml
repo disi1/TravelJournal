@@ -37,33 +37,46 @@
             android:layout_height="0dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_custom_gradient"
+            android:src="@drawable/custom_gradient"
             app:layout_constraintBottom_toBottomOf="@+id/journey_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/journey_destination_name"/>
 
+        <ImageView
+            android:id="@+id/location_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_baseline_location_on"
+            android:tint="?attr/colorOnBackground"
+            app:layout_constraintBottom_toBottomOf="@id/journey_destination_address"
+            app:layout_constraintEnd_toStartOf="@id/journey_destination_address"
+            app:layout_constraintStart_toStartOf="@id/journey_image"
+            app:layout_constraintTop_toTopOf="@id/journey_destination_address"/>
+
         <TextView
             android:id="@+id/journey_destination_name"
-            style="@style/TextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:paddingTop="32dp"
+            android:paddingTop="16dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:journeyDestinationName="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
             app:layout_constraintEnd_toEndOf="@+id/journey_image"
-            app:layout_constraintStart_toStartOf="@+id/journey_image"
+            app:layout_constraintStart_toEndOf="@+id/location_icon"
             tools:text="Zürich" />
 
         <TextView
             android:id="@+id/journey_destination_address"
-            style="@style/TextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="12sp"
             app:journeyDestinationAddress="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toBottomOf="@+id/journey_image"
             app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"

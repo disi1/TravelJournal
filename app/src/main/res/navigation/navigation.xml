@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/journeys_destination"
         android:name="com.example.traveljournal.journeys.JourneysFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_journeys">
         <action
             android:id="@+id/action_journeys_destination_to_new_journey_destination"
@@ -37,7 +38,6 @@
     <fragment
         android:id="@+id/journey_details_destination"
         android:name="com.example.traveljournal.journeyDetails.JourneyDetailsFragment"
-        android:label="@string/journey_details"
         tools:layout="@layout/fragment_journey_details">
         <argument
             android:name="journeyKey"
@@ -77,7 +77,6 @@
     <fragment
         android:id="@+id/experience_details_destination"
         android:name="com.example.traveljournal.experienceDetails.ExperienceDetailsFragment"
-        android:label="@string/experience_details"
         tools:layout="@layout/fragment_experience_details">
         <argument
             android:name="experienceKey"
@@ -115,7 +114,6 @@
     <fragment
         android:id="@+id/memory_details_destination"
         android:name="com.example.traveljournal.memoryDetails.MemoryDetailsFragment"
-        android:label="@string/memory_details"
         tools:layout="@layout/fragment_memory_details">
         <argument
             android:name="memoryKey"

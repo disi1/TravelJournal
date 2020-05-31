@@ -1,6 +1,7 @@
 package com.example.traveljournal.memory
 
 import android.app.DatePickerDialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +33,11 @@ class NewMemoryFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_memory)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor))
+        )
 
         val binding: FragmentNewMemoryBinding = DataBindingUtil.inflate(
             inflater,
@@ -39,7 +47,7 @@ class NewMemoryFragment: Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        val arguments = NewMemoryFragmentArgs.fromBundle(arguments!!)
+        val arguments = NewMemoryFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
@@ -95,7 +103,7 @@ class NewMemoryFragment: Fragment() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
+        val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
             c[thisYear, thisMonth] = thisDay
 
             memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(c.time)

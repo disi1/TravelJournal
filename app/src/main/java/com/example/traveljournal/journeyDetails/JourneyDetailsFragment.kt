@@ -3,6 +3,7 @@ package com.example.traveljournal.journeyDetails
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
@@ -11,6 +12,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,14 +35,16 @@ class JourneyDetailsFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey_details)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         val binding: FragmentJourneyDetailsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_journey_details, container, false
         )
 
         val application = requireNotNull(this.activity).application
-        val arguments = JourneyDetailsFragmentArgs.fromBundle(arguments!!)
+        val arguments = JourneyDetailsFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
         val viewModelFactory = JourneyDetailsViewModelFactory(arguments.journeyKey, dataSource)
@@ -56,7 +60,7 @@ class JourneyDetailsFragment: Fragment() {
         })
         binding.experiencesList.adapter = adapter
 
-        backupPhotoPath = getBackupPath(context!!) + "Media/"
+        backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
         journeyDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
             if(it == true) {
@@ -91,7 +95,7 @@ class JourneyDetailsFragment: Fragment() {
         journeyDetailsViewModel.showSnackbarEventExperiencesDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.cleared_experiences_message,
                         journeyDetailsViewModel.getJourney().value?.placeName),
                         Snackbar.LENGTH_SHORT
@@ -103,7 +107,7 @@ class JourneyDetailsFragment: Fragment() {
         journeyDetailsViewModel.showSnackbarEventJourneyDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.journey_deleted,
                         journeyDetailsViewModel.getJourney().value?.placeName),
                     Snackbar.LENGTH_SHORT
@@ -146,12 +150,12 @@ class JourneyDetailsFragment: Fragment() {
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_experiences_menu)
         val spannabledeleteAllExperiencesMenuString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannabledeleteAllExperiencesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannabledeleteAllExperiencesMenuString.length, 0)
+        spannabledeleteAllExperiencesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannabledeleteAllExperiencesMenuString.length, 0)
         deleteAllExperiencesMenu.title = spannabledeleteAllExperiencesMenuString
 
         val deleteJourneyMenu = menu.findItem(R.id.delete_journey_menu)
         val spannabledeleteJourneyMenuString = SpannableString(deleteJourneyMenu.title.toString())
-        spannabledeleteJourneyMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannabledeleteJourneyMenuString.length, 0)
+        spannabledeleteJourneyMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannabledeleteJourneyMenuString.length, 0)
         deleteJourneyMenu.title = spannabledeleteJourneyMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -203,7 +207,7 @@ class JourneyDetailsFragment: Fragment() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PermissionChecker.checkSelfPermission(
-                    context!!,
+                    requireContext(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PermissionChecker.PERMISSION_DENIED
             ) {
@@ -226,7 +230,7 @@ class JourneyDetailsFragment: Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9000) {
-            val srcFile = getRealPath(data, context!!)
+            val srcFile = getRealPath(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 

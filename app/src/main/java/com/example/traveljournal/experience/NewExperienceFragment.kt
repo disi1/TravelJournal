@@ -1,6 +1,7 @@
 package com.example.traveljournal.experience
 
 import android.graphics.Bitmap
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -44,6 +47,11 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
         savedInstanceState: Bundle?): View? {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_experience)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor))
+        )
 
         val binding: FragmentNewExperienceBinding = DataBindingUtil.inflate(
             inflater,
@@ -53,7 +61,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
         val application = requireNotNull(this.activity).application
 
-        val arguments = NewExperienceFragmentArgs.fromBundle(arguments!!)
+        val arguments = NewExperienceFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
@@ -88,7 +96,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.experience_autocomplete_fragment)
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
-        autocompleteFragment!!.setHint(getString(R.string.experience_example))
+        autocompleteFragment!!.setHint(getString(R.string.where_to))
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS))
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
@@ -117,12 +125,12 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
         val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
 
-        val placesClient = Places.createClient(this.context!!)
+        val placesClient = Places.createClient(this.requireContext())
 
         if (photoRequest != null) {
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
 
-                val backupPhotoPath = getBackupPath(context!!) + "Media/"
+                val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
                 bitmapCover = it.bitmap
                 newExperienceViewModel.onBitmapCoverLoaded()

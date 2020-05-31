@@ -37,7 +37,10 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
+//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         val binding : FragmentMemoryDetailsBinding = DataBindingUtil.inflate(
             inflater,
@@ -45,7 +48,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         )
 
         val application = requireNotNull(this.activity).application
-        val arguments = MemoryDetailsFragmentArgs.fromBundle(arguments!!)
+        val arguments = MemoryDetailsFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
         val viewModelFactory = MemoryDetailsViewModelFactory(arguments.memoryKey, dataSource)
@@ -74,7 +77,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         binding.memoryPhotosGrid.adapter = adapter
 
-        backupPhotoPath = getBackupPath(context!!) + "Media/"
+        backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
         memoryDetailsViewModel.openPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -139,7 +142,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         memoryDetailsViewModel.showSnackbarEventMemoryPhotosDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.cleared_memory_photos_message,
                         memoryDetailsViewModel.getMemory().value?.memoryName),
                     Snackbar.LENGTH_SHORT
@@ -176,7 +179,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_memory_photos_menu)
         val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannableString.length, 0)
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableString.length, 0)
         deleteAllExperiencesMenu.title = spannableString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -209,7 +212,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     private fun requestStoragePermission(requestCode: Int) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
+            if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
                 val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
                 when(requestCode) {
@@ -238,7 +241,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9990 && data != null) {
-            val srcFile = getRealPath(data, context!!)
+            val srcFile = getRealPath(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 
@@ -248,7 +251,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         }
 
         if(resultCode == Activity.RESULT_OK && requestCode == 9900 && data != null) {
-            val srcFile = getRealPath(data, context!!)
+            val srcFile = getRealPath(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 

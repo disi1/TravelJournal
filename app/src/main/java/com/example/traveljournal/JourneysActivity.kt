@@ -20,6 +20,9 @@ class JourneysActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_journeys)
 
+        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        setSupportActionBar(toolbar)
+
         val navController = this.findNavController(R.id.navHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
