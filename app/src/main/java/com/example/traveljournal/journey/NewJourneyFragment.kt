@@ -107,12 +107,12 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
 
-        val placesClient = Places.createClient(this.context!!)
+        val placesClient = Places.createClient(this.requireContext())
 
         if (photoRequest != null) {
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
 
-                val backupPhotoPath = getBackupPath(context!!) + "Media/"
+                val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
                 bitmapCover = it.bitmap
                 newJourneyViewModel.onBitmapCoverLoaded()

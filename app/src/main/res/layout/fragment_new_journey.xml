@@ -30,13 +30,6 @@
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_undraw_destinations" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent">
-        </androidx.cardview.widget.CardView>
-
         <fragment
             android:id="@+id/autocomplete_fragment"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

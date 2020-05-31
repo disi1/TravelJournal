@@ -96,8 +96,7 @@
             android:onClick="@{() -> memoryDetailsViewModel.onNewMemoryPhotoClicked()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_icon"
-            app:tint="@android:color/white"/>
+            app:srcCompat="@drawable/ic_add_icon"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

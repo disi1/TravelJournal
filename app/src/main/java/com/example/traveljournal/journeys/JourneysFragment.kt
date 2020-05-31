@@ -65,7 +65,7 @@ class JourneysFragment : Fragment() {
 
         binding.journeysList.adapter = adapter
 
-        val backupPath = context!!.getExternalFilesDir(null)!!.path + "/Backup/"
+        val backupPath = requireContext().getExternalFilesDir(null)!!.path + "/Backup/"
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -116,7 +116,7 @@ class JourneysFragment : Fragment() {
         journeysViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.cleared_journeys_message),
                     Snackbar.LENGTH_SHORT
                 ).show()
@@ -144,7 +144,7 @@ class JourneysFragment : Fragment() {
 
         journeysViewModel.openLocalStorageBackupDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = BackupDialogFragment(journeysViewModel, getBackupPath(context!!))
+                val dialogFragment = BackupDialogFragment(journeysViewModel, getBackupPath(requireContext()))
 
                 val ft = parentFragmentManager.beginTransaction()
                 val prev = parentFragmentManager.findFragmentByTag("local_storage_backup_dialog")
@@ -162,7 +162,7 @@ class JourneysFragment : Fragment() {
 
         journeysViewModel.openRestoreDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = RestoreDialogFragment(journeysViewModel, getBackupPath(context!!))
+                val dialogFragment = RestoreDialogFragment(journeysViewModel, getBackupPath(requireContext()))
 
                 val ft = parentFragmentManager.beginTransaction()
                 val prev = parentFragmentManager.findFragmentByTag("restore_dialog")
@@ -182,7 +182,7 @@ class JourneysFragment : Fragment() {
             if(it == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (PermissionChecker.checkSelfPermission(
-                            context!!,
+                            requireContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                         ) == PermissionChecker.PERMISSION_DENIED
                     ) {
@@ -190,7 +190,7 @@ class JourneysFragment : Fragment() {
 
                         requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
                     } else {
-                        journeysViewModel.localStorageBackup(context!!, getBackupPath(context!!))
+                        journeysViewModel.onLocalStorageBackup(requireContext(), getBackupPath(requireContext()))
                         journeysViewModel.onBackupMechanismDone()
                     }
                 }
@@ -201,7 +201,7 @@ class JourneysFragment : Fragment() {
             if(it == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (PermissionChecker.checkSelfPermission(
-                            context!!,
+                            requireContext(),
                             Manifest.permission.READ_EXTERNAL_STORAGE
                         ) == PermissionChecker.PERMISSION_DENIED
                     ) {
@@ -209,9 +209,9 @@ class JourneysFragment : Fragment() {
 
                         requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
                     } else {
-                        journeysViewModel.restore(context!!, backupPath)
+                        journeysViewModel.restore(requireContext(), backupPath)
                         journeysViewModel.onRestoreMechanismDone()
-                        triggerRestart(context!!)
+                        triggerRestart(requireContext())
                     }
                 }
             }
@@ -220,7 +220,7 @@ class JourneysFragment : Fragment() {
         journeysViewModel.showSnackBarEventDataBackedUp.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.data_backed_up),
                     Snackbar.LENGTH_SHORT
                 ).show()
@@ -232,7 +232,7 @@ class JourneysFragment : Fragment() {
         journeysViewModel.showSnackBarEventDataRestored.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     getString(R.string.data_restored),
                     Snackbar.LENGTH_SHORT
                 ).show()
@@ -250,7 +250,7 @@ class JourneysFragment : Fragment() {
 
         val deleteAllDataMenu = menu.findItem(R.id.delete_all_data_menu)
         val spannableString = SpannableString(deleteAllDataMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context!!, R.color.errorColor)), 0, spannableString.length, 0)
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableString.length, 0)
         deleteAllDataMenu.title = spannableString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -306,26 +306,4 @@ class JourneysFragment : Fragment() {
             journeysViewModel.onBackupButtonClicked()
         }
     }
-
-//    private fun setRecyclerViewItemTouchListener(journey: Journey) {
-//        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(
-//            0,
-//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-//        ) {
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                return false
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                Toast.makeText(context, journey.placeName, Toast.LENGTH_LONG).show()
-////                journeysViewModel.onDeleteJourney(journey)
-//            }
-//        }
-//        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
-//        itemTouchHelper.attachToRecyclerView()
-//    }
 }

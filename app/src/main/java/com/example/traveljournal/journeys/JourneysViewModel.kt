@@ -2,11 +2,13 @@ package com.example.traveljournal.journeys
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
+import com.example.traveljournal.getBackupPath
 import kotlinx.coroutines.*
 import java.io.*
 import java.util.zip.ZipEntry
@@ -27,10 +29,6 @@ class JourneysViewModel(
     private var _showSnackbarEvent = MutableLiveData<Boolean>()
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
-
-    private var _showSnackBarEventJourneyDeleted = MutableLiveData<Boolean>()
-    val showSnackBarEventJourneyDeleted: LiveData<Boolean>
-        get() = _showSnackBarEventJourneyDeleted
 
     private var _showSnackBarEventDataBackedUp = MutableLiveData<Boolean>()
     val showSnackBarEventDataBackedUp: LiveData<Boolean>
@@ -82,10 +80,6 @@ class JourneysViewModel(
 
     fun doneShowingSnackbar() {
         _showSnackbarEvent.value = false
-    }
-
-    fun doneShowingSnackbarJourneyDeleted() {
-        _showSnackBarEventJourneyDeleted.value = false
     }
 
     fun doneShowingSnackbarDataBackedUp() {
@@ -156,26 +150,8 @@ class JourneysViewModel(
         }
     }
 
-    fun onDeleteJourney(journey: Journey) {
-        uiScope.launch {
-            deleteJourney(journey)
-
-            _showSnackBarEventJourneyDeleted.value = true
-        }
-    }
-
-    private suspend fun deleteJourney(journey: Journey) {
-        withContext(Dispatchers.IO) {
-            database.deleteJourney(journey)
-        }
-    }
-
     fun onJourneyClicked(id: Long) {
         _navigateToJourneyDetails.value = id
-    }
-
-    fun onJourneyLongClicked(journey: Journey) {
-
     }
 
     fun onJourneyDetailsNavigated() {
@@ -202,35 +178,42 @@ class JourneysViewModel(
         _launchRestoreMechanism.value = true
     }
 
-    fun localStorageBackup(context: Context, backupPath: String) {
-        val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
-        val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
-        val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
-
-        val file = File(backupPath)
-        if (!file.exists()) {
-            file.mkdirs()
+    fun onLocalStorageBackup(context: Context, backupPath: String) {
+        uiScope.launch {
+            localStorageBackup(context, backupPath)
+            _showSnackBarEventDataBackedUp.value = true
         }
+    }
 
-        val dbFileExternalPath = backupPath + DATABASE_NAME
-        val dbShmFileExternalPath = backupPath + DATABASE_NAME + "-shm"
-        val dbWalFileExternalPath = backupPath + DATABASE_NAME + "-wal"
+    private suspend fun localStorageBackup(context: Context, backupPath: String) {
+        return withContext(Dispatchers.IO) {
+            val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
+            val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
+            val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
 
-        try {
-            copyFile(dbFilePath, dbFileExternalPath)
-            copyFile(dbShmFilePath, dbShmFileExternalPath)
-            copyFile(dbWalFilePath, dbWalFileExternalPath)
-        } catch (e: Exception) {
-            e.printStackTrace()
+            val file = File(backupPath)
+            if (!file.exists()) {
+                file.mkdirs()
+            }
+
+            val dbFileExternalPath = backupPath + DATABASE_NAME
+            val dbShmFileExternalPath = "$backupPath$DATABASE_NAME-shm"
+            val dbWalFileExternalPath = "$backupPath$DATABASE_NAME-wal"
+
+            try {
+                copyFile(dbFilePath, dbFileExternalPath)
+                copyFile(dbShmFilePath, dbShmFileExternalPath)
+                copyFile(dbWalFilePath, dbWalFileExternalPath)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-
-        _showSnackBarEventDataBackedUp.value = true
     }
 
     fun restore(context: Context, backupPath: String) {
         val dbFileExternalPath = backupPath + DATABASE_NAME
-        val dbShmFileExternalPath = backupPath + DATABASE_NAME + "-shm"
-        val dbWalFileExternalPath = backupPath + DATABASE_NAME + "-wal"
+        val dbShmFileExternalPath = "$backupPath$DATABASE_NAME-shm"
+        val dbWalFileExternalPath = "$backupPath$DATABASE_NAME-wal"
 
         val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
         val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
@@ -260,12 +243,21 @@ class JourneysViewModel(
         outStream.close()
     }
 
-    fun onZipFiles(directory: String, zipFile: String) {
-        val sourceFile = File(directory)
+    fun onExternalStorageBackup(directory: String, zipFile: String, context: Context) {
+        uiScope.launch {
+            localStorageBackup(context, getBackupPath(context))
+            externalStorageBackup(directory, zipFile)
+        }
+    }
 
-        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { it ->
-            it.use {
-                zipFiles(it, sourceFile, "")
+    private suspend fun externalStorageBackup(directory: String, zipFile: String) {
+        return withContext(Dispatchers.IO) {
+            val sourceFile = File(directory)
+
+            ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { it ->
+                it.use {
+                    zipFiles(it, sourceFile, "")
+                }
             }
         }
     }
@@ -284,7 +276,6 @@ class JourneysViewModel(
 
                 zipFiles(zipOut, f, f.name)
             } else {
-
                 if (!f.name.contains(".zip")) {
                     FileInputStream(f).use { fi ->
                         BufferedInputStream(fi).use { origin ->

@@ -95,7 +95,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add_icon"
-            app:tint="@android:color/white"
             android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
