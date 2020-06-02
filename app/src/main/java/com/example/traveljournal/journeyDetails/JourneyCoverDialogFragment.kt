@@ -1,21 +1,17 @@
 package com.example.traveljournal.journeyDetails
 
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.database.Journey
 import com.example.traveljournal.databinding.FragmentDialogJourneyCoverBinding
-import com.example.traveljournal.experienceDetails.setVisibility
 
 class JourneyCoverDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel): DialogFragment() {
 

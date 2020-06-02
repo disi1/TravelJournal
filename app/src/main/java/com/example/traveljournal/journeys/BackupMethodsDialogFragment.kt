@@ -22,6 +22,7 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
 
     private lateinit var localStorageGroupButton: ConstraintLayout
     private lateinit var otherStorageGroupButton: ConstraintLayout
+    private lateinit var cancelButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +40,7 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
 
         localStorageGroupButton = binding.localStorageGroup
         otherStorageGroupButton = binding.otherStorageGroup
+        cancelButton = binding.cancelButton
 
         return binding.root
     }
@@ -58,11 +60,15 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         otherStorageGroupButton.setOnClickListener {
             val zipBackupFile = getBackupPath(requireContext()) + "TravelJournalBackup_${getCurrentDate()}.zip"
 
-//            journeysViewModel.onZipFiles(getBackupPath(requireContext()), zipBackupFile, requireContext())
             journeysViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
 
             backUpDataToEmail(zipBackupFile, requireContext())
 
+            dismiss()
+        }
+
+        cancelButton.setOnClickListener {
+            journeysViewModel.doneShowingBackupMethodsDialogFragment()
             dismiss()
         }
 

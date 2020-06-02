@@ -40,7 +40,6 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
@@ -183,12 +182,12 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         val deleteAllMemoriesMenu = menu.findItem(R.id.delete_all_memories_menu)
         val spannableDeleteAllMemoriesMenuString = SpannableString(deleteAllMemoriesMenu.title.toString())
-        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), android.R.color.holo_red_light)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
+        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
         deleteAllMemoriesMenu.title = spannableDeleteAllMemoriesMenuString
 
         val deleteExperienceMenu = menu.findItem(R.id.delete_experience_menu)
         val spannableDeleteExperienceMenuString = SpannableString(deleteExperienceMenu.title.toString())
-        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), android.R.color.holo_red_light)), 0, spannableDeleteExperienceMenuString.length, 0)
+        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteExperienceMenuString.length, 0)
         deleteExperienceMenu.title = spannableDeleteExperienceMenuString
 
         super.onCreateOptionsMenu(menu, inflater)

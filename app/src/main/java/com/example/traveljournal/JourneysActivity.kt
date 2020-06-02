@@ -1,18 +1,12 @@
 package com.example.traveljournal
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.example.traveljournal.database.TravelDatabase
-import com.example.traveljournal.journeys.JourneysViewModel
-import com.example.traveljournal.journeys.JourneysViewModelFactory
+import androidx.navigation.ui.setupWithNavController
 
 class JourneysActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,11 +18,8 @@ class JourneysActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val navController = this.findNavController(R.id.navHostFragment)
-        NavigationUI.setupActionBarWithNavController(this, navController)
-    }
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.navHostFragment)
-        return navController.navigateUp()
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 }

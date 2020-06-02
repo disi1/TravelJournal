@@ -126,4 +126,28 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <dialog
+        android:id="@+id/backupDialogFragment"
+        android:name="com.example.traveljournal.journeys.BackupDialogFragment"
+        android:label="BackupDialogFragment"
+        tools:layout="@layout/fragment_dialog_backup"/>
+
+    <dialog
+        android:id="@+id/backupMethodsDialogFragment"
+        android:name="com.example.traveljournal.journeys.BackupMethodsDialogFragment"
+        android:label="BackupMethodsDialogFragment"
+        tools:layout="@layout/fragment_dialog_backup_methods"/>
+
+    <dialog
+        android:id="@+id/deleteAllDataDialogFragment"
+        android:name="com.example.traveljournal.journeys.DeleteAllDataDialogFragment"
+        android:label="DeleteAllDataDialogFragment"
+        tools:layout="@layout/fragment_dialog_delete_all_data"/>
+
+    <dialog
+        android:id="@+id/restoreDialogFragment"
+        android:name="com.example.traveljournal.journeys.RestoreDialogFragment"
+        android:label="RestoreDialogFragment"
+        tools:layout="@layout/fragment_dialog_restore"/>
+
 </navigation>
