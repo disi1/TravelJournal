@@ -9,7 +9,7 @@
             type="com.example.traveljournal.database.Experience" />
         <variable
             name="clickListener"
-            type="com.example.traveljournal.journeyDetails.ExperienceListener" />
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{() -> clickListener.onClick(experience)}">
+            android:onClick="@{clickListener}">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/experiece_image_card_view"
@@ -50,7 +50,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_undraw_experience"
-                    tools:srcCompat="@drawable/ic_undraw_experience" />
+                    android:transitionName="@{@string/transition_experience_image(experience.experienceId)}"
+                    tools:srcCompat="@drawable/ic_undraw_experience"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -65,6 +66,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/experience_place_address"
                 app:layout_constraintTop_toTopOf="parent"
+                android:transitionName="@{@string/transition_experience_name(experience.experienceId)}"
                 tools:text="Outdoor Swimming"/>
 
             <ImageView
@@ -76,6 +78,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/experience_place_address"
                 app:layout_constraintEnd_toStartOf="@id/experience_place_address"
                 app:layout_constraintStart_toEndOf="@id/experiece_image_card_view"
+                android:transitionName="@{@string/transition_experience_location_marker(experience.experienceId)}"
                 app:layout_constraintTop_toTopOf="@id/experience_place_address"/>
 
             <TextView
@@ -87,6 +90,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
                 app:layout_constraintStart_toStartOf="@+id/experience_place_address"
+                android:transitionName="@{@string/transition_experience_place_name(experience.experienceId)}"
                 tools:text="Lake Zürich"/>
 
             <TextView
@@ -104,6 +108,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
                 app:layout_constraintTop_toBottomOf="@id/experience_name"
+                android:transitionName="@{@string/transition_experience_description(experience.experienceId)}"
                 tools:text="Experience description"/>
 
             <TextView
@@ -115,6 +120,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/experience_place_name"
                 app:layout_constraintBottom_toBottomOf="@+id/experiece_image_card_view"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
+                android:transitionName="@{@string/transition_experience_place_address(experience.experienceId)}"
                 tools:text="Lake Zürich, Switzerland"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

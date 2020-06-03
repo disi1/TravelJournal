@@ -276,6 +276,7 @@ class JourneysViewModel(
 
                 zipFiles(zipOut, f, f.name)
             } else {
+                Log.i("jvm", f.name)
                 if (!f.name.contains(".zip")) {
                     FileInputStream(f).use { fi ->
                         BufferedInputStream(fi).use { origin ->

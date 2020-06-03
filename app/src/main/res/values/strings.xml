@@ -80,4 +80,20 @@
     <string name="delete_experience">Delete experience</string>
     <string name="delete_photo_question">Are you sure you want to delete this photo?</string>
 
+    // transaction names
+    <string name="transition_journey_image">journey image %d</string>
+    <string name="transition_journey_destination_name">journey destination name %d</string>
+    <string name="transition_journey_destination_address">journey destination address %d</string>
+    <string name="transition_journey_location_marker">journey location marker %d</string>
+    <string name="transition_experience_image">experience image %d</string>
+    <string name="transition_experience_name">experience name %d</string>
+    <string name="transition_experience_place_name">experience place name %d</string>
+    <string name="transition_experience_place_address">experience place address %d</string>
+    <string name="transition_experience_location_marker">experience location marker %d</string>
+    <string name="transition_experience_description">experience description %d</string>
+    <string name="transition_memory_image">memory image %d</string>
+    <string name="transition_memory_name">memory name %d</string>
+    <string name="transition_memory_description">memory description %d</string>
+    <string name="transition_memory_date">memory date %d</string>
+
 </resources>

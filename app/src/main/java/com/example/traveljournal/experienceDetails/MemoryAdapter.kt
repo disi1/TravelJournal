@@ -1,13 +1,17 @@
 package com.example.traveljournal.experienceDetails
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.databinding.HeaderExperienceDescriptionBinding
 import com.example.traveljournal.databinding.ListItemMemoryBinding
+import com.example.traveljournal.journeyDetails.JourneyDetailsFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +20,7 @@ import kotlinx.coroutines.withContext
 private const val ITEM_VIEW_TYPE_DESCRIPTION_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class MemoryAdapter(val clickListener: MemoryListener, val experienceDetailsViewModel: ExperienceDetailsViewModel) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryDiffCallback()) {
+class MemoryAdapter(val experienceDetailsViewModel: ExperienceDetailsViewModel) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -51,7 +55,7 @@ class MemoryAdapter(val clickListener: MemoryListener, val experienceDetailsView
         when (holder) {
             is ViewHolder -> {
                 val memoryItem = getItem(position) as DataItem.MemoryItem
-                holder.bind(memoryItem.memory, clickListener)
+                holder.bind(memoryItem.memory)
             }
             is DescriptionHeaderViewHolder -> {
                 holder.bind(experienceDetailsViewModel)
@@ -61,11 +65,19 @@ class MemoryAdapter(val clickListener: MemoryListener, val experienceDetailsView
 
     class ViewHolder private constructor(val binding: ListItemMemoryBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: Memory,
-            clickListener: MemoryListener
+            item: Memory
         ) {
+            binding.clickListener = View.OnClickListener {
+                val destination = ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToMemoryDetailsFragment(item.memoryId)
+                val extras = FragmentNavigatorExtras(
+                    binding.memoryImage to binding.memoryImage.transitionName,
+                    binding.memoryName to binding.memoryName.transitionName,
+                    binding.memoryDate to binding.memoryDate.transitionName,
+                    binding.memoryDescription to binding.memoryDescription.transitionName
+                )
+                it.findNavController().navigate(destination, extras)
+            }
             binding.memory = item
-            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -103,10 +115,6 @@ class MemoryDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem == newItem
     }
-}
-
-class MemoryListener(val clickListener: (memoryId: Long) -> Unit) {
-    fun onClick(memory: Memory) = clickListener(memory.memoryId)
 }
 
 sealed class DataItem {

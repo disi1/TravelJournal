@@ -19,30 +19,34 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.traveljournal.R
-import com.example.traveljournal.backupPhoto
+import androidx.transition.TransitionInflater
+import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
-import com.example.traveljournal.getBackupPath
-import com.example.traveljournal.getRealPath
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
 class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogListener {
     private lateinit var memoryDetailsViewModel: MemoryDetailsViewModel
     private lateinit var backupPhotoPath: String
+    private lateinit var binding: FragmentMemoryDetailsBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
-        val binding : FragmentMemoryDetailsBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_memory_details, container, false
         )
@@ -172,6 +176,11 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        waitForTransition(binding.memoryImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

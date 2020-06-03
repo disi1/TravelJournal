@@ -25,7 +25,6 @@ class NewJourneyViewModel (
     val coverPhotoAttributions = MutableLiveData<String>()
 
     private var viewModelJob = Job()
-
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     // @TODO this does not work. it needs a fix
@@ -62,6 +61,7 @@ class NewJourneyViewModel (
             _navigateToJourneys.value = true
         }
     }
+
 
     private suspend fun insertJourney(journey: Journey) {
         withContext(Dispatchers.IO) {

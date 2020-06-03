@@ -2,9 +2,13 @@ package com.example.traveljournal.journeys
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +18,7 @@ import java.util.*
 
 
 class JourneyAdapter(
-    var journeysList: List<Journey>?,
-    val clickListener: JourneyListener
+    var journeysList: List<Journey>?
 ): ListAdapter<Journey, JourneyAdapter.ViewHolder>(JourneyDiffCallback()), Filterable {
 
     var journeysFilteredList: List<Journey>?
@@ -29,16 +32,24 @@ class JourneyAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, clickListener)
+        holder.bind(getItem(position)!!)
     }
 
     class ViewHolder private constructor(val binding: ListItemJourneyBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: Journey,
-            clickListener: JourneyListener
+            item: Journey
         ) {
+            binding.clickListener = View.OnClickListener {
+                val destination = JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(item.journeyId)
+                val extras = FragmentNavigatorExtras(
+                    binding.journeyDestinationName to binding.journeyDestinationName.transitionName,
+                    binding.journeyDestinationAddress to binding.journeyDestinationAddress.transitionName,
+                    binding.journeyImage to binding.journeyImage.transitionName,
+                    binding.locationIcon to binding.locationIcon.transitionName
+                )
+                it.findNavController().navigate(destination, extras)
+            }
             binding.journey = item
-            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -92,8 +103,4 @@ class JourneyDiffCallback: DiffUtil.ItemCallback<Journey>() {
         return oldItem == newItem
     }
 
-}
-
-class JourneyListener(val clickListener: (journeyId: Long) -> Unit) {
-    fun onClick(journey: Journey) = clickListener(journey.journeyId)
 }

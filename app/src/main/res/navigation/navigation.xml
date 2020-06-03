@@ -17,9 +17,7 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
         <action
             android:id="@+id/action_journeys_destination_to_journey_details_destination"
-            app:destination="@id/journey_details_destination"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
+            app:destination="@id/journey_details_destination" />
     </fragment>
 
     <fragment
@@ -83,10 +81,7 @@
             app:argType="long" />
         <action
             android:id="@+id/action_experience_details_destination_to_journey_details_destination"
-            app:destination="@id/journey_details_destination"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/journey_details_destination"
-            app:popUpToInclusive="true" />
+            app:destination="@id/journey_details_destination" />
         <action
             android:id="@+id/action_experience_details_destination_to_new_memory_destination"
             app:destination="@id/new_memory_destination" />

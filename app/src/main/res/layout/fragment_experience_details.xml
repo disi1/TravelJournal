@@ -37,6 +37,7 @@
                     app:layout_constraintWidth_percent="1"
 					app:experienceImage="@{experienceDetailsViewModel.experience}"
                     android:onClick="@{() -> experienceDetailsViewModel.onExperienceCoverClicked()}"
+                    android:transitionName="@{@string/transition_experience_image(experienceDetailsViewModel.experience.experienceId)}"
                     tools:src="@drawable/ic_undraw_experience"/>
 
                 <ImageView
@@ -56,16 +57,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:textStyle="bold"
-                    android:paddingTop="16dp"
+                    android:paddingTop="20dp"
                     android:textColor="?attr/colorOnBackground"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     app:experienceName="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_name"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toStartOf="@+id/experience_place_address"
-                    tools:text="Outdoor Swimming" />
+                    android:transitionName="@{@string/transition_experience_name(experienceDetailsViewModel.experience.experienceId)}"
+                    tools:text="Outdoor Swimming"/>
 
                 <ImageView
                     android:id="@+id/location_icon"
@@ -76,6 +77,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/experience_place_address"
                     app:layout_constraintEnd_toStartOf="@id/experience_place_address"
                     app:layout_constraintStart_toStartOf="@id/experience_image"
+                    android:transitionName="@{@string/transition_experience_location_marker(experienceDetailsViewModel.experience.experienceId)}"
                     app:layout_constraintTop_toTopOf="@id/experience_place_address"/>
 
                 <TextView
@@ -90,6 +92,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toStartOf="@+id/experience_place_address"
+                    android:transitionName="@{@string/transition_experience_place_name(experienceDetailsViewModel.experience.experienceId)}"
                     tools:text="Lake Zürich"/>
 
                 <TextView
@@ -103,7 +106,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/experience_image"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toEndOf="@+id/location_icon"
-                    tools:text="Lake Zürich, Switzerland" />
+                    android:transitionName="@{@string/transition_experience_place_address(experienceDetailsViewModel.experience.experienceId)}"
+                    tools:text="Lake Zürich, Switzerland"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/memories_list"

@@ -58,12 +58,13 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         }
 
         otherStorageGroupButton.setOnClickListener {
-            val zipBackupFile = getBackupPath(requireContext()) + "TravelJournalBackup_${getCurrentDate()}.zip"
+            val zipBackupFile = getBackupPath(requireContext()) + "TravelJournalBackup.zip"
 
             journeysViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
 
             backUpDataToEmail(zipBackupFile, requireContext())
 
+            journeysViewModel.doneShowingBackupMethodsDialogFragment()
             dismiss()
         }
 

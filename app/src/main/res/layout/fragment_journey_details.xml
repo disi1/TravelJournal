@@ -29,6 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 			android:onClick="@{() -> journeyDetailsViewModel.onJourneyCoverClicked()}"
+            android:transitionName="@{@string/transition_journey_image(journeyDetailsViewModel.journey.journeyId)}"
             tools:background="@drawable/ic_undraw_destinations"/>
 
         <ImageView
@@ -52,6 +53,7 @@
             app:layout_constraintBottom_toBottomOf="@id/journey_destination_address"
             app:layout_constraintEnd_toStartOf="@id/journey_destination_address"
             app:layout_constraintStart_toStartOf="@id/journey_image"
+            android:transitionName="@{@string/transition_journey_location_marker(journeyDetailsViewModel.journey.journeyId)}"
             app:layout_constraintTop_toTopOf="@id/journey_destination_address"/>
 
         <TextView
@@ -59,15 +61,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingTop="16dp"
+            android:paddingTop="20dp"
             android:textColor="?attr/colorOnBackground"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:journeyDestinationName="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
             app:layout_constraintEnd_toEndOf="@+id/journey_image"
             app:layout_constraintStart_toEndOf="@+id/location_icon"
-            tools:text="Zürich" />
+            android:transitionName="@{@string/transition_journey_destination_name(journeyDetailsViewModel.journey.journeyId)}"
+            tools:text="Zürich"/>
 
         <TextView
             android:id="@+id/journey_destination_address"
@@ -76,12 +79,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textColor="?attr/colorOnBackground"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:journeyDestinationAddress="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toBottomOf="@+id/journey_image"
             app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
             app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
-            tools:text="Zürich, Switzerland" />
+            android:transitionName="@{@string/transition_journey_destination_address(journeyDetailsViewModel.journey.journeyId)}"
+            tools:text="Zürich, Switzerland"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/experiences_list"

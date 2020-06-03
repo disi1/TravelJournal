@@ -51,7 +51,7 @@ class BackupDialogFragment(val journeysViewModel: JourneysViewModel, private val
         }
 
         cancelButton.setOnClickListener {
-            journeysViewModel.doneShowingBackupMethodsDialogFragment()
+            journeysViewModel.doneShowingLocalStorageBackupDialogFragment()
             dismiss()
         }
     }

@@ -9,7 +9,7 @@
             type="com.example.traveljournal.database.Journey" />
         <variable
             name="clickListener"
-            type="com.example.traveljournal.journeys.JourneyListener" />
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -19,7 +19,7 @@
         app:cardElevation="2dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="10dp"
-        android:onClick="@{() -> clickListener.onClick(journey)}"
+        android:onClick="@{clickListener}"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/ic_undraw_destinations" />
+                android:transitionName="@{@string/transition_journey_image(journey.journeyId)}"
+                tools:srcCompat="@drawable/ic_undraw_destinations"/>
 
             <ImageView
                 android:id="@+id/gradient"
@@ -59,6 +60,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/journey_destination_address"
                 app:layout_constraintEnd_toStartOf="@id/journey_destination_address"
                 app:layout_constraintStart_toStartOf="@id/journey_image"
+                android:transitionName="@{@string/transition_journey_location_marker(journey.journeyId)}"
                 app:layout_constraintTop_toTopOf="@id/journey_destination_address"/>
 
             <TextView
@@ -74,7 +76,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
                 app:layout_constraintEnd_toEndOf="@+id/journey_image"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
-                tools:text="Zürich" />
+                android:transitionName="@{@string/transition_journey_destination_name(journey.journeyId)}"
+                tools:text="Zürich"/>
 
             <TextView
                 android:id="@+id/journey_destination_address"
@@ -87,7 +90,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/journey_image"
                 app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
                 app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
-                tools:text="Zürich, Switzerland" />
+                android:transitionName="@{@string/transition_journey_destination_address(journey.journeyId)}"
+                tools:text="Zürich, Switzerland"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

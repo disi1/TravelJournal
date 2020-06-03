@@ -9,7 +9,7 @@
             type="com.example.traveljournal.database.Memory" />
         <variable
             name="clickListener"
-            type="com.example.traveljournal.experienceDetails.MemoryListener" />
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:cardElevation="2dp"
-        android:onClick="@{() -> clickListener.onClick(memory)}"
+        android:onClick="@{clickListener}"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true">
 
@@ -50,7 +50,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:memoryImage="@{memory}"
                     app:srcCompat="@drawable/ic_undraw_memory"
-                    tools:srcCompat="@drawable/ic_undraw_memory" />
+                    android:transitionName="@{@string/transition_memory_image(memory.memoryId)}"
+                    tools:srcCompat="@drawable/ic_undraw_memory"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -66,6 +67,7 @@
                 app:layout_constraintStart_toEndOf="@+id/memory_image_card_view"
                 app:layout_constraintTop_toTopOf="parent"
                 app:memoryName="@{memory}"
+                android:transitionName="@{@string/transition_memory_name(memory.memoryId)}"
                 tools:text="Outdoor Swimming for the first time"/>
 
             <TextView
@@ -83,6 +85,7 @@
                 app:layout_constraintStart_toStartOf="@+id/memory_name"
                 app:layout_constraintTop_toBottomOf="@id/memory_name"
                 app:memoryDescription="@{memory}"
+                android:transitionName="@{@string/transition_memory_description(memory.memoryId)}"
                 tools:text="Experience description"/>
 
             <TextView
@@ -96,6 +99,7 @@
                 app:layout_constraintStart_toEndOf="@+id/memory_image_card_view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:memoryDate="@{memory}"
+                android:transitionName="@{@string/transition_memory_date(memory.memoryId)}"
                 tools:text="June 28, 2020"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

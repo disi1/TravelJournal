@@ -22,6 +22,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.JourneysActivity
@@ -29,10 +31,12 @@ import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
 import com.example.traveljournal.getBackupPath
+import com.example.traveljournal.waitForTransition
 import com.google.android.material.snackbar.Snackbar
 
 class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
+    private lateinit var binding: FragmentJourneysBinding
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +45,7 @@ class JourneysFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(android.R.attr.background.toDrawable())
 
-        val binding: FragmentJourneysBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_journeys, container, false)
 
@@ -60,10 +64,7 @@ class JourneysFragment : Fragment() {
         binding.journeysList.layoutManager = manager
 
         val adapter = JourneyAdapter(
-            journeysViewModel.journeys.value,
-            JourneyListener {
-                    journeyId -> journeysViewModel.onJourneyClicked(journeyId)
-            }
+            journeysViewModel.journeys.value
         )
 
         binding.journeysList.adapter = adapter
@@ -99,10 +100,10 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journey ->
-            journey?.let {
-                this.findNavController().navigate(
-                    JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(journey))
+        journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journeyKey ->
+            journeyKey?.let {
+                val destination = JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(journeyKey)
+                this.findNavController().navigate(destination)
                 journeysViewModel.onJourneyDetailsNavigated()
             }
         })
@@ -246,6 +247,11 @@ class JourneysFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        waitForTransition(binding.journeysList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

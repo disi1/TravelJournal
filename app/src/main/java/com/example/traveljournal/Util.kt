@@ -3,7 +3,19 @@ package com.example.traveljournal
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore
+import android.view.View
+import android.widget.ImageView
+import androidx.core.net.toUri
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.example.traveljournal.database.Journey
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,7 +31,7 @@ fun getCurrentDate(): String {
     val month = c.get(Calendar.MONTH)
     val day = c.get(Calendar.DAY_OF_MONTH)
 
-    return "$day-$month-$year"
+    return "$day-${month + 1}-$year"
 }
 
 fun getCurrentDateAndTime(): String {
@@ -91,4 +103,35 @@ fun saveBitmap(bitmapImage: Bitmap, imageName: String, backupPhotoPath: String):
     }
     return imageFile.toString()
 }
+
+fun Fragment.waitForTransition(targetView: View) {
+    postponeEnterTransition()
+    targetView.doOnPreDraw { startPostponedEnterTransition() }
+}
+
+//fun ImageView.setJourneyImage(item: Journey?, onLoadingFinished: () -> Unit = {}) {
+//    item?.let {
+//        if(item.coverPhotoSrcUri == "") {
+//            this.setImageResource(R.drawable.ic_undraw_destinations)
+//        } else {
+//            val listener = object : RequestListener<Drawable> {
+//                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+//                    onLoadingFinished()
+//                    return false
+//                }
+//
+//                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+//                    onLoadingFinished()
+//                    return false
+//                }
+//            }
+//            val imageUri = item.coverPhotoSrcUri.toUri()
+//            Glide.with(this.context)
+//                .load(File(imageUri.path!!))
+//                .listener(listener)
+//                .into(this)
+//        }
+//    }
+//}
+
 

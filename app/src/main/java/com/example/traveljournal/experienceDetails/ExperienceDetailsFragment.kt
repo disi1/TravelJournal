@@ -19,12 +19,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.traveljournal.R
-import com.example.traveljournal.backupPhoto
+import androidx.transition.TransitionInflater
+import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
-import com.example.traveljournal.getBackupPath
-import com.example.traveljournal.getRealPath
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import kotlin.math.exp
@@ -35,6 +33,13 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     private lateinit var experienceDetailsViewModel: ExperienceDetailsViewModel
     private lateinit var adapter: MemoryAdapter
     private lateinit var backupPhotoPath: String
+    private lateinit var binding: FragmentExperienceDetailsBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +49,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
-        val binding: FragmentExperienceDetailsBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_experience_details, container, false
         )
@@ -65,9 +70,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         val manager = LinearLayoutManager(activity)
         binding.memoriesList.layoutManager = manager
-        adapter = MemoryAdapter(MemoryListener {
-            memoryId -> experienceDetailsViewModel.onMemoryClicked(memoryId)
-        }, experienceDetailsViewModel)
+        adapter = MemoryAdapter(experienceDetailsViewModel)
         binding.memoriesList.adapter = adapter
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
@@ -175,6 +178,12 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        waitForTransition(binding.memoriesList)
+        waitForTransition(binding.experienceImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
