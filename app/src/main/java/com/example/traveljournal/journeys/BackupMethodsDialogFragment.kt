@@ -1,14 +1,19 @@
 package com.example.traveljournal.journeys
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -17,6 +22,8 @@ import com.example.traveljournal.databinding.FragmentDialogBackupMethodsBinding
 import com.example.traveljournal.getBackupPath
 import com.example.traveljournal.getCurrentDate
 import com.example.traveljournal.getCurrentDateAndTime
+import java.io.File
+import java.nio.file.spi.FileSystemProvider
 
 class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment() {
 
@@ -93,19 +100,18 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         super.onResume()
     }
 
-    private fun backUpDataToEmail(zipFilePath: String , context: Context) {
-        val sendIntent: Intent = Intent(Intent.ACTION_SEND).apply {
+    private fun backUpDataToEmail(backupZipFilePath: String , context: Context) {
+        val backupZipFile = File(backupZipFilePath)
+        val contentUri: Uri = getUriForFile(context, "com.example.traveljournal.fileprovider", backupZipFile)
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_SUBJECT, "Travel Journal Backup")
             putExtra(Intent.EXTRA_TEXT, "You backed your data up at ${getCurrentDateAndTime()}.")
-            putExtra(Intent.EXTRA_STREAM, Uri.parse("file://$zipFilePath"))
+            putExtra(Intent.EXTRA_STREAM, contentUri)
             type = "application/zip"
         }
 
         val shareIntent = Intent.createChooser(sendIntent, null)
-        try {
-            startActivity(shareIntent)
-        } catch (e: Exception) {
-            Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_LONG).show()
-        }
+        startActivity(shareIntent)
     }
 }

@@ -13,6 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.traveljournal.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+        </provider>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/apiKey" />
@@ -20,7 +31,6 @@
         <activity
             android:name=".JourneysActivity"
             android:windowSoftInputMode="adjustNothing">
-<!--            android:theme="@style/AppTheme.ActionBar.Transparent">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

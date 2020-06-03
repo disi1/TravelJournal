@@ -32,29 +32,32 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_img_placeholder"/>
+                    tools:srcCompat="@drawable/ic_img_placeholder" />
 
                 <ImageButton
                     android:id="@+id/change_cover_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/button_background"
                     android:src="@drawable/ic_edit_black"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/close_cover_photo_button" />
 
                 <ImageButton
                     android:id="@+id/close_cover_photo_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/button_background"
                     android:src="@drawable/ic_close_black"
+                    app:layout_constraintBottom_toTopOf="@+id/change_cover_button"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
 
                 <TextView
                     android:id="@+id/credits_text"
