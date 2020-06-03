@@ -2,6 +2,7 @@ package com.example.traveljournal.journeys
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -25,6 +26,8 @@ class JourneysViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     val journeys = database.getAllJourneys()
+
+    val backupFilePath = MutableLiveData<String>()
 
     private var _showSnackbarEvent = MutableLiveData<Boolean>()
     val showSnackbarEvent: LiveData<Boolean>
@@ -66,6 +69,10 @@ class JourneysViewModel(
     val openRestoreDialogFragment: LiveData<Boolean?>
         get() = _openRestoreDialogFragment
 
+    private val _openRestoreGuideDialogFragment = MutableLiveData<Boolean?>()
+    val openRestoreGuideDialogFragment: LiveData<Boolean?>
+        get() = _openRestoreGuideDialogFragment
+
     fun doneShowingBackupMethodsDialogFragment() {
         _openBackupMethodsDialogFragment.value = false
     }
@@ -76,6 +83,10 @@ class JourneysViewModel(
 
     fun doneShowingRestoreDialogFragment() {
         _openRestoreDialogFragment.value = false
+    }
+
+    fun doneShowingRestoreGuideDialogFragment() {
+        _openRestoreGuideDialogFragment.value = false
     }
 
     fun doneShowingSnackbar() {
@@ -96,6 +107,7 @@ class JourneysViewModel(
 
     fun onRestoreMechanismDone() {
         _launchRestoreMechanism.value = false
+        backupFilePath.value = null
     }
 
     fun doneNavigating() {
@@ -150,9 +162,9 @@ class JourneysViewModel(
         }
     }
 
-    fun onJourneyClicked(id: Long) {
-        _navigateToJourneyDetails.value = id
-    }
+//    fun onJourneyClicked(id: Long) {
+//        _navigateToJourneyDetails.value = id
+//    }
 
     fun onJourneyDetailsNavigated() {
         _navigateToJourneyDetails.value = null
@@ -171,6 +183,10 @@ class JourneysViewModel(
     }
 
     fun onRestoreButtonClicked() {
+        _openRestoreGuideDialogFragment.value = true
+    }
+
+    fun onRestoreMechanismInitialized() {
         _openRestoreDialogFragment.value = true
     }
 
@@ -207,6 +223,17 @@ class JourneysViewModel(
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun onRestore(context: Context, backupStoragePath: String) {
+        Log.i("jvm", backupFilePath.value.toString())
+    }
+
+    private fun unzipFiles(backupFilePath: String,  backupStoragePath: String) {
+        val file = File(backupStoragePath)
+        if (!file.exists()) {
+            file.mkdirs()
         }
     }
 
@@ -276,8 +303,7 @@ class JourneysViewModel(
 
                 zipFiles(zipOut, f, f.name)
             } else {
-                Log.i("jvm", f.name)
-                if (!f.name.contains(".zip")) {
+                if (!f.name.contains(".bdia")) {
                     FileInputStream(f).use { fi ->
                         BufferedInputStream(fi).use { origin ->
                             val path = parentDirPath + File.separator + f.name

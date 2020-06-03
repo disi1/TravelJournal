@@ -23,5 +23,6 @@
     <color name="errorColor">#CF6679</color>
     <color name="black_alpha_40">#66000000</color>
     <color name="black_alpha_70">#B3000000</color>
+    <color name="danger_color_dark">#CC0000</color>
 
 </resources>

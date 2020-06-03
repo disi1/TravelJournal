@@ -65,7 +65,7 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         }
 
         otherStorageGroupButton.setOnClickListener {
-            val zipBackupFile = getBackupPath(requireContext()) + "TravelJournalBackup.zip"
+            val zipBackupFile = getBackupPath(requireContext()) + "TravelDiaryBackup.bdia"
 
             journeysViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
 
@@ -105,13 +105,14 @@ class BackupMethodsDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         val contentUri: Uri = getUriForFile(context, "com.example.traveljournal.fileprovider", backupZipFile)
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_SUBJECT, "Travel Journal Backup")
+            putExtra(Intent.EXTRA_SUBJECT, "Travel Diary Backup")
             putExtra(Intent.EXTRA_TEXT, "You backed your data up at ${getCurrentDateAndTime()}.")
             putExtra(Intent.EXTRA_STREAM, contentUri)
-            type = "application/zip"
+            type = "application/bdia"
         }
 
         val shareIntent = Intent.createChooser(sendIntent, null)
+        Log.i("bmdf", shareIntent.toString())
         startActivity(shareIntent)
     }
 }

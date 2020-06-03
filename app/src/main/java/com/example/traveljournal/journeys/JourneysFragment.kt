@@ -5,14 +5,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.TypedArray
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.TypedValue
+import android.util.Log
 import android.view.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -22,8 +20,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.traveljournal.JourneysActivity
@@ -38,12 +34,13 @@ class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
     private lateinit var binding: FragmentJourneysBinding
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(android.R.attr.background.toDrawable())
+
+        val intent = (activity as AppCompatActivity).intent
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -59,6 +56,12 @@ class JourneysFragment : Fragment() {
 
         binding.journeysViewModel = journeysViewModel
         binding.lifecycleOwner = this
+
+        if(intent.data != null) {
+            journeysViewModel.backupFilePath.value = intent.data.toString()
+            intent.data = null
+            journeysViewModel.onRestoreMechanismInitialized()
+        }
 
         val manager = GridLayoutManager(activity, 2)
         binding.journeysList.layoutManager = manager
@@ -166,7 +169,7 @@ class JourneysFragment : Fragment() {
 
         journeysViewModel.openRestoreDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = RestoreDialogFragment(journeysViewModel, getBackupPath(requireContext()))
+                val dialogFragment = RestoreDialogFragment(journeysViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
                 val prev = parentFragmentManager.findFragmentByTag("restore_dialog")
@@ -182,6 +185,24 @@ class JourneysFragment : Fragment() {
             }
         })
 
+        journeysViewModel.openRestoreGuideDialogFragment.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                val dialogFragment = RestoreGuideDialogFragment(journeysViewModel)
+
+                val ft = parentFragmentManager.beginTransaction()
+                val prev = parentFragmentManager.findFragmentByTag("restore_guide_dialog")
+
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+
+                dialogFragment.setTargetFragment(this, 300)
+
+                dialogFragment.show(ft, "restore_guide_dialog")
+            }
+        })
+
         journeysViewModel.launchLocalStorageBackupMechanism.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -192,7 +213,7 @@ class JourneysFragment : Fragment() {
                     ) {
                         val permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-                        requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
+                        requestPermissions(permission, 9990)
                     } else {
                         journeysViewModel.onLocalStorageBackup(requireContext(), getBackupPath(requireContext()))
                         journeysViewModel.onBackupMechanismDone()
@@ -211,9 +232,10 @@ class JourneysFragment : Fragment() {
                     ) {
                         val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
-                        requestPermissions(permission, 9990) // GIVE AN INTEGER VALUE FOR PERMISSION_CODE_READ LIKE 1001
+                        requestPermissions(permission, 9990)
                     } else {
-                        journeysViewModel.restore(requireContext(), backupPath)
+//                        journeysViewModel.restore(requireContext(), backupPath)
+                        journeysViewModel.onRestore(requireContext(), backupPath)
                         journeysViewModel.onRestoreMechanismDone()
                         triggerRestart(requireContext())
                     }

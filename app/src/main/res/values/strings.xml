@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Travel Journal</string>
+    <string name="app_name">Travel Diary</string>
 
     <string name="apiKey">AIzaSyD9gTR55_KQYV0FkdZatU27KwFoTBNebxE</string>
 
@@ -70,11 +70,13 @@
     <string name="memory_details">Memory Details</string>
     <string name="delete_all_memory_photos">Delete all photos</string>
     <string name="description">Description</string>
-    <string name="restore_from">RESTORING FROM</string>
-    <string name="restore_warning">App will restart</string>
+    <string name="how_to_restore_data">HOW TO RESTORE DATA</string>
+    <string name="restore_data">RESTORING DATA</string>
+    <string name="restore_warning">Restoring the backup file will overwrite your application data.</string>
     <string name="local_storage">Local Storage</string>
     <string name="other">Other</string>
     <string name="ok">OK</string>
+    <string name="restore_ack">GOT IT</string>
     <string name="delete_all_photos_question">Are you sure you want to delete all photos?</string>
     <string name="change_cover_photo">Change cover photo</string>
     <string name="delete_experience">Delete experience</string>
@@ -95,5 +97,6 @@
     <string name="transition_memory_name">memory name %d</string>
     <string name="transition_memory_description">memory description %d</string>
     <string name="transition_memory_date">memory date %d</string>
+    <string name="restoring_data_hint">To restore your data, open the TravelDiaryBackup.bdia file on this device.</string>
 
 </resources>

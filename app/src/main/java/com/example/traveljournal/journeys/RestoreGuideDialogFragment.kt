@@ -7,28 +7,26 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
-import com.example.traveljournal.databinding.FragmentDialogRestoreBinding
+import com.example.traveljournal.databinding.FragmentDialogRestoreGuideBinding
 
-class RestoreDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment() {
-    private lateinit var cancelButton: Button
-    private lateinit var restoreButton: Button
+class RestoreGuideDialogFragment(val journeysViewModel: JourneysViewModel):DialogFragment() {
+    private lateinit var okButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentDialogRestoreBinding = DataBindingUtil.inflate(
+        val binding: FragmentDialogRestoreGuideBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_dialog_restore,
+            R.layout.fragment_dialog_restore_guide,
             container,
             false
         )
 
         binding.journeysViewModel = journeysViewModel
 
-        cancelButton = binding.cancelButton
-        restoreButton = binding.restoreButton
+        okButton = binding.okButton
 
         return binding.root
     }
@@ -36,14 +34,8 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel): DialogFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        restoreButton.setOnClickListener {
-            journeysViewModel.onDialogRestoreButtonClicked()
-            journeysViewModel.doneShowingRestoreDialogFragment()
-            dismiss()
-        }
-
-        cancelButton.setOnClickListener {
-            journeysViewModel.doneShowingRestoreDialogFragment()
+        okButton.setOnClickListener {
+            journeysViewModel.doneShowingRestoreGuideDialogFragment()
             dismiss()
         }
     }
