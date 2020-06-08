@@ -58,8 +58,10 @@
             android:id="@+id/line_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@+id/cancel_button"
             app:layout_constraintTop_toBottomOf="@+id/delete_all_data_question" />

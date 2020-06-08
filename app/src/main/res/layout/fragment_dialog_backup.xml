@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -19,32 +18,80 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
-            android:id="@+id/backup_to_title"
+            android:id="@+id/backup_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/backup_to"
+            android:text="@string/backing_up_data"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/backup_file_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/backup_path_text"
+            android:id="@+id/backup_file_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/backup_with_file_name"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/backup_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backup_to_title"
-            tools:text="backup path" />
+            app:layout_constraintTop_toBottomOf="@+id/backup_title" />
+
+        <ImageView
+            android:id="@+id/info_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_info"
+            app:layout_constraintBottom_toBottomOf="@+id/backup_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/backup_guideline"
+            app:layout_constraintStart_toStartOf="@+id/backup_file_name"
+            app:layout_constraintTop_toTopOf="@+id/backup_guideline" />
+
+        <TextView
+            android:id="@+id/backup_guideline"
+            style="@style/LabelStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/backup_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/info_icon"
+            app:layout_constraintTop_toBottomOf="@+id/backup_file_name" />
+
+        <View
+            android:id="@+id/line_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/backup_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backup_guideline" />
 
         <Button
             android:id="@+id/cancel_button"
@@ -69,7 +116,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cancel_button"
-            app:layout_constraintTop_toBottomOf="@+id/backup_path_text"/>
+            app:layout_constraintTop_toBottomOf="@+id/backup_guideline"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.traveljournal.JourneysActivity
+import com.example.traveljournal.MainActivity
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneysBinding
@@ -131,9 +130,9 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.openBackupMethodsDialogFragment.observe(viewLifecycleOwner, Observer {
+        journeysViewModel.openBackupDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
-                val dialogFragment = BackupMethodsDialogFragment(journeysViewModel)
+                val dialogFragment = BackupDialogFragment(journeysViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
                 val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
@@ -146,24 +145,6 @@ class JourneysFragment : Fragment() {
                 dialogFragment.setTargetFragment(this, 300)
 
                 dialogFragment.show(ft, "backup_methods_dialog")
-            }
-        })
-
-        journeysViewModel.openLocalStorageBackupDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                val dialogFragment = BackupDialogFragment(journeysViewModel, getBackupPath(requireContext()))
-
-                val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("local_storage_backup_dialog")
-
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-
-                dialogFragment.setTargetFragment(this, 300)
-
-                dialogFragment.show(ft, "local_storage_backup_dialog")
             }
         })
 
@@ -200,69 +181,6 @@ class JourneysFragment : Fragment() {
                 dialogFragment.setTargetFragment(this, 300)
 
                 dialogFragment.show(ft, "restore_guide_dialog")
-            }
-        })
-
-        journeysViewModel.launchLocalStorageBackupMechanism.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionChecker.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ) == PermissionChecker.PERMISSION_DENIED
-                    ) {
-                        val permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                        requestPermissions(permission, 9990)
-                    } else {
-                        journeysViewModel.onLocalStorageBackup(requireContext(), getBackupPath(requireContext()))
-                        journeysViewModel.onBackupMechanismDone()
-                    }
-                }
-            }
-        })
-
-        journeysViewModel.launchRestoreMechanism.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionChecker.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        ) == PermissionChecker.PERMISSION_DENIED
-                    ) {
-                        val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-                        requestPermissions(permission, 9990)
-                    } else {
-//                        journeysViewModel.restore(requireContext(), backupPath)
-                        journeysViewModel.onRestore(requireContext(), backupPath)
-                        journeysViewModel.onRestoreMechanismDone()
-                        triggerRestart(requireContext())
-                    }
-                }
-            }
-        })
-
-        journeysViewModel.showSnackBarEventDataBackedUp.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.data_backed_up),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                journeysViewModel.doneShowingSnackbarDataBackedUp()
-
-            }
-        })
-
-        journeysViewModel.showSnackBarEventDataRestored.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.data_restored),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                journeysViewModel.doneShowingSnackbarDataRestored()
             }
         })
 
@@ -322,7 +240,7 @@ class JourneysFragment : Fragment() {
     }
 
     private fun triggerRestart(context: Context) {
-        val intent = Intent(context, JourneysActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
         if (context is Activity) {

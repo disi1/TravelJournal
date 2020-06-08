@@ -129,9 +129,9 @@
 
     <dialog
         android:id="@+id/backupMethodsDialogFragment"
-        android:name="com.example.traveljournal.journeys.BackupMethodsDialogFragment"
+        android:name="com.example.traveljournal.journeys.BackupDialogFragment"
         android:label="BackupMethodsDialogFragment"
-        tools:layout="@layout/fragment_dialog_backup_methods"/>
+        tools:layout="@layout/fragment_dialog_backup"/>
 
     <dialog
         android:id="@+id/deleteAllDataDialogFragment"
@@ -140,9 +140,9 @@
         tools:layout="@layout/fragment_dialog_delete_all_data"/>
 
     <dialog
-        android:id="@+id/restoreDialogFragment"
+        android:id="@+id/restoreGuideDialogFragment"
         android:name="com.example.traveljournal.journeys.RestoreGuideDialogFragment"
-        android:label="RestoreDialogFragment"
+        android:label="RestoreGuideDialogFragment"
         tools:layout="@layout/fragment_dialog_restore_guide"/>
 
 </navigation>
