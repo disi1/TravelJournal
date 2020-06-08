@@ -2,12 +2,15 @@ package com.example.traveljournal.journeys
 
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteAllDataBinding
+import com.example.traveljournal.getBackupPath
+import java.io.File
 
 class DeleteAllDataDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment() {
 
@@ -38,7 +41,7 @@ class DeleteAllDataDialogFragment(val journeysViewModel: JourneysViewModel): Dia
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            journeysViewModel.onClear()
+            journeysViewModel.onClear(getBackupPath(requireContext()))
             dismiss()
         }
 

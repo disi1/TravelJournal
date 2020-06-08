@@ -79,14 +79,14 @@ class JourneysViewModel(
         _navigateToNewJourney.value = true
     }
 
-    fun onClear() {
+    fun onClear(backupPath: String) {
         uiScope.launch {
-            clear()
+            clear(backupPath)
             _showSnackbarEvent.value = true
         }
     }
 
-    private suspend fun clear() {
+    private suspend fun clear(backupPath: String) {
         withContext(Dispatchers.IO) {
             journeys.value?.forEach {
                 val fileToDelete = File(it.coverPhotoSrcUri)
@@ -120,6 +120,15 @@ class JourneysViewModel(
             database.deleteMemories()
             database.deleteExperiences()
             database.deleteJourneys()
+
+            val backupStorageDir = File(backupPath)
+            if(backupStorageDir.exists()) {
+                try {
+                    backupStorageDir.deleteRecursively()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -148,7 +157,7 @@ class JourneysViewModel(
         val backupStorageDir = File(backupStoragePath)
         if(backupStorageDir.exists()) {
             try {
-                backupStorageDir.delete()
+                backupStorageDir.deleteRecursively()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
