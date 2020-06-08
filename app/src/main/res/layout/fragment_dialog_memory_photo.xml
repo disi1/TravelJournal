@@ -33,6 +33,18 @@
                 app:memoryImageUrl="@{memoryPhoto}"
                 tools:srcCompat="@drawable/ic_img_placeholder" />
 
+            <TextView
+                android:id="@+id/photo_caption_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#8ef2f2f2"
+                android:gravity="center"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:memoryPhotoCaption="@{memoryPhoto}" />
+
             <ImageButton
                 android:id="@+id/delete_photo_button"
                 android:layout_width="30dp"
@@ -41,7 +53,7 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/button_background"
                 android:src="@drawable/ic_delete_forever"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/photo_caption_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/close_photo_button" />
 

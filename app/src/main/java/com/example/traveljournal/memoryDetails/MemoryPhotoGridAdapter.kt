@@ -108,10 +108,6 @@ class MemoryPhotoDiffCallback: DiffUtil.ItemCallback<DataItem>() {
 
 }
 
-/**
- * Listener class that receives a MemoryPhoto object and passes it over
- *
- */
 class MemoryPhotoListener(val clickListener: (memoryPhoto: MemoryPhoto) -> Unit) {
     fun onClick(memoryPhoto: MemoryPhoto) = clickListener(memoryPhoto)
 }

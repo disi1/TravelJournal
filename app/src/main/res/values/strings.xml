@@ -101,5 +101,7 @@
     <string name="backing_up_data">BACKING UP DATA</string>
     <string name="backup_guideline">Send this file to yourself through one of the available applications.</string>
     <string name="backup_with_file_name">A file named \"TravelDiaryBackup.bdia\" will be created.</string>
+    <string name="add_a_caption_here">Add a caption here...</string>
+    <string name="caption">Type a caption up to 140 characters</string>
 
 </resources>

@@ -97,6 +97,9 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_photo_table WHERE photoId = :key")
     fun getMemoryPhoto(key: Long): MemoryPhoto
 
+    @Update
+    fun updateMemoryPhoto(memoryPhoto: MemoryPhoto)
+
     @Query("SELECT * FROM memory_photo_table ORDER BY photoId DESC")
     fun getAllMemoryPhotos(): LiveData<List<MemoryPhoto>>
 

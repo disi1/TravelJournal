@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.database.TravelDatabaseDao
@@ -29,6 +30,8 @@ class MemoryDetailsViewModel(
     val memoryPhotos = database.getAllPhotosFromMemory(memoryKey)
 
     val memoryDescription = MutableLiveData<String>()
+
+    val memoryPhotoCaption = MutableLiveData<String>()
 
     val coverPhotoSrcUri = MutableLiveData<String>()
 
@@ -60,6 +63,10 @@ class MemoryDetailsViewModel(
     val memoryPhotoDeleted: LiveData<Boolean?>
         get() = _memoryPhotoDeleted
 
+    private val _openMemoryPhotoCaptionDialogFragment = MutableLiveData<Boolean?>()
+    val openMemoryPhotoCaptionDialogFragment: LiveData<Boolean?>
+        get() = _openMemoryPhotoCaptionDialogFragment
+
     fun doneDeletingMemoryPhoto() {
         _memoryPhotoDeleted.value = null
     }
@@ -78,6 +85,10 @@ class MemoryDetailsViewModel(
 
     fun doneImportingCoverImageFromGallery() {
         _initiateCoverImageImportFromGallery.value = null
+    }
+
+    fun doneShowingMemoryPhotoCaptionDialogFragment() {
+        _openMemoryPhotoCaptionDialogFragment.value = null
     }
 
     init {
@@ -134,6 +145,24 @@ class MemoryDetailsViewModel(
         withContext(Dispatchers.IO) {
             database.insertMemoryPhoto(memoryPhoto)
         }
+    }
+
+    fun onUpdateMemoryPhotoCaption(memoryPhoto: MemoryPhoto) {
+        uiScope.launch {
+            val oldMemoryPhoto = memoryPhoto ?: return@launch
+            oldMemoryPhoto.photoCaption = memoryPhotoCaption.value.toString()
+            updateMemoryPhoto(oldMemoryPhoto)
+        }
+    }
+
+    private suspend fun updateMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        withContext(Dispatchers.IO) {
+            database.updateMemoryPhoto(memoryPhoto)
+        }
+    }
+
+    fun onAddCaptionHereClicked() {
+        _openMemoryPhotoCaptionDialogFragment.value = true
     }
 
     fun onMemoryPhotoClicked(memoryPhoto: MemoryPhoto) {
