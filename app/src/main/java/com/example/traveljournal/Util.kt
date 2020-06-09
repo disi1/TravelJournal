@@ -1,22 +1,18 @@
 package com.example.traveljournal
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.provider.MediaStore
 import android.view.View
-import android.widget.ImageView
-import androidx.core.net.toUri
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.example.traveljournal.database.Journey
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +36,7 @@ fun getCurrentDateAndTime(): String {
     return formatter.format(date)
 }
 
-fun getRealPath(data: Intent?, context: Context): File {
+fun getRealPathForIntentData(data: Intent?, context: Context): File {
     val selectedImage = data?.data
     val cursor = context.contentResolver.query(
         selectedImage!!,
@@ -49,6 +45,25 @@ fun getRealPath(data: Intent?, context: Context): File {
         null,
         null
     )
+    cursor!!.moveToFirst()
+
+    val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+    val selectedImagePath = cursor.getString(idx)
+    cursor.close()
+
+    return File(selectedImagePath)
+}
+
+fun getRealPathFromUri(data: Uri?, context: Context): File {
+    val cursor = data?.let {
+        context.contentResolver.query(
+            it,
+        arrayOf(MediaStore.Images.ImageColumns.DATA),
+        null,
+        null,
+        null
+    )
+    }
     cursor!!.moveToFirst()
 
     val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
@@ -107,6 +122,58 @@ fun saveBitmap(bitmapImage: Bitmap, imageName: String, backupPhotoPath: String):
 fun Fragment.waitForTransition(targetView: View) {
     postponeEnterTransition()
     targetView.doOnPreDraw { startPostponedEnterTransition() }
+}
+
+fun rotateFAB(view: View, rotate: Boolean): Boolean {
+    view.animate().setDuration(200)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+            }
+        })
+        .rotation(if (rotate) 135f else 0f)
+    return rotate
+}
+
+fun showIn(view: View) {
+    view.visibility = View.VISIBLE
+    view.alpha = 0f
+    view.translationY = view.height.toFloat()
+
+    view.animate()
+        .setDuration(200)
+        .translationY(0F)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+            }
+        })
+        .alpha(1f)
+        .start()
+}
+
+fun showOut(view: View) {
+    view.visibility = View.VISIBLE
+    view.alpha = 1f
+    view.translationY = 0F
+
+    view.animate()
+        .setDuration(200)
+        .translationY(view.height.toFloat())
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.GONE
+                super.onAnimationEnd(animation)
+            }
+        })
+        .alpha(0f)
+        .start()
+}
+
+fun init(view: View) {
+    view.visibility = View.GONE
+    view.translationY = view.height.toFloat()
+    view.alpha = 0F
 }
 
 //fun ImageView.setJourneyImage(item: Journey?, onLoadingFinished: () -> Unit = {}) {

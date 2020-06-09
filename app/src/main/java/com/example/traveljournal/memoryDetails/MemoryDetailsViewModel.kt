@@ -39,6 +39,10 @@ class MemoryDetailsViewModel(
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
 
+    private var _initiateImageImportFromCamera = MutableLiveData<Boolean?>()
+    val initiateImageImportFromCamera: LiveData<Boolean?>
+        get() = _initiateImageImportFromCamera
+
     private var _initiateCoverImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateCoverImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateCoverImageImportFromGallery
@@ -81,6 +85,10 @@ class MemoryDetailsViewModel(
 
     fun doneImportingImageFromGallery() {
         _initiateImageImportFromGallery.value = null
+    }
+
+    fun doneImportingImageFromCamera() {
+        _initiateImageImportFromCamera.value = null
     }
 
     fun doneImportingCoverImageFromGallery() {
@@ -169,8 +177,12 @@ class MemoryDetailsViewModel(
         _openPhotoDialogFragment.value = memoryPhoto
     }
 
-    fun onNewMemoryPhotoClicked() {
+    fun onAddPhotoFromGalleryButtonClicked() {
         _initiateImageImportFromGallery.value = true
+    }
+
+    fun onAddPhotoFromCameraButtonClicked() {
+        _initiateImageImportFromCamera.value = true
     }
 
     fun onDescriptionTextClicked() {

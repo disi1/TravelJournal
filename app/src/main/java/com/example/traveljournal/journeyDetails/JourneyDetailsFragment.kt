@@ -3,28 +3,21 @@ package com.example.traveljournal.journeyDetails
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.*
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.net.toUri
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
-import com.bumptech.glide.Glide
 import com.example.traveljournal.*
-import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentJourneyDetailsBinding
 import com.google.android.material.snackbar.Snackbar
@@ -246,7 +239,7 @@ class JourneyDetailsFragment: Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9000) {
-            val srcFile = getRealPath(data, requireContext())
+            val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 

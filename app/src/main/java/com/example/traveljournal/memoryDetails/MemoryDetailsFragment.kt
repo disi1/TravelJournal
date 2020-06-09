@@ -2,14 +2,17 @@ package com.example.traveljournal.memoryDetails
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
@@ -26,10 +29,16 @@ import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
+private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 8880
+private const val READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO = 9990
+private const val READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO = 9900
+
 class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogListener {
     private lateinit var memoryDetailsViewModel: MemoryDetailsViewModel
     private lateinit var backupPhotoPath: String
     private lateinit var binding: FragmentMemoryDetailsBinding
+    private var isRotated: Boolean = false
+    private lateinit var imageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +72,20 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         binding.memoryDetailsViewModel = memoryDetailsViewModel
 
         binding.lifecycleOwner = this
+
+        init(binding.addPhotoFromGalleryButton)
+        init(binding.addPhotoFromCameraButton)
+
+        binding.addMemoryPhotoButton.setOnClickListener { view ->
+            isRotated = rotateFAB(view, !isRotated)
+            if(isRotated) {
+                showIn(binding.addPhotoFromCameraButton)
+                showIn(binding.addPhotoFromGalleryButton)
+            } else {
+                showOut(binding.addPhotoFromCameraButton)
+                showOut(binding.addPhotoFromGalleryButton)
+            }
+        }
 
         val manager = GridLayoutManager(activity, 3)
 
@@ -133,13 +156,19 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         memoryDetailsViewModel.initiateImageImportFromGallery.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                requestStoragePermission(9990)
+                requestReadExternalStoragePermission(READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO)
             }
         })
 
         memoryDetailsViewModel.initiateCoverImageImportFromGallery.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                requestStoragePermission(9900)
+                requestReadExternalStoragePermission(READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO)
+            }
+        })
+
+        memoryDetailsViewModel.initiateImageImportFromCamera.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                requestWriteExternalStoragePermission(WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
             }
         })
 
@@ -218,22 +247,43 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         return super.onOptionsItemSelected(item)
     }
 
-    private fun requestStoragePermission(requestCode: Int) {
+    private fun requestReadExternalStoragePermission(requestCode: Int) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
                 val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
                 when(requestCode) {
-                    9990 -> requestPermissions(permission, requestCode)
-                    9900 -> requestPermissions(permission, requestCode)
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> requestPermissions(permission, requestCode)
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> requestPermissions(permission, requestCode)
                 }
             } else {
                 when(requestCode) {
-                    9990 -> pickImageFromGallery(requestCode)
-                    9900 -> pickImageFromGallery(requestCode)
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> pickImageFromGallery(requestCode)
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> pickImageFromGallery(requestCode)
                 }
             }
+        } else {
+            when(requestCode) {
+                READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> pickImageFromGallery(requestCode)
+                READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> pickImageFromGallery(requestCode)
+            }
+        }
+    }
+
+    private fun requestWriteExternalStoragePermission(requestCode: Int) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_DENIED
+                || checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PERMISSION_DENIED) {
+                val permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+
+                requestPermissions(permission, requestCode)
+            } else {
+                addPhotoFromCamera(requestCode)
+            }
+        } else {
+            addPhotoFromCamera(requestCode)
         }
     }
 
@@ -242,15 +292,28 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.type = "image/*"
         when(requestCode) {
-            9990 -> startActivityForResult(intent, requestCode)
-            9900 -> startActivityForResult(intent, requestCode)
+            READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> startActivityForResult(intent, requestCode)
+            READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> startActivityForResult(intent, requestCode)
+        }
+    }
+
+    private fun addPhotoFromCamera(requestCode: Int) {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "${System.currentTimeMillis() / 1000L}")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the TravelCompanion Camera")
+        imageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        when(requestCode) {
+            WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> startActivityForResult(cameraIntent, requestCode)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == 9990 && data != null) {
-            val srcFile = getRealPath(data, requireContext())
+        if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO && data != null) {
+            val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 
@@ -259,8 +322,8 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             memoryDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(resultCode == Activity.RESULT_OK && requestCode == 9900 && data != null) {
-            val srcFile = getRealPath(data, requireContext())
+        if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO && data != null) {
+            val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 
@@ -269,6 +332,34 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             memoryDetailsViewModel.doneImportingCoverImageFromGallery()
             memoryDetailsViewModel.onUpdateMemoryCoverPhoto()
         }
+
+        if(resultCode == Activity.RESULT_OK && requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+            val srcFile = getRealPathFromUri(imageUri, requireContext())
+            val destFile = File(backupPhotoPath, srcFile.name)
+            backupPhoto(srcFile, destFile, backupPhotoPath)
+
+            memoryDetailsViewModel.photoSrcUri.value = destFile.toString()
+            memoryDetailsViewModel.onCreateMemoryPhoto()
+            memoryDetailsViewModel.doneImportingImageFromCamera()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode) {
+            WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    addPhotoFromCamera(8880)
+                } else {
+                    Toast.makeText(requireContext(), "Permissions denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onFinishEditDialog(inputText: String) {

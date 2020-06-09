@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -25,7 +24,6 @@ import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import kotlin.math.exp
 
 
 class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragment.DialogListener {
@@ -271,7 +269,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 9999) {
-            val srcFile = getRealPath(data, requireContext())
+            val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
 
 

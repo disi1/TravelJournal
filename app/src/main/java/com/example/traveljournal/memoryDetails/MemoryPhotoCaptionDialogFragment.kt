@@ -38,7 +38,7 @@ class MemoryPhotoCaptionDialogFragment(
         memoryPhotoCaptionEditText = binding.memoryPhotoCaptionEditText
         okButton = binding.okButton
         cancelButton = binding.cancelButton
-        
+
         return binding.root
     }
 
