@@ -118,6 +118,15 @@ class JourneysFragment : Fragment() {
             }
         })
 
+        journeysViewModel.navigateToSettings.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController().navigate(
+                    JourneysFragmentDirections
+                        .actionJourneysDestinationToSettingsDestination())
+                journeysViewModel.onDoneNavigatingToSettings()
+            }
+        })
+
         journeysViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Snackbar.make(
@@ -232,6 +241,11 @@ class JourneysFragment : Fragment() {
 
         if(id == R.id.restore_data_menu) {
             journeysViewModel.onRestoreButtonClicked()
+            return true
+        }
+
+        if(id == R.id.settings_menu) {
+            journeysViewModel.onNavigateToSettings()
             return true
         }
 

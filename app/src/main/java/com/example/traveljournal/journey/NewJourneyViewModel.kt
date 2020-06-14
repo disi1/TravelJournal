@@ -12,9 +12,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.coroutines.*
 
-class NewJourneyViewModel (
-//        private val journeyKey: Long = 0L,
-        val database: TravelDatabaseDao) : ViewModel() {
+class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
 
     val selectedPlaceName = MutableLiveData<String>()
 

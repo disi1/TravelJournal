@@ -104,5 +104,6 @@
     <string name="add_a_caption_here">Add a caption here...</string>
     <string name="caption">Type a caption up to 140 characters</string>
     <string name="add_a_photo">Add a photo</string>
+    <string name="settings">Settings</string>
 
 </resources>

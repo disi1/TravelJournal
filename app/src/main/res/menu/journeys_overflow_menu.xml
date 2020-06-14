@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/settings_menu"
+        android:icon="@drawable/ic_baseline_settings"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/backup_data_menu"
         android:title="@string/backup"/>
     <item

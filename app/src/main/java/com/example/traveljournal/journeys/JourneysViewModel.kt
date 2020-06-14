@@ -35,6 +35,10 @@ class JourneysViewModel(
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
 
+    private val _navigateToSettings = MutableLiveData<Boolean?>()
+    val navigateToSettings: LiveData<Boolean?>
+        get() = _navigateToSettings
+
     private val _navigateToNewJourney = MutableLiveData<Boolean?>()
     val navigateToNewJourney: LiveData<Boolean?>
         get() = _navigateToNewJourney
@@ -77,6 +81,14 @@ class JourneysViewModel(
 
     fun onNewJourney() {
         _navigateToNewJourney.value = true
+    }
+
+    fun onNavigateToSettings() {
+        _navigateToSettings.value = true
+    }
+
+    fun onDoneNavigatingToSettings() {
+        _navigateToSettings.value = false
     }
 
     fun onClear(backupPath: String) {

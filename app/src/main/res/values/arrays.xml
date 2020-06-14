@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="backup_reminder_options">
+        <item>Every minute</item>
+        <item>Every 15 days</item>
+        <item>Every 30 days</item>
+        <item>Every 60 days</item>
+    </string-array>
+</resources>
