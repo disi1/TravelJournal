@@ -6,8 +6,8 @@
     // Journeys strings
     <string name="my_journeys">My Journeys</string>
     <string name="new_journey">New Journey</string>
-    <string name="create_journey">Create Journey</string>
-    <string name="create_journey_button">Create</string>
+    <string name="create_journey">Add Journey</string>
+    <string name="create_journey_button">Let\'s go!</string>
     <string name="where_question">Where are you going?</string>
     <string name="destination_example">e.g. Bucharest / Switzerland / Lake Zürich</string>
     <string name="cleared_journeys_message">All your Journeys have been deleted.</string>
@@ -35,10 +35,10 @@
 
     // Experiences strings
     <string name="experience">Experience</string>
-    <string name="create_experience">Create Experience</string>
+    <string name="create_experience">Add Experience</string>
     <string name="new_experience">New Experience</string>
     <string name="create_experience_button">Create</string>
-    <string name="add_experience_name">Add experience name</string>
+    <string name="add_experience_name">Name your experience</string>
     <string name="where_to">Where to?</string>
     <string name="defaultNumberOfMemories">0 memories</string>
     <string name="new_memory">New memory</string>
@@ -53,14 +53,14 @@
     <string name="delete_all_memories_question">Are you sure you want to delete all memories and associated data?</string>
     <string name="delete_experience_question">Are you sure you want to delete the <b>%1$s</b> experience?</string>
     <string name="experience_deleted"><b>%1$s</b> experience was deleted.</string>
-
+    <string name="describe_your_experience">Describe your experience (Optional)</string>
 
     // Memories strings
-    <string name="create_memory">Create Memory</string>
+    <string name="create_memory">Add Memory</string>
     <string name="create_memory_button">Create</string>
     <string name="memoryName">Memory name</string>
     <string name="memoryDate">Memory date</string>
-    <string name="describeMemory">Describe your memory</string>
+    <string name="describeMemory">Describe your memory (Optional)</string>
     <string name="clear_all_experiences">Delete all experiences</string>
     <string name="experience_updated_message">Your experience has been updated.</string>
     <string name="memory_date">Click here to choose a date</string>

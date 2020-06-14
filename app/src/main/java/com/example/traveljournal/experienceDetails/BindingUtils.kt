@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 import com.example.traveljournal.R
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import java.io.File
 import java.text.DateFormat

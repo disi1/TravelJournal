@@ -62,11 +62,14 @@
                 android:layout_marginEnd="8dp"
                 android:textStyle="bold"
                 android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 app:experienceName="@{experience}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/experience_place_address"
                 app:layout_constraintTop_toTopOf="parent"
                 android:transitionName="@{@string/transition_experience_name(experience.experienceId)}"
+                app:experienceNameVisibility="@{experience}"
                 tools:text="Outdoor Swimming"/>
 
             <ImageView
@@ -79,6 +82,7 @@
                 app:layout_constraintEnd_toStartOf="@id/experience_place_address"
                 app:layout_constraintStart_toEndOf="@id/experiece_image_card_view"
                 android:transitionName="@{@string/transition_experience_location_marker(experience.experienceId)}"
+                app:experienceLocationIconVisibility="@{experience}"
                 app:layout_constraintTop_toTopOf="@id/experience_place_address"/>
 
             <TextView
@@ -91,6 +95,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
                 app:layout_constraintStart_toStartOf="@+id/experience_place_address"
                 android:transitionName="@{@string/transition_experience_place_name(experience.experienceId)}"
+                app:experiencePlaceNameVisibility="@{experience}"
                 tools:text="Lake Zürich"/>
 
             <TextView
@@ -109,6 +114,7 @@
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
                 app:layout_constraintTop_toBottomOf="@id/experience_name"
                 android:transitionName="@{@string/transition_experience_description(experience.experienceId)}"
+                app:experienceDescriptionVisibility="@{experience}"
                 tools:text="Experience description"/>
 
             <TextView
@@ -121,6 +127,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/experiece_image_card_view"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
                 android:transitionName="@{@string/transition_experience_place_address(experience.experienceId)}"
+                app:experiencePlaceAddressVisibility="@{experience}"
                 tools:text="Lake Zürich, Switzerland"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

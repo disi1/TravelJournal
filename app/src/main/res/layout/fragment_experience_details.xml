@@ -66,6 +66,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toStartOf="@+id/experience_place_address"
                     android:transitionName="@{@string/transition_experience_name(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experienceNameVisibility="@{experienceDetailsViewModel.experience}"
                     tools:text="Outdoor Swimming"/>
 
                 <ImageView
@@ -78,6 +79,7 @@
                     app:layout_constraintEnd_toStartOf="@id/experience_place_address"
                     app:layout_constraintStart_toStartOf="@id/experience_image"
                     android:transitionName="@{@string/transition_experience_location_marker(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experienceLocationIconVisibility="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintTop_toTopOf="@id/experience_place_address"/>
 
                 <TextView
@@ -93,6 +95,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toStartOf="@+id/experience_place_address"
                     android:transitionName="@{@string/transition_experience_place_name(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experiencePlaceNameVisibility="@{experienceDetailsViewModel.experience}"
                     tools:text="Lake Zürich"/>
 
                 <TextView
@@ -107,6 +110,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
                     app:layout_constraintStart_toEndOf="@+id/location_icon"
                     android:transitionName="@{@string/transition_experience_place_address(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experiencePlaceAddressVisibility="@{experienceDetailsViewModel.experience}"
                     tools:text="Lake Zürich, Switzerland"/>
 
                 <androidx.recyclerview.widget.RecyclerView

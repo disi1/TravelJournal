@@ -1,19 +1,18 @@
 package com.example.traveljournal.journey
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -77,6 +76,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
                 binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
                 binding.journeyImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.journeyImage.setImageBitmap(bitmapCover)
+                binding.createButton.isEnabled = true
             }
         })
 
@@ -89,6 +89,9 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
         autocompleteFragment?.setOnPlaceSelectedListener(this)
         autocompleteFragment!!.setHint(getString(R.string.where_question))
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS))
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setTextColor(Color.WHITE)
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setHintTextColor(Color.GRAY)
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).textSize = 18f
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener {
@@ -99,6 +102,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
             newJourneyViewModel.selectedPlaceAddress.value = null
             binding.creditsText.text = ""
             binding.journeyImage.setImageResource(R.drawable.ic_undraw_destinations)
+            binding.createButton.isEnabled = false
         }
 
         return binding.root

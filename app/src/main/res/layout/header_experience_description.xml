@@ -45,6 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/experience_description_label"
             android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"
+            app:experienceDescriptionVisibility="@{experienceDetailsViewModel.experience}"
             tools:text="Memory description"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

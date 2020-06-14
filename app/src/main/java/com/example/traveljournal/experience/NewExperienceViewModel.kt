@@ -19,6 +19,8 @@ class NewExperienceViewModel (
 
     val experienceName = MutableLiveData<String>()
 
+    val experienceDescription = MutableLiveData<String>()
+
     val coverPhotoSrcUri = MutableLiveData<String>()
 
     val coverPhotoAttributions = MutableLiveData<String>()
@@ -46,11 +48,42 @@ class NewExperienceViewModel (
     fun onCreateExperience() {
         uiScope.launch {
             val experience = Experience(journeyHostId = journeyKey)
-            experience.coverPhotoAttributions = coverPhotoAttributions.value.toString()
-            experience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
-            experience.experienceName = experienceName.value.toString()
-            experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
-            experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
+
+            if(experienceName.value == null) {
+                experience.experienceName = ""
+            } else {
+                experience.experienceName = experienceName.value.toString()
+            }
+
+            if(experienceDescription.value == null) {
+                experience.experienceDescription = ""
+            } else {
+                experience.experienceDescription = experienceDescription.value.toString()
+            }
+
+            if(selectedExperiencePlaceName.value == null) {
+                experience.experiencePlaceName = ""
+            } else {
+                experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
+            }
+
+            if(selectedExperiencePlaceAddress.value == null) {
+                experience.experiencePlaceAddress = ""
+            } else {
+                experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
+            }
+
+            if(coverPhotoAttributions.value == null) {
+                experience.coverPhotoAttributions = ""
+            } else {
+                experience.coverPhotoAttributions = coverPhotoAttributions.value.toString()
+            }
+
+            if(coverPhotoSrcUri.value == null) {
+                experience.coverPhotoSrcUri = ""
+            } else {
+                experience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
+            }
 
             insertExperience(experience)
 

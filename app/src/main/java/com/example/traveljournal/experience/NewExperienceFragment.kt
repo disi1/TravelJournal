@@ -1,6 +1,7 @@
 package com.example.traveljournal.experience
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -98,6 +99,9 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
         autocompleteFragment?.setOnPlaceSelectedListener(this)
         autocompleteFragment!!.setHint(getString(R.string.where_to))
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS))
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setTextColor(Color.WHITE)
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).textSize = 18f
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setHintTextColor(Color.GRAY)
 
         val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener {
@@ -112,6 +116,11 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
         binding.experienceNameEditText.afterTextChanged { experienceName ->
             newExperienceViewModel.experienceName.value = experienceName
+            binding.createButton.isEnabled = true
+        }
+
+        binding.experienceDescriptionEditText.afterTextChanged { experienceDescription ->
+            newExperienceViewModel.experienceDescription.value = experienceDescription
         }
 
         return binding.root
@@ -120,7 +129,6 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
     override fun onPlaceSelected(p0: Place) {
 
         val photoMetadata = p0.photoMetadatas?.get(0)
-        Log.i("nef", "metadata: $photoMetadata")
         attributions = photoMetadata?.attributions.toString()
 
         val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
@@ -134,7 +142,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
                 bitmapCover = it.bitmap
                 newExperienceViewModel.onBitmapCoverLoaded()
-                val savedBitmapPath = saveBitmap(bitmapCover, "${p0.name}_${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+                val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
                 newExperienceViewModel.coverPhotoSrcUri.value = savedBitmapPath
                 newExperienceViewModel.coverPhotoAttributions.value = attributions
 

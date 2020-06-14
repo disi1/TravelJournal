@@ -62,7 +62,6 @@ class NewJourneyViewModel (
         }
     }
 
-
     private suspend fun insertJourney(journey: Journey) {
         withContext(Dispatchers.IO) {
             database.insertJourney(journey)

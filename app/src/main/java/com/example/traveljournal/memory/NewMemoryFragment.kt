@@ -59,8 +59,13 @@ class NewMemoryFragment: Fragment() {
 
         binding.newMemoryViewModel = newMemoryViewModel
 
+        val currentTime = Calendar.getInstance().time
+        binding.memoryDate.text = DateFormat.getDateInstance(DateFormat.LONG).format(currentTime)
+        newMemoryViewModel.memoryTimestamp.value = currentTime.time
+
         binding.memoryNameInputText.afterTextChanged { memoryName ->
             newMemoryViewModel.memoryName.value = memoryName
+            binding.createButton.isEnabled = true
         }
 
         binding.memoryDescriptionInputText.afterTextChanged { memoryDescription ->

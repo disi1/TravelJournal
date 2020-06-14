@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".40"
+            app:layout_constraintHeight_percent=".30"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="1"
             tools:ignore="ContentDescription"
@@ -41,7 +41,16 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/journey_image" />
+            app:layout_constraintTop_toBottomOf="@+id/journey_image"/>
+
+        <View
+            android:id="@+id/line_separator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/autocomplete_fragment"
+            app:layout_constraintStart_toStartOf="@+id/autocomplete_fragment"
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
 
         <Button
             android:id="@+id/create_button"
@@ -52,7 +61,8 @@
             android:text="@string/create_journey_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/credits_text"

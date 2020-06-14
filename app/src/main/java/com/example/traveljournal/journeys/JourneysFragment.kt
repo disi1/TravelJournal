@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -70,8 +71,6 @@ class JourneysFragment : Fragment() {
         )
 
         binding.journeysList.adapter = adapter
-
-        val backupPath = requireContext().getExternalFilesDir(null)!!.path + "/Backup/"
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -237,16 +236,6 @@ class JourneysFragment : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun triggerRestart(context: Context) {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-        if (context is Activity) {
-            context.finish()
-        }
-        Runtime.getRuntime().exit(0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
