@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--    Text values for backup reminders time intervals-->
     <string-array name="backup_reminder_options">
-        <item>Every minute</item>
+        <item>Every 10 seconds</item>
         <item>Every 15 days</item>
         <item>Every 30 days</item>
         <item>Every 60 days</item>
     </string-array>
+
+<!--    Backup reminders time intervals in number of days-->
+    <integer-array name="days_array">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </integer-array>
 </resources>

@@ -52,8 +52,13 @@
                 <data android:mimeType="application/bdia"/>
                 <data android:mimeType="application/octet-stream"/>
             </intent-filter>
-
         </activity>
+
+        <receiver
+            android:name=".settings.receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
     </application>
 
 </manifest>

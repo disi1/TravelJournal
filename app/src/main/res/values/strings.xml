@@ -101,7 +101,7 @@
     <string name="backing_up_data">BACKING UP DATA</string>
     <string name="backup_guideline">Send this file to yourself through one of the available applications.</string>
     <string name="backup_with_file_name">A file named \"TravelDiaryBackup.bdia\" will be created.</string>
-    <string name="add_a_caption_here">Add a caption here...</string>
+    <string name="add_a_caption_here">Add a caption here…</string>
     <string name="caption">Type a caption up to 140 characters</string>
     <string name="add_a_photo">Add a photo</string>
     <string name="settings">Settings</string>
@@ -109,10 +109,14 @@
     <string name="turn_on_or_off">Turn on or off</string>
     <string name="reminder_frequency">Reminder frequency</string>
     <string name="back_up_data">Back Up Data</string>
-    <string name="back_up_data_info">Your data will be archived and you will have the option to send it to yourself. This proccess might take a while, depending on the size of your data.</string>
+    <string name="back_up_data_info">Your data will be archived and you will have the option to send it to yourself. This process might take a while, depending on the size of your data.</string>
     <string name="restore_data">Restore Data</string>
     <string name="restore_data_info">To restore your data, download the TravelDiaryBackup.bdia backup file on this device, then open it with this app.\nRestoring data will overwrite all your current data.</string>
     <string name="delete_data">Delete Data</string>
     <string name="delete_data_info">This will delete all your current data.</string>
+    <string name="backup_notification_channel_id">backup_channel</string>
+    <string name="notification_title">Backup reminder</string>
+    <string name="backup_notification_body">You should back up your data!</string>
+    <string name="backup_notification_channel_name">Backup</string>
 
 </resources>

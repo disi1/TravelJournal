@@ -1,10 +1,15 @@
 package com.example.traveljournal.settings
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -94,6 +99,30 @@ class SettingsFragment: Fragment() {
             }
         })
 
+        createChannel(getString(R.string.backup_notification_channel_id), getString(R.string.backup_notification_channel_name))
+
         return binding.root
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_LOW
+            )
+                .apply {
+                    setShowBadge(true)
+                }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.description = "TravelCompanion backup time"
+
+            val notificationManager = requireActivity().getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 }

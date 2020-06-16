@@ -56,6 +56,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:checked="@{settingsViewModel.isAlarmOn}"
+                    android:onCheckedChanged="@{(button, on) -> settingsViewModel.setAlarm(on)}"
                     app:layout_constraintBottom_toBottomOf="@+id/turn_on_or_off_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/turn_on_or_off_text" />
@@ -78,6 +80,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:entries="@array/backup_reminder_options"
+                    android:onItemSelected="@{(parent, view, selection, id)-> settingsViewModel.setTimeSelected(selection)}"
+                    android:selectedItemPosition="@{settingsViewModel.timeSelection}"
                     app:layout_constraintBottom_toBottomOf="@+id/reminder_frequency_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/reminder_frequency_text" />
