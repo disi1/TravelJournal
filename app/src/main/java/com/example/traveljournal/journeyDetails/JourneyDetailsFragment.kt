@@ -87,14 +87,6 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
-        journeyDetailsViewModel.navigateToExperienceDetails.observe(viewLifecycleOwner, Observer { experienceKey ->
-            experienceKey?.let {
-                this.findNavController().navigate(
-                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToExperienceDetailsDestination(experienceKey))
-                journeyDetailsViewModel.doneNavigatingToExperienceDetails()
-            }
-        })
-
         journeyDetailsViewModel.showSnackbarEventExperiencesDeleted.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(

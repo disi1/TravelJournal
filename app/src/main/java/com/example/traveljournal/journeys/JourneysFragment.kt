@@ -101,14 +101,6 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, Observer { journeyKey ->
-            journeyKey?.let {
-                val destination = JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(journeyKey)
-                this.findNavController().navigate(destination)
-                journeysViewModel.onJourneyDetailsNavigated()
-            }
-        })
-
         journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 this.findNavController().navigate(
@@ -124,35 +116,6 @@ class JourneysFragment : Fragment() {
                     JourneysFragmentDirections
                         .actionJourneysDestinationToSettingsDestination())
                 journeysViewModel.onDoneNavigatingToSettings()
-            }
-        })
-
-        journeysViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cleared_journeys_message),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                journeysViewModel.doneShowingSnackbar()
-            }
-        })
-
-        journeysViewModel.openBackupDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                val dialogFragment = BackupDialogFragment(journeysViewModel)
-
-                val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
-
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-
-                dialogFragment.setTargetFragment(this, 300)
-
-                dialogFragment.show(ft, "backup_methods_dialog")
             }
         })
 
@@ -174,24 +137,6 @@ class JourneysFragment : Fragment() {
             }
         })
 
-        journeysViewModel.openRestoreGuideDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                val dialogFragment = RestoreGuideDialogFragment(journeysViewModel)
-
-                val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("restore_guide_dialog")
-
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-
-                dialogFragment.setTargetFragment(this, 300)
-
-                dialogFragment.show(ft, "restore_guide_dialog")
-            }
-        })
-
         setHasOptionsMenu(true)
 
         return binding.root
@@ -204,45 +149,11 @@ class JourneysFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.journeys_overflow_menu, menu)
-
-        val deleteAllDataMenu = menu.findItem(R.id.delete_all_data_menu)
-        val spannableString = SpannableString(deleteAllDataMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableString.length, 0)
-        deleteAllDataMenu.title = spannableString
-
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
-        if(id == R.id.delete_all_data_menu) {
-            val dialogFragment = DeleteAllDataDialogFragment(journeysViewModel)
-
-            val ft = parentFragmentManager.beginTransaction()
-            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
-
-            if (prev != null) {
-                ft.remove(prev)
-            }
-            ft.addToBackStack(null)
-
-            dialogFragment.setTargetFragment(this, 300)
-
-            dialogFragment.show(ft, "backup_methods_dialog")
-
-            return true
-        }
-
-        if(id == R.id.backup_data_menu) {
-            journeysViewModel.onBackupButtonClicked()
-            return true
-        }
-
-        if(id == R.id.restore_data_menu) {
-            journeysViewModel.onRestoreButtonClicked()
-            return true
-        }
 
         if(id == R.id.settings_menu) {
             journeysViewModel.onNavigateToSettings()
@@ -250,12 +161,5 @@ class JourneysFragment : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == 9990) {
-            journeysViewModel.onBackupButtonClicked()
-        }
     }
 }

@@ -48,10 +48,6 @@ class JourneyDetailsViewModel(
     val navigateToNewExperience: LiveData<Long>
         get() = _navigateToNewExperience
 
-    private val _navigateToExperienceDetails = MutableLiveData<Long>()
-    val navigateToExperienceDetails
-        get() = _navigateToExperienceDetails
-
     private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
@@ -72,10 +68,6 @@ class JourneyDetailsViewModel(
         _initiateImageImportFromGallery.value = null
     }
 
-    fun doneNavigatingToExperienceDetails() {
-        _navigateToExperienceDetails.value = null
-    }
-
     fun doneShowingSnackbarExperiencesDeleted() {
         _showSnackbarEventExperiencesDeleted.value = false
     }
@@ -86,10 +78,6 @@ class JourneyDetailsViewModel(
 
     fun onNewExperience() {
         _navigateToNewExperience.value = journeyKey
-    }
-
-    fun onExperienceClicked(experienceId: Long) {
-        _navigateToExperienceDetails.value = experienceId
     }
 
     fun onChangeCoverPhotoClicked() {

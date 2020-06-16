@@ -1,20 +1,16 @@
-package com.example.traveljournal.journeys
+package com.example.traveljournal.settings
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.traveljournal.MainActivity
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogBackupBinding
 import com.example.traveljournal.getBackupPath
@@ -23,7 +19,7 @@ import kotlinx.coroutines.*
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-class BackupDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment(), CoroutineScope {
+class BackupDialogFragment(private val settingsViewModel: SettingsViewModel): DialogFragment(), CoroutineScope {
 
     private lateinit var backUpButton: Button
     private lateinit var cancelButton: Button
@@ -50,8 +46,6 @@ class BackupDialogFragment(val journeysViewModel: JourneysViewModel): DialogFrag
             false
         )
 
-        binding.journeysViewModel = journeysViewModel
-
         backUpButton = binding.backupButton
         cancelButton = binding.cancelButton
         progressBar = binding.indeterminateBar
@@ -74,18 +68,18 @@ class BackupDialogFragment(val journeysViewModel: JourneysViewModel): DialogFrag
 
             launch {
                 withContext(Dispatchers.IO) {
-                    journeysViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
+                    settingsViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
                 }
 
                 backUpDataExternally(zipBackupFile, requireContext())
 
-                journeysViewModel.doneShowingBackupDialogFragment()
+                settingsViewModel.doneShowingBackupDialogFragment()
                 dismiss()
             }
         }
 
         cancelButton.setOnClickListener {
-            journeysViewModel.doneShowingBackupDialogFragment()
+            settingsViewModel.doneShowingBackupDialogFragment()
             dismiss()
         }
     }

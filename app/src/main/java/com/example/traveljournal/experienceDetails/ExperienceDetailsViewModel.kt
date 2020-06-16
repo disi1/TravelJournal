@@ -42,10 +42,6 @@ class ExperienceDetailsViewModel(
     val navigateToNewMemory: LiveData<Long>
         get() = _navigateToNewMemory
 
-    private val _navigateToMemoryDetails = MutableLiveData<Long>()
-    val navigateToMemoryDetails: LiveData<Long>
-        get() = _navigateToMemoryDetails
-
     private val _navigateToJourneyDetails = MutableLiveData<Long>()
     val navigateToJourneyDetails: LiveData<Long>
         get() = _navigateToJourneyDetails
@@ -76,10 +72,6 @@ class ExperienceDetailsViewModel(
 
     fun doneNavigatingToNewMemory() {
         _navigateToNewMemory.value = null
-    }
-
-    fun doneNavigatingToMemoryDetails() {
-        _navigateToMemoryDetails.value = null
     }
 
     fun doneNavigatingToJourneyDetails() {
@@ -128,10 +120,6 @@ class ExperienceDetailsViewModel(
         withContext(Dispatchers.IO) {
             database.updateExperience(experience)
         }
-    }
-
-    fun onMemoryClicked(memoryId: Long) {
-        _navigateToMemoryDetails.value = memoryId
     }
 
     fun onDescriptionTextClicked() {

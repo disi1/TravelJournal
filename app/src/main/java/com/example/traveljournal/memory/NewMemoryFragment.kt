@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,18 +104,18 @@ class NewMemoryFragment: Fragment() {
     }
 
     private fun showDatePickerDialog(memoryDateTextView: TextView) {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
 
-        val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
-            c[thisYear, thisMonth] = thisDay
+        val datePickerDialog = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
+            calendar[thisYear, thisMonth] = thisDay
 
-            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(c.time)
+            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.time)
 
-            newMemoryViewModel.memoryTimestamp.value = c.time.time
+            newMemoryViewModel.memoryTimestamp.value = calendar.time.time
         }, year, month, day)
-        dpd.show()
+        datePickerDialog.show()
     }
 }

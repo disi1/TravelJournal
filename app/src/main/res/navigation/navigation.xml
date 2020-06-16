@@ -148,10 +148,4 @@
         android:label="DeleteAllDataDialogFragment"
         tools:layout="@layout/fragment_dialog_delete_all_data"/>
 
-    <dialog
-        android:id="@+id/restoreGuideDialogFragment"
-        android:name="com.example.traveljournal.journeys.RestoreGuideDialogFragment"
-        android:label="RestoreGuideDialogFragment"
-        tools:layout="@layout/fragment_dialog_restore_guide"/>
-
 </navigation>

@@ -123,14 +123,6 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
-        experienceDetailsViewModel.navigateToMemoryDetails.observe(viewLifecycleOwner, Observer { memoryKey ->
-            memoryKey?.let {
-                this.findNavController().navigate(
-                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToMemoryDetailsFragment(memoryKey))
-                experienceDetailsViewModel.doneNavigatingToMemoryDetails()
-            }
-        })
-
         experienceDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 val dialogFragment = ExperienceDescriptionDialogFragment(experienceDetailsViewModel)

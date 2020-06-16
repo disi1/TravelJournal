@@ -6,13 +6,4 @@
         android:icon="@drawable/ic_baseline_settings"
         android:title="@string/settings"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/backup_data_menu"
-        android:title="@string/backup"/>
-    <item
-        android:id="@+id/restore_data_menu"
-        android:title="@string/restore"/>
-    <item
-        android:id="@+id/delete_all_data_menu"
-        android:title="@string/delete_all_data"/>
 </menu>
