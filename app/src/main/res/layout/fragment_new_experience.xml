@@ -71,7 +71,7 @@
                 android:id="@+id/line_separator"
                 android:layout_width="0dp"
                 android:layout_height="0.5dp"
-                android:background="@android:color/darker_gray"
+                android:background="#03dac5"
                 app:layout_constraintEnd_toEndOf="@+id/experience_name_edit_text"
                 app:layout_constraintStart_toStartOf="@+id/experience_name_edit_text"
                 app:layout_constraintTop_toBottomOf="@+id/experience_autocomplete_fragment" />
@@ -105,6 +105,20 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.87"
+            android:onClick="@{() -> newExperienceViewModel.onCancelExperience()}"
+            android:text="@string/cancel_upper_case"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/create_button"
+            app:layout_constraintEnd_toStartOf="@id/create_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/create_button" />
+
         <Button
             android:id="@+id/create_button"
             android:layout_width="wrap_content"
@@ -115,7 +129,7 @@
             android:text="@string/create_experience_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/cancel_button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

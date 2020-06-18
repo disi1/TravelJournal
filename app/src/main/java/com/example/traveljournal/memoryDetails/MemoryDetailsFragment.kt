@@ -21,11 +21,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
+import com.example.traveljournal.experienceDetails.DeleteExperienceDialogFragment
+import com.example.traveljournal.experienceDetails.ExperienceDetailsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -184,6 +187,26 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             }
         })
 
+        memoryDetailsViewModel.showSnackbarEventMemoryDeleted.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.memory_deleted,
+                        memoryDetailsViewModel.getMemory().value?.memoryName),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                memoryDetailsViewModel.doneShowingSnackbarMemoryDeleted()
+            }
+        })
+
+        memoryDetailsViewModel.navigateToExperienceDetails.observe(viewLifecycleOwner, androidx.lifecycle.Observer { experienceKey ->
+            experienceKey?.let {
+                this.findNavController().navigate(
+                    MemoryDetailsFragmentDirections.actionMemoryDetailsFragmentToExperienceDetailsDestination(experienceKey))
+                memoryDetailsViewModel.doneNavigatingToExperienceDetails()
+            }
+        })
+
         memoryDetailsViewModel.openDescriptionDialogFragment.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 val dialogFragment = MemoryDescriptionDialogFragment(memoryDetailsViewModel)
@@ -220,6 +243,11 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableString.length, 0)
         deleteAllExperiencesMenu.title = spannableString
 
+        val deleteMemoryMenu = menu.findItem(R.id.delete_memory_menu)
+        val spannableDeleteMemoryMenuString = SpannableString(deleteMemoryMenu.title.toString())
+        spannableDeleteMemoryMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteMemoryMenuString.length, 0)
+        deleteMemoryMenu.title = spannableDeleteMemoryMenuString
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -230,7 +258,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             val dialogFragment = DeleteAllPhotosDialogFragment(memoryDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
-            val prev = parentFragmentManager.findFragmentByTag("backup_methods_dialog")
+            val prev = parentFragmentManager.findFragmentByTag("delete_all_memories_dialog")
 
             if (prev != null) {
                 ft.remove(prev)
@@ -239,7 +267,25 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
             dialogFragment.setTargetFragment(this, 300)
 
-            dialogFragment.show(ft, "backup_methods_dialog")
+            dialogFragment.show(ft, "delete_all_memories_dialog")
+
+            return true
+        }
+
+        if(id == R.id.delete_memory_menu) {
+            val dialogFragment = DeleteMemoryDialogFragment(memoryDetailsViewModel)
+
+            val ft = parentFragmentManager.beginTransaction()
+            val prev = parentFragmentManager.findFragmentByTag("delete_memory_dialog")
+
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+
+            dialogFragment.setTargetFragment(this, 300)
+
+            dialogFragment.show(ft, "delete_memory_dialog")
 
             return true
         }

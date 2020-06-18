@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -15,7 +16,7 @@ class ExperienceDescriptionDialogFragment(val experienceDetailsViewModel: Experi
 
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var doneButton: Button
-    private lateinit var cancelButton: Button
+    private lateinit var cancelButton: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +50,12 @@ class ExperienceDescriptionDialogFragment(val experienceDetailsViewModel: Experi
         doneButton.setOnClickListener {
             val dialogListener = targetFragment as DialogListener
             dialogListener.onFinishEditDialog(descriptionEditText.text.toString())
+            experienceDetailsViewModel.doneShowingDialogFragment()
             dismiss()
         }
 
         cancelButton.setOnClickListener {
+            experienceDetailsViewModel.doneShowingDialogFragment()
             dismiss()
         }
     }

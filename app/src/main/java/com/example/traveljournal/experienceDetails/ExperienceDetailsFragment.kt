@@ -199,7 +199,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             val dialogFragment = DeleteAllMemoriesDialogFragment(experienceDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
-            val prev = parentFragmentManager.findFragmentByTag("delete_all_memories_dialog")
+            val prev = parentFragmentManager.findFragmentByTag("delete_all_experiences_dialog")
 
             if (prev != null) {
                 ft.remove(prev)
@@ -208,7 +208,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
             dialogFragment.setTargetFragment(this, 300)
 
-            dialogFragment.show(ft, "delete_all_memories_dialog")
+            dialogFragment.show(ft, "delete_all_experiences_dialog")
 
             return true
         }

@@ -42,21 +42,21 @@
             app:layout_constraintBottom_toBottomOf="@+id/memory_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/memory_date" />
+            app:layout_constraintTop_toTopOf="@id/memory_name" />
 
         <TextView
             android:id="@+id/memory_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="end"
-            android:paddingTop="16dp"
             android:textColor="?attr/colorOnBackground"
             android:textSize="16sp"
             android:transitionName="@{@string/transition_memory_date(memoryDetailsViewModel.memory.memoryId)}"
-            app:layout_constraintBottom_toTopOf="@+id/memory_name"
-            app:layout_constraintEnd_toEndOf="@+id/memory_name"
-            app:layout_constraintStart_toStartOf="@+id/memory_name"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/memory_name"
             app:memoryDate="@{memoryDetailsViewModel.memory}"
             tools:text="June 28, 2020" />
 
@@ -70,9 +70,10 @@
             android:textColor="?attr/colorOnBackground"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:paddingTop="16dp"
             android:transitionName="@{@string/transition_memory_name(memoryDetailsViewModel.memory.memoryId)}"
             app:layout_constraintBottom_toBottomOf="@+id/memory_image"
-            app:layout_constraintEnd_toEndOf="@+id/memory_image"
+            app:layout_constraintEnd_toStartOf="@+id/memory_date"
             app:layout_constraintStart_toStartOf="@+id/memory_image"
             app:memoryName="@{memoryDetailsViewModel.memory}"
             tools:text="Outdoor Swimming for the first time" />
@@ -101,7 +102,7 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_icon" />
+            app:srcCompat="@drawable/ic_add_attach" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_photo_from_gallery_button"

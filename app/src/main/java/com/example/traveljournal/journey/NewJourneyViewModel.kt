@@ -11,6 +11,7 @@ import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.coroutines.*
+import java.io.File
 
 class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
 
@@ -64,6 +65,16 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
         withContext(Dispatchers.IO) {
             database.insertJourney(journey)
         }
+    }
+
+    fun onCancelJourney() {
+        if(coverPhotoSrcUri.value != null) {
+            val fileToDelete = File(coverPhotoSrcUri.value!!)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
+        }
+        _navigateToJourneys.value = true
     }
 
     override fun onCleared() {

@@ -19,11 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
+            android:alpha="0.87"
             android:text="@string/delete_confirmation"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:alpha="0.87"
-            android:textColor="?attr/colorOnBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,24 +33,24 @@
             android:layout_height="30dp"
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_warning"
-            app:layout_constraintBottom_toBottomOf="@+id/delete_experience_question"
+            app:layout_constraintBottom_toBottomOf="@+id/delete_memory_question"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/delete_experience_question" />
+            app:layout_constraintTop_toTopOf="@+id/delete_memory_question" />
 
         <TextView
-            android:id="@+id/delete_experience_question"
+            android:id="@+id/delete_memory_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:textSize="18sp"
             android:alpha="0.87"
             android:textColor="?attr/colorOnBackground"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/warning_icon"
             app:layout_constraintTop_toBottomOf="@+id/delete_confirmation_title"
-            tools:text="Are you sure you want to delete this experience?" />
+            tools:text="Are you sure you want to delete this memory?" />
 
         <View
             android:id="@+id/line_separator"
@@ -62,7 +62,7 @@
             app:layout_constraintBottom_toTopOf="@+id/cancel_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delete_experience_question" />
+            app:layout_constraintTop_toBottomOf="@+id/delete_memory_question" />
 
         <TextView
             android:id="@+id/cancel_button"
@@ -86,8 +86,8 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="12dp"
-            android:text="@string/delete"
             android:backgroundTint="@color/errorColor"
+            android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cancel_button"

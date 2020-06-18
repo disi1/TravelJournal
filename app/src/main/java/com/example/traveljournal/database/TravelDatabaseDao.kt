@@ -114,4 +114,17 @@ interface TravelDatabaseDao {
 
     @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
     fun getAllPhotosFromMemory(key: Long): LiveData<List<MemoryPhoto>>
+
+    // Methods for using the Notification class with Room
+    @Insert
+    fun insertNotification(notification: Notification)
+
+    @Update
+    fun updateNotification(notification: Notification)
+
+    @Query("SELECT * FROM notification_table ORDER BY notificationId DESC")
+    fun getAllNotifications(): LiveData<List<Notification>>
+
+    @Query("SELECT * FROM notification_table WHERE notification_name = :key ORDER BY notificationId DESC LIMIT 1")
+    fun getBackupNotification(key: String): Notification?
 }

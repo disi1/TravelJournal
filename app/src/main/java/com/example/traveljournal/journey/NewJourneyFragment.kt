@@ -101,7 +101,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
             newJourneyViewModel.selectedPlaceName.value = null
             newJourneyViewModel.selectedPlaceAddress.value = null
             binding.creditsText.text = ""
-            binding.journeyImage.setImageResource(R.drawable.ic_undraw_destinations)
+            binding.journeyImage.setImageResource(R.drawable.ic_undraw_journey)
             binding.createButton.isEnabled = false
         }
 

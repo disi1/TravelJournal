@@ -20,9 +20,7 @@
             style="@style/LabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
-            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_icon"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            android:text="@string/description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,17 +34,52 @@
             app:layout_constraintStart_toEndOf="@+id/experience_description_label"
             app:layout_constraintTop_toTopOf="@+id/experience_description_label" />
 
-        <TextView
-            android:id="@+id/experience_description_text"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/experience_description_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_rounded_corners"
+            android:enabled="false"
+            android:hint="@string/experienceDescription"
+            android:minLines="2"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"
             app:experienceDescription="@{experienceDetailsViewModel.experience}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/experience_description_label"
-            android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"
-            app:experienceDescriptionVisibility="@{experienceDetailsViewModel.experience}"
-            tools:text="Memory description"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/experience_description_label"/>
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:cardElevation="2dp"-->
+<!--            app:cardCornerRadius="10dp"-->
+<!--            app:cardUseCompatPadding="true"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/experience_description_label">-->
+<!--            <TextView-->
+<!--                android:id="@+id/experience_description_text"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:minHeight="100dp"-->
+<!--                app:experienceDescription="@{experienceDetailsViewModel.experience}"-->
+<!--                android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"-->
+<!--                app:experienceDescriptionVisibility="@{experienceDetailsViewModel.experience}"-->
+<!--                tools:text="Memory description"/>-->
+<!--        </androidx.cardview.widget.CardView>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

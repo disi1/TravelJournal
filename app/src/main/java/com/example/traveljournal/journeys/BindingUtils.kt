@@ -29,7 +29,7 @@ fun TextView.setJourneyDestinationAddress(item: Journey?) {
 fun setJourneyImage(imageView: ImageView, item: Journey?) {
     item?.let {
         if(item.coverPhotoSrcUri == "") {
-            imageView.setImageResource(R.drawable.ic_undraw_destinations)
+            imageView.setImageResource(R.drawable.ic_undraw_journey)
         } else {
             val imageUri = item.coverPhotoSrcUri.toUri()
             Glide.with(imageView.context)

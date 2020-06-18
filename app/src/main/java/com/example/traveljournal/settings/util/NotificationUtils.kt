@@ -29,10 +29,6 @@ fun NotificationManager.sendNotification(
         R.drawable.ic_logo
     )
 
-    val bigPictureStyle = NotificationCompat.BigPictureStyle()
-        .bigPicture(appLogoImage)
-        .bigLargeIcon(null)
-
     val builder = NotificationCompat.Builder(
         applicationContext,
         applicationContext.getString(R.string.backup_notification_channel_id)
@@ -42,7 +38,6 @@ fun NotificationManager.sendNotification(
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
         .setAutoCancel(true)
-        .setStyle(bigPictureStyle)
         .setLargeIcon(appLogoImage)
 
     notify(NOTIFICATION_ID, builder.build())

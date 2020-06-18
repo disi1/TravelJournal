@@ -19,7 +19,7 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/ic_undraw_destinations"
+            android:src="@drawable/ic_undraw_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
@@ -65,7 +65,7 @@
             android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_icon"
+            app:srcCompat="@drawable/ic_add_journey"
             android:onClick="@{() -> journeysViewModel.onNewJourney()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

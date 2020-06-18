@@ -51,6 +51,10 @@ class MemoryDetailsViewModel(
     val showSnackbarEventMemoryPhotosDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoryPhotosDeleted
 
+    private var _showSnackbarEventMemoryDeleted = MutableLiveData<Boolean>()
+    val showSnackbarEventMemoryDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventMemoryDeleted
+
     private val _openDescriptionDialogFragment = MutableLiveData<Boolean?>()
     val openDescriptionDialogFragment: LiveData<Boolean?>
         get() = _openDescriptionDialogFragment
@@ -67,6 +71,10 @@ class MemoryDetailsViewModel(
     val memoryPhotoDeleted: LiveData<Boolean?>
         get() = _memoryPhotoDeleted
 
+    private val _navigateToExperienceDetails = MutableLiveData<Long>()
+    val navigateToExperienceDetails: LiveData<Long>
+        get() = _navigateToExperienceDetails
+
     private val _openMemoryPhotoCaptionDialogFragment = MutableLiveData<Boolean?>()
     val openMemoryPhotoCaptionDialogFragment: LiveData<Boolean?>
         get() = _openMemoryPhotoCaptionDialogFragment
@@ -77,6 +85,10 @@ class MemoryDetailsViewModel(
 
     fun doneShowingSnackbarMemoryPhotosDeleted() {
         _showSnackbarEventMemoryPhotosDeleted.value = false
+    }
+
+    fun doneShowingSnackbarMemoryDeleted() {
+        _showSnackbarEventMemoryDeleted.value = false
     }
 
     fun doneShowingDescriptionDialogFragment() {
@@ -97,6 +109,10 @@ class MemoryDetailsViewModel(
 
     fun doneShowingMemoryPhotoCaptionDialogFragment() {
         _openMemoryPhotoCaptionDialogFragment.value = null
+    }
+
+    fun doneNavigatingToExperienceDetails() {
+        _navigateToExperienceDetails.value = null
     }
 
     init {
@@ -243,6 +259,22 @@ class MemoryDetailsViewModel(
         val fileToDelete = File(memoryPhoto.photoSrcUri)
         if(fileToDelete.exists()) {
             fileToDelete.delete()
+        }
+    }
+
+    fun onDeleteMemory() {
+        uiScope.launch {
+            memory.value?.memoryId?.let { deleteMemoryPhotos(it) }
+            deleteMemory()
+
+            _showSnackbarEventMemoryDeleted.value = true
+            _navigateToExperienceDetails.value = memory.value?.experienceHostId
+        }
+    }
+
+    private suspend fun deleteMemory() {
+        withContext(Dispatchers.IO) {
+            memory.value?.let { database.deleteMemory(it) }
         }
     }
 

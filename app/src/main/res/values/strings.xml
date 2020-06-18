@@ -81,6 +81,8 @@
     <string name="change_cover_photo">Change cover photo</string>
     <string name="delete_experience">Delete experience</string>
     <string name="delete_photo_question">Are you sure you want to delete this photo?</string>
+    <string name="delete_memory_question">Are you sure you want to delete the <b>%1$s</b> memory?</string>
+    <string name="memory_deleted"><b>%1$s</b> memory was deleted.</string>
 
     // transaction names
     <string name="transition_journey_image">journey image %d</string>
@@ -118,5 +120,8 @@
     <string name="notification_title">Backup reminder</string>
     <string name="backup_notification_body">You should back up your data!</string>
     <string name="backup_notification_channel_name">Backup</string>
+    <string name="delete_memory">Delete memory</string>
+    <string name="describe_your_memory">Describe your memory</string>
+    <string name="cancel_upper_case">CANCEL</string>
 
 </resources>

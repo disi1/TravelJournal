@@ -39,7 +39,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:transitionName="@{@string/transition_journey_image(journey.journeyId)}"
-                tools:srcCompat="@drawable/ic_undraw_destinations"/>
+                tools:srcCompat="@drawable/ic_undraw_journey"/>
 
             <ImageView
                 android:id="@+id/gradient"

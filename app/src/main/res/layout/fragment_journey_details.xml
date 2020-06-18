@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
 			android:onClick="@{() -> journeyDetailsViewModel.onJourneyCoverClicked()}"
             android:transitionName="@{@string/transition_journey_image(journeyDetailsViewModel.journey.journeyId)}"
-            tools:background="@drawable/ic_undraw_destinations"/>
+            tools:background="@drawable/ic_undraw_journey"/>
 
         <ImageView
             android:id="@+id/gradient"
@@ -111,7 +111,7 @@
             android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_icon"
+            app:srcCompat="@drawable/ic_add_experience"
             android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

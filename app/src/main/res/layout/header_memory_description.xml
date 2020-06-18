@@ -20,7 +20,7 @@ xmlns:tools="http://schemas.android.com/tools">
             style="@style/LabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="@string/description"
             app:layout_constraintBaseline_toBaselineOf="@id/edit_text_icon"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,16 +36,27 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintStart_toEndOf="@+id/memory_description_label"
             app:layout_constraintTop_toTopOf="@+id/memory_description_label" />
 
-        <TextView
-            android:id="@+id/memory_description_text"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/memory_description_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_rounded_corners"
+            android:enabled="false"
+            android:hint="@string/describe_your_memory"
+            android:minLines="2"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            android:transitionName="@{@string/transition_memory_description(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memory_description_label"
             app:memoryDescription="@{memoryDetailsViewModel.memory}"
-            android:transitionName="@{@string/transition_memory_description(memoryDetailsViewModel.memory.memoryId)}"
-            tools:text="Memory description"/>
+            app:layout_constraintTop_toBottomOf="@+id/memory_description_label"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

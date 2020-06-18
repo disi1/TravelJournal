@@ -138,7 +138,7 @@
             android:contentDescription="@string/new_journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_icon"
+            app:srcCompat="@drawable/ic_add_memory"
             android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

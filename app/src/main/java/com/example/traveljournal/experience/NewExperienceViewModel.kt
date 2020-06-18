@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
+import java.io.File
 
 class NewExperienceViewModel (
     private val journeyKey: Long = 0L,
@@ -95,6 +96,16 @@ class NewExperienceViewModel (
         withContext(Dispatchers.IO) {
             database.insertExperience(experience)
         }
+    }
+
+    fun onCancelExperience() {
+        if(coverPhotoSrcUri.value != null) {
+            val fileToDelete = File(coverPhotoSrcUri.value!!)
+            if(fileToDelete.exists()) {
+                fileToDelete.delete()
+            }
+        }
+        _navigateToJourneyDetails.value = journeyKey
     }
 
     override fun onCleared() {
