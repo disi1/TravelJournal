@@ -68,12 +68,16 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         val manager = LinearLayoutManager(activity)
         binding.memoriesList.layoutManager = manager
-        adapter = MemoryAdapter(experienceDetailsViewModel)
+        adapter = MemoryAdapter(experienceDetailsViewModel, experienceDetailsViewModel.memories.value)
         binding.memoriesList.adapter = adapter
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
             it?.let {
+                adapter.memoriesList = it
+
                 adapter.addHeaderAndSubmitList(it)
+
+                adapter.notifyItemChanged(0, null)
             }
         })
 

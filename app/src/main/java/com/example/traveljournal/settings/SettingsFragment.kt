@@ -16,9 +16,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentSettingsBinding
+import com.example.traveljournal.journeyDetails.JourneyDetailsFragmentDirections
 import com.example.traveljournal.journeys.JourneysViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -96,6 +98,14 @@ class SettingsFragment: Fragment() {
                 dialogFragment.setTargetFragment(this, 300)
 
                 dialogFragment.show(ft, "delete_data_dialog")
+            }
+        })
+
+        settingsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController().navigate(
+                    SettingsFragmentDirections.actionSettingsDestinationToJourneysDestination())
+                settingsViewModel.doneNavigatingToJourneys()
             }
         })
 

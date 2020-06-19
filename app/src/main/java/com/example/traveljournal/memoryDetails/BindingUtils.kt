@@ -2,10 +2,12 @@ package com.example.traveljournal.memoryDetails
 
 import android.text.SpannableString
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 import com.example.traveljournal.R
 import com.example.traveljournal.database.Experience

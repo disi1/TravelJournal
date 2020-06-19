@@ -128,23 +128,21 @@
         android:id="@+id/settings_destination"
         android:name="com.example.traveljournal.settings.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination" />
+    </fragment>
 
     <dialog
         android:id="@+id/backupDialogFragment"
-        android:name="com.example.traveljournal.journeys.BackupDialogFragment"
+        android:name="com.example.traveljournal.settings.BackupDialogFragment"
         android:label="BackupDialogFragment"
         tools:layout="@layout/fragment_dialog_backup"/>
 
     <dialog
-        android:id="@+id/backupMethodsDialogFragment"
-        android:name="com.example.traveljournal.journeys.BackupDialogFragment"
-        android:label="BackupMethodsDialogFragment"
-        tools:layout="@layout/fragment_dialog_backup"/>
-
-    <dialog
         android:id="@+id/deleteAllDataDialogFragment"
-        android:name="com.example.traveljournal.journeys.DeleteAllDataDialogFragment"
+        android:name="com.example.traveljournal.settings.DeleteAllDataDialogFragment"
         android:label="DeleteAllDataDialogFragment"
         tools:layout="@layout/fragment_dialog_delete_all_data"/>
 

@@ -20,7 +20,10 @@ import kotlinx.coroutines.withContext
 private const val ITEM_VIEW_TYPE_DESCRIPTION_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class MemoryAdapter(val experienceDetailsViewModel: ExperienceDetailsViewModel) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryDiffCallback()) {
+class MemoryAdapter(
+    val experienceDetailsViewModel: ExperienceDetailsViewModel,
+    var memoriesList: List<Memory>?
+) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -58,7 +61,7 @@ class MemoryAdapter(val experienceDetailsViewModel: ExperienceDetailsViewModel) 
                 holder.bind(memoryItem.memory)
             }
             is DescriptionHeaderViewHolder -> {
-                holder.bind(experienceDetailsViewModel)
+                holder.bind(experienceDetailsViewModel, memoriesList)
             }
         }
     }
@@ -92,7 +95,15 @@ class MemoryAdapter(val experienceDetailsViewModel: ExperienceDetailsViewModel) 
 }
 
 class DescriptionHeaderViewHolder(val binding: HeaderExperienceDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ExperienceDetailsViewModel) {
+    fun bind(item: ExperienceDetailsViewModel, memoriesList: List<Memory>?) {
+        if (memoriesList != null) {
+            if(memoriesList.isNotEmpty()) {
+                binding.emptyMemoriesListImage.visibility = View.GONE
+            } else {
+                binding.emptyMemoriesListImage.visibility = View.VISIBLE
+            }
+        }
+
         binding.experienceDetailsViewModel = item
         binding.executePendingBindings()
     }

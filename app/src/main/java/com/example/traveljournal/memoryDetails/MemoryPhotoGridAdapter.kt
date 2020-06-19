@@ -1,7 +1,10 @@
 package com.example.traveljournal.memoryDetails
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +20,11 @@ import java.lang.ClassCastException
 private const val ITEM_VIEW_TYPE_DESCRIPTION_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryDetailsViewModel: MemoryDetailsViewModel) :
-        ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryPhotoDiffCallback()) {
+class MemoryPhotoGridAdapter(
+    val clickListener: MemoryPhotoListener,
+    val memoryDetailsViewModel: MemoryDetailsViewModel,
+    var memoryPhotosList: List<MemoryPhoto>?
+) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MemoryPhotoDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -56,7 +62,7 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
                 holder.bind(memoryPhotoItem.memoryPhoto, clickListener)
             }
             is DescriptionHeaderViewHolder -> {
-                holder.bind(memoryDetailsViewModel)
+                holder.bind(memoryDetailsViewModel, memoryPhotosList)
             }
         }
     }
@@ -81,7 +87,15 @@ class MemoryPhotoGridAdapter(val clickListener: MemoryPhotoListener, val memoryD
     }
 
     class DescriptionHeaderViewHolder(val binding: HeaderMemoryDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MemoryDetailsViewModel) {
+        fun bind(item: MemoryDetailsViewModel, memoryPhotosList: List<MemoryPhoto>?) {
+            if (memoryPhotosList != null) {
+                if(memoryPhotosList.isNotEmpty()) {
+                    binding.emptyMemoryPhotosListImage.visibility = View.GONE
+                } else {
+                    binding.emptyMemoryPhotosListImage.visibility = View.VISIBLE
+                }
+            }
+
             binding.memoryDetailsViewModel = item
             binding.executePendingBindings()
         }

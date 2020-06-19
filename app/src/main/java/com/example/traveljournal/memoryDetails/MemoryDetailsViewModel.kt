@@ -1,9 +1,7 @@
 package com.example.traveljournal.memoryDetails
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto

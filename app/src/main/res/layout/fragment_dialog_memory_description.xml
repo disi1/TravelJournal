@@ -54,6 +54,8 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             android:text="@string/cancel_upper_case"
             android:textStyle="bold"
+            android:alpha="0.87"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <Button

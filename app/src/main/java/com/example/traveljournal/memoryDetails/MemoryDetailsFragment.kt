@@ -11,9 +11,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -27,6 +30,7 @@ import androidx.transition.TransitionInflater
 import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
+import com.example.traveljournal.databinding.HeaderMemoryDescriptionBinding
 import com.example.traveljournal.experienceDetails.DeleteExperienceDialogFragment
 import com.example.traveljournal.experienceDetails.ExperienceDetailsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
@@ -103,7 +107,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         val adapter = MemoryPhotoGridAdapter(MemoryPhotoListener {
             memoryPhoto ->  memoryDetailsViewModel.onMemoryPhotoClicked(memoryPhoto)
-        }, memoryDetailsViewModel)
+        }, memoryDetailsViewModel, memoryDetailsViewModel.memoryPhotos.value)
 
         binding.memoryPhotosGrid.adapter = adapter
 
@@ -153,7 +157,11 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         memoryDetailsViewModel.memoryPhotos.observe(viewLifecycleOwner, Observer {
             it?.let {
+                adapter.memoryPhotosList = it
+
                 adapter.addHeaderAndSubmitList(it)
+
+                adapter.notifyItemChanged(0, null)
             }
         })
 

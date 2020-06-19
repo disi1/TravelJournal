@@ -74,6 +74,10 @@ class SettingsViewModel(
     val showDataDeletedSnackbarEvent: LiveData<Boolean>
         get() = _showDataDeletedSnackbarEvent
 
+    private val _navigateToJourneys = MutableLiveData<Boolean?>()
+    val navigateToJourneys: LiveData<Boolean?>
+        get() = _navigateToJourneys
+
     private lateinit var timer: CountDownTimer
 
     init {
@@ -258,6 +262,10 @@ class SettingsViewModel(
             preferences.getLong(TRIGGER_TIME, 0)
         }
 
+    fun doneNavigatingToJourneys() {
+        _navigateToJourneys.value = null
+    }
+
     fun doneShowingBackupDialogFragment() {
         _openBackupDialogFragment.value = false
     }
@@ -282,6 +290,7 @@ class SettingsViewModel(
         uiScope.launch {
             clear(backupPath)
             _showDataDeletedSnackbarEvent.value = true
+            _navigateToJourneys.value = true
         }
     }
 

@@ -123,5 +123,6 @@
     <string name="delete_memory">Delete memory</string>
     <string name="describe_your_memory">Describe your memory</string>
     <string name="cancel_upper_case">CANCEL</string>
+    <string name="journeys_empty_list_hint">You haven\'t set any journeys yet.\nStart here!</string>
 
 </resources>

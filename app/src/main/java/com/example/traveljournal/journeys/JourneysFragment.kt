@@ -79,10 +79,10 @@ class JourneysFragment : Fragment() {
                 }
                 adapter.submitList(it)
                 if(it.isNotEmpty()) {
-                    binding.imageView.visibility = ConstraintLayout.GONE
+                    binding.emptyJourneyListImage.visibility = ConstraintLayout.GONE
                     binding.searchView.visibility = ConstraintLayout.VISIBLE
                 } else {
-                    binding.imageView.visibility = ConstraintLayout.VISIBLE
+                    binding.emptyJourneyListImage.visibility = ConstraintLayout.VISIBLE
                     binding.searchView.visibility = ConstraintLayout.GONE
                 }
             }

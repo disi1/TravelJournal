@@ -61,7 +61,3 @@ class ExperienceDiffCallback : DiffUtil.ItemCallback<Experience>() {
         return oldItem == newItem
     }
 }
-
-//class ExperienceListener(val clickListener: (experienceId: Long) -> Unit) {
-//    fun onClick(experience: Experience) = clickListener(experience.experienceId)
-//}

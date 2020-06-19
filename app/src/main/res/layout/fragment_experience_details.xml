@@ -127,19 +127,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/experience_image"
                     tools:listitem="@layout/list_item_memory"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/new_memory_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="18dp"
+                    android:contentDescription="@string/new_journey"
+                    android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_add_memory"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/new_memory_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="18dp"
-            android:contentDescription="@string/new_journey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_memory"
-            android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

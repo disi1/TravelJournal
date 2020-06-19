@@ -34,14 +34,12 @@
             app:layout_constraintStart_toEndOf="@+id/experience_description_label"
             app:layout_constraintTop_toTopOf="@+id/experience_description_label" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/experience_description_edit_text"
+        <TextView
+            android:id="@+id/experience_description_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_rounded_corners"
-            android:enabled="false"
-            android:hint="@string/experienceDescription"
             android:minLines="2"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
@@ -53,33 +51,17 @@
             app:experienceDescription="@{experienceDetailsViewModel.experience}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:hint="@string/experienceDescription"
             app:layout_constraintTop_toBottomOf="@+id/experience_description_label"/>
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            app:cardElevation="2dp"-->
-<!--            app:cardCornerRadius="10dp"-->
-<!--            app:cardUseCompatPadding="true"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/experience_description_label">-->
-<!--            <TextView-->
-<!--                android:id="@+id/experience_description_text"-->
-<!--                android:layout_width="fill_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:layout_marginBottom="5dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:minHeight="100dp"-->
-<!--                app:experienceDescription="@{experienceDetailsViewModel.experience}"-->
-<!--                android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"-->
-<!--                app:experienceDescriptionVisibility="@{experienceDetailsViewModel.experience}"-->
-<!--                tools:text="Memory description"/>-->
-<!--        </androidx.cardview.widget.CardView>-->
+        <ImageView
+            android:id="@+id/empty_memories_list_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_memories_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/experience_description_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

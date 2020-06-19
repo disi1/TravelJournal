@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
@@ -76,6 +77,11 @@ class JourneyDetailsFragment: Fragment() {
         journeyDetailsViewModel.experiences.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                if(it.isNotEmpty()) {
+                    binding.emptyExperiencesListImage.visibility = ConstraintLayout.GONE
+                } else {
+                    binding.emptyExperiencesListImage.visibility = ConstraintLayout.VISIBLE
+                }
             }
         })
 

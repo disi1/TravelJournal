@@ -16,18 +16,14 @@
         tools:context=".journeys.JourneysFragment">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/empty_journey_list_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/ic_undraw_journey"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".30"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="1" />
+            android:src="@drawable/ic_empty_journeys_list"
+            app:layout_constraintBottom_toTopOf="@id/new_journey_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
