@@ -45,46 +45,56 @@
             app:layout_constraintTop_toTopOf="@id/memory_name" />
 
         <TextView
-            android:id="@+id/memory_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="end"
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="16sp"
-            android:transitionName="@{@string/transition_memory_date(memoryDetailsViewModel.memory.memoryId)}"
-            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/memory_name"
-            app:memoryDate="@{memoryDetailsViewModel.memory}"
-            tools:text="June 28, 2020" />
-
-        <TextView
             android:id="@+id/memory_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:paddingTop="16dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:transitionName="@{@string/transition_memory_name(memoryDetailsViewModel.memory.memoryId)}"
-            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
-            app:layout_constraintEnd_toStartOf="@+id/memory_date"
-            app:layout_constraintStart_toStartOf="@+id/memory_image"
+            app:layout_constraintBottom_toTopOf="@+id/memory_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
             app:memoryName="@{memoryDetailsViewModel.memory}"
-            tools:text="Outdoor Swimming for the first time" />
+            tools:text="Outdoor" />
+
+        <TextView
+            android:id="@+id/memory_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="?attr/colorOnBackground"
+            android:alpha="0.6"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            android:transitionName="@{@string/transition_memory_date(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
+            app:memoryDate="@{memoryDetailsViewModel.memory}"
+            tools:text="June 28, 2020" />
+
+        <ImageView
+            android:id="@+id/calendar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_baseline_today"
+            android:tint="?attr/colorOnBackground"
+            android:transitionName="@{@string/transition_memory_calendar_icon(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toBottomOf="@id/memory_image"
+            app:layout_constraintStart_toStartOf="@id/memory_image"
+            app:layout_constraintTop_toTopOf="@id/memory_date"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/memory_photos_grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +112,7 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_attach"/>
+            app:srcCompat="@drawable/ic_add_attach" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_photo_from_gallery_button"

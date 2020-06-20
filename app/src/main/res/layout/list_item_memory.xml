@@ -19,7 +19,10 @@
         app:cardElevation="2dp"
         android:onClick="@{clickListener}"
         app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="@color/cardsBackgroundColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,11 +32,10 @@
                 android:id="@+id/memory_image_card_view"
                 android:layout_width="@dimen/experience_icon_width"
                 android:layout_height="@dimen/experience_icon_height"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
                 android:orientation="vertical"
                 app:cardCornerRadius="5dp"
                 app:cardUseCompatPadding="true"
+                android:layout_marginStart="0.5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -58,7 +60,6 @@
                 android:id="@+id/memory_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -66,7 +67,7 @@
                 android:maxLines="1"
                 android:textColor="?attr/colorOnBackground"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/memory_image_card_view"
+                app:layout_constraintStart_toEndOf="@+id/calendar_icon"
                 app:layout_constraintTop_toTopOf="parent"
                 app:memoryName="@{memory}"
                 android:transitionName="@{@string/transition_memory_name(memory.memoryId)}"
@@ -83,26 +84,38 @@
                 android:maxLines="3"
                 app:layout_constraintBottom_toTopOf="@id/memory_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/memory_name"
+                app:layout_constraintStart_toEndOf="@+id/calendar_icon"
                 app:layout_constraintTop_toBottomOf="@id/memory_name"
                 app:memoryDescription="@{memory}"
                 android:transitionName="@{@string/transition_memory_description(memory.memoryId)}"
-                tools:text="Experience description"/>
+                tools:text="Memory description"/>
 
             <TextView
                 android:id="@+id/memory_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:layout_marginStart="8dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="?attr/colorOnBackground"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/memory_image_card_view"
+                app:layout_constraintStart_toEndOf="@+id/calendar_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:memoryDate="@{memory}"
                 android:transitionName="@{@string/transition_memory_date(memory.memoryId)}"
                 tools:text="June 28, 2020"/>
+
+            <ImageView
+                android:id="@+id/calendar_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="1dp"
+                android:src="@drawable/ic_baseline_today"
+                android:tint="@android:color/white"
+                android:transitionName="@{@string/transition_memory_calendar_icon(memory.memoryId)}"
+                app:layout_constraintBottom_toBottomOf="@+id/memory_image_card_view"
+                app:layout_constraintStart_toEndOf="@id/memory_image_card_view"
+                app:layout_constraintTop_toTopOf="@id/memory_date"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

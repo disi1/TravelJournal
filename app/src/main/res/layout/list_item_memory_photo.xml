@@ -18,6 +18,7 @@
         android:orientation="vertical"
         app:cardElevation="2dp"
         app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/cardsBackgroundColor"
         android:onClick="@{() -> clickListener.onClick(memoryPhoto)}"
         app:cardUseCompatPadding="true">
 

@@ -1,15 +1,9 @@
 package com.example.traveljournal.journey
 
-import android.app.Application
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.coroutines.*
 import java.io.File
 
@@ -26,11 +20,6 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    // @TODO this does not work. it needs a fix
-    val createButtonVisible = Transformations.map(selectedPlaceName) {
-        null != it
-    }
-
     private val _navigateToJourneys = MutableLiveData<Boolean?>()
     val navigateToJourneys: LiveData<Boolean?>
         get() = _navigateToJourneys
@@ -39,8 +28,8 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
     val bitmapCoverLoaded: LiveData<Boolean?>
         get() = _bitmapCoverLoaded
 
-    fun onBitmapCoverLoaded() {
-        _bitmapCoverLoaded.value = true
+    fun onBitmapCoverLoaded(state: Boolean) {
+        _bitmapCoverLoaded.value = state
     }
 
     fun doneNavigating() {
@@ -50,10 +39,30 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
     fun onCreateJourney() {
         uiScope.launch {
             val journey = Journey()
-            journey.coverPhotoAttributions = coverPhotoAttributions.value.toString()
-            journey.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
-            journey.placeName = selectedPlaceName.value.toString()
-            journey.placeAddress = selectedPlaceAddress.value.toString()
+
+            if(coverPhotoAttributions.value == null) {
+                journey.coverPhotoAttributions = ""
+            } else {
+                journey.coverPhotoAttributions = coverPhotoAttributions.value.toString()
+            }
+
+            if(coverPhotoSrcUri.value == null) {
+                journey.coverPhotoSrcUri = ""
+            } else {
+                journey.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
+            }
+
+            if(selectedPlaceName.value == null) {
+                journey.placeName = ""
+            } else {
+                journey.placeName = selectedPlaceName.value.toString()
+            }
+
+            if(selectedPlaceAddress.value == null) {
+                journey.placeAddress = ""
+            } else {
+                journey.placeAddress = selectedPlaceAddress.value.toString()
+            }
 
             insertJourney(journey)
 

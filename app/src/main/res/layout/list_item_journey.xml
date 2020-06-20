@@ -20,6 +20,7 @@
         app:cardElevation="2dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="10dp"
+        android:backgroundTint="@color/cardsBackgroundColor"
         android:onClick="@{clickListener}"
         app:cardUseCompatPadding="true">
 

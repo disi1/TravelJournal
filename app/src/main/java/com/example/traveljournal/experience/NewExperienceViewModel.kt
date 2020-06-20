@@ -42,8 +42,8 @@ class NewExperienceViewModel (
     val bitmapCoverLoaded: LiveData<Boolean?>
         get() = _bitmapCoverLoaded
 
-    fun onBitmapCoverLoaded() {
-        _bitmapCoverLoaded.value = true
+    fun onBitmapCoverLoaded(state: Boolean) {
+        _bitmapCoverLoaded.value = state
     }
 
     fun onCreateExperience() {
@@ -69,7 +69,7 @@ class NewExperienceViewModel (
             }
 
             if(selectedExperiencePlaceAddress.value == null) {
-                experience.experiencePlaceAddress = ""
+                experience.experiencePlaceAddress = "No location set"
             } else {
                 experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
             }

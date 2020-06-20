@@ -13,7 +13,9 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> memoryDetailsViewModel.onDescriptionTextClicked()}"
-        android:paddingBottom="8dp">
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="11dp">
 
         <TextView
             android:id="@+id/memory_description_label"
@@ -29,11 +31,10 @@ xmlns:tools="http://schemas.android.com/tools">
         <ImageView
             android:id="@+id/edit_text_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_height="0dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="@+id/memory_description_label"
-            app:layout_constraintStart_toEndOf="@+id/memory_description_label"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/memory_description_label" />
 
         <TextView
@@ -43,9 +44,9 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_rounded_corners"
             android:minLines="2"
-            android:paddingStart="10dp"
+            android:paddingStart="5dp"
             android:paddingTop="5dp"
-            android:paddingEnd="10dp"
+            android:paddingEnd="5dp"
             android:paddingBottom="5dp"
             android:textColor="?attr/colorOnBackground"
             android:textSize="14sp"

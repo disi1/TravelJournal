@@ -99,6 +99,7 @@
     <string name="transition_memory_name">memory name %d</string>
     <string name="transition_memory_description">memory description %d</string>
     <string name="transition_memory_date">memory date %d</string>
+    <string name="transition_memory_calendar_icon">memory calendar icon %d</string>
     <string name="restoring_data_hint">To restore your data, open the TravelDiaryBackup.bdia file on this device.</string>
     <string name="backing_up_data">BACKING UP DATA</string>
     <string name="backup_guideline">Send this file to yourself through one of the available applications.</string>

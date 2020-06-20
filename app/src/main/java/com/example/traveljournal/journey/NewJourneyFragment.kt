@@ -77,6 +77,8 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
                 binding.journeyImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.journeyImage.setImageBitmap(bitmapCover)
                 binding.createButton.isEnabled = true
+            } else if(it == false) {
+                binding.createButton.isEnabled = true
             }
         })
 
@@ -110,31 +112,34 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
+        if(p0.photoMetadatas != null) {
+            val photoMetadata = p0.photoMetadatas?.get(0)
+            attributions = photoMetadata?.attributions.toString()
 
-        val photoMetadata = p0.photoMetadatas?.get(0)
-        attributions = photoMetadata?.attributions.toString()
+            val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
 
-        val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
+            val placesClient = Places.createClient(this.requireContext())
 
-        val placesClient = Places.createClient(this.requireContext())
+            if (photoRequest != null) {
+                placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
 
-        if (photoRequest != null) {
-            placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
+                    val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
-                val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
+                    bitmapCover = it.bitmap
+                    newJourneyViewModel.onBitmapCoverLoaded(true)
+                    val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+                    newJourneyViewModel.coverPhotoSrcUri.value = savedBitmapPath
+                    newJourneyViewModel.coverPhotoAttributions.value = attributions
 
-                bitmapCover = it.bitmap
-                newJourneyViewModel.onBitmapCoverLoaded()
-                val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
-                newJourneyViewModel.coverPhotoSrcUri.value = savedBitmapPath
-                newJourneyViewModel.coverPhotoAttributions.value = attributions
-
-            }.addOnFailureListener { exception ->
-                if (exception is ApiException) {
-                    val statusCode = exception.statusCode
-                    Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+                }.addOnFailureListener { exception ->
+                    if (exception is ApiException) {
+                        val statusCode = exception.statusCode
+                        Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+                    }
                 }
             }
+        } else {
+            newJourneyViewModel.onBitmapCoverLoaded(false)
         }
 
         newJourneyViewModel.selectedPlaceName.value = p0.name

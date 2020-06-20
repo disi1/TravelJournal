@@ -70,8 +70,10 @@
             <View
                 android:id="@+id/line_separator"
                 android:layout_width="0dp"
-                android:layout_height="0.5dp"
-                android:background="#03dac5"
+                android:layout_height="2dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/secondaryColor"
                 app:layout_constraintEnd_toEndOf="@+id/experience_name_edit_text"
                 app:layout_constraintStart_toStartOf="@+id/experience_name_edit_text"
                 app:layout_constraintTop_toBottomOf="@+id/experience_autocomplete_fragment" />

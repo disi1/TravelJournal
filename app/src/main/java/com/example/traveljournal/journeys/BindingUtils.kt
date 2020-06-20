@@ -1,5 +1,6 @@
 package com.example.traveljournal.journeys
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast

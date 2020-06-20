@@ -76,7 +76,8 @@ class MemoryAdapter(
                     binding.memoryImage to binding.memoryImage.transitionName,
                     binding.memoryName to binding.memoryName.transitionName,
                     binding.memoryDate to binding.memoryDate.transitionName,
-                    binding.memoryDescription to binding.memoryDescription.transitionName
+                    binding.memoryDescription to binding.memoryDescription.transitionName,
+                    binding.calendarIcon to binding.calendarIcon.transitionName
                 )
                 it.findNavController().navigate(destination, extras)
             }

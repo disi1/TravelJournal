@@ -35,7 +35,7 @@ fun TextView.setExperiencePlaceAddress(item: Experience?) {
 @BindingAdapter("experienceImage")
 fun setExperienceImage(imageView: ImageView, item: Experience?) {
     item?.let {
-        if((item.coverPhotoSrcUri == "") || (item.coverPhotoSrcUri == "null")) {
+        if(item.coverPhotoSrcUri == "") {
             imageView.setImageResource(R.drawable.ic_undraw_experience)
         } else {
             val imageUri = item.coverPhotoSrcUri.toUri()
@@ -79,7 +79,7 @@ fun TextView.setExperienceDescriptionVisibility(item: Experience?) {
 fun TextView.setExperiencePlaceNameVisibility(item: Experience?) {
     item?.let {
         visibility = if(it.experiencePlaceName == "") {
-            View.INVISIBLE
+            View.GONE
         } else {
             View.VISIBLE
         }
@@ -90,7 +90,7 @@ fun TextView.setExperiencePlaceNameVisibility(item: Experience?) {
 fun TextView.setExperiencePlaceAddressVisibility(item: Experience?) {
     item?.let {
         visibility = if(it.experiencePlaceAddress == "") {
-            View.INVISIBLE
+            View.GONE
         } else {
             View.VISIBLE
         }

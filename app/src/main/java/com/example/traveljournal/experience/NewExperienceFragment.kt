@@ -87,6 +87,9 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
                 binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
                 binding.experienceImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.experienceImage.setImageBitmap(bitmapCover)
+                binding.createButton.isEnabled = true
+            } else if (it == false) {
+                binding.createButton.isEnabled = true
             }
         })
 
@@ -112,11 +115,12 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
             newExperienceViewModel.coverPhotoSrcUri.value = null
             binding.creditsText.text = ""
             binding.experienceImage.setImageResource(R.drawable.ic_undraw_experience)
+            binding.createButton.isEnabled = false
         }
 
         binding.experienceNameEditText.afterTextChanged { experienceName ->
             newExperienceViewModel.experienceName.value = experienceName
-            binding.createButton.isEnabled = true
+            binding.createButton.isEnabled = experienceName != ""
         }
 
         binding.experienceDescriptionEditText.afterTextChanged { experienceDescription ->
@@ -127,31 +131,34 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
     }
 
     override fun onPlaceSelected(p0: Place) {
+        if(p0.photoMetadatas != null) {
+            val photoMetadata = p0.photoMetadatas?.get(0)
+            attributions = photoMetadata?.attributions.toString()
 
-        val photoMetadata = p0.photoMetadatas?.get(0)
-        attributions = photoMetadata?.attributions.toString()
+            val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
 
-        val photoRequest = photoMetadata?.let { FetchPhotoRequest.builder(it).build() }
+            val placesClient = Places.createClient(this.requireContext())
 
-        val placesClient = Places.createClient(this.requireContext())
+            if (photoRequest != null) {
+                placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
 
-        if (photoRequest != null) {
-            placesClient.fetchPhoto(photoRequest).addOnSuccessListener {
+                    val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
-                val backupPhotoPath = getBackupPath(requireContext()) + "Media/"
+                    bitmapCover = it.bitmap
+                    newExperienceViewModel.onBitmapCoverLoaded(true)
+                    val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+                    newExperienceViewModel.coverPhotoSrcUri.value = savedBitmapPath
+                    newExperienceViewModel.coverPhotoAttributions.value = attributions
 
-                bitmapCover = it.bitmap
-                newExperienceViewModel.onBitmapCoverLoaded()
-                val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
-                newExperienceViewModel.coverPhotoSrcUri.value = savedBitmapPath
-                newExperienceViewModel.coverPhotoAttributions.value = attributions
-
-            }.addOnFailureListener { exception ->
-                if (exception is ApiException) {
-                    val statusCode = exception.statusCode
-                    Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+                }.addOnFailureListener { exception ->
+                    if (exception is ApiException) {
+                        val statusCode = exception.statusCode
+                        Log.e("ERROR", "$statusCode - Place not found: " + exception.message)
+                    }
                 }
             }
+        } else {
+            newExperienceViewModel.onBitmapCoverLoaded(false)
         }
 
         newExperienceViewModel.selectedExperiencePlaceName.value = p0.name
