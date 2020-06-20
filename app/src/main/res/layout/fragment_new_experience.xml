@@ -16,6 +16,16 @@
         android:layout_marginTop="?attr/actionBarSize"
         tools:context=".experience.NewExperienceFragment">
 
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -88,6 +98,7 @@
                 android:maxLength="50"
                 android:maxLines="5"
                 android:hint="@string/add_experience_name"
+                android:inputType="textCapSentences"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/experience_autocomplete_fragment" />
@@ -101,6 +112,7 @@
                 android:layout_marginEnd="8dp"
                 android:hint="@string/describe_your_experience"
                 android:maxLines="5"
+                android:inputType="textCapSentences"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/experience_name_edit_text" />

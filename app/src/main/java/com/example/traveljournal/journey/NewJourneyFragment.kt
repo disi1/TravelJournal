@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -39,6 +40,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
     private lateinit var bitmapCover: Bitmap
     private lateinit var attributions: String
     private lateinit var newJourneyViewModel: NewJourneyViewModel
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_journey)
@@ -62,6 +64,8 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         binding.newJourneyViewModel = newJourneyViewModel
 
+        progressBar = binding.indeterminateBar
+
         newJourneyViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 this.findNavController().navigate(
@@ -76,6 +80,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
                 binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
                 binding.journeyImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.journeyImage.setImageBitmap(bitmapCover)
+                progressBar.visibility = View.GONE
                 binding.createButton.isEnabled = true
             } else if(it == false) {
                 binding.createButton.isEnabled = true
@@ -113,6 +118,8 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
         if(p0.photoMetadatas != null) {
+            progressBar.visibility = View.VISIBLE
+
             val photoMetadata = p0.photoMetadatas?.get(0)
             attributions = photoMetadata?.attributions.toString()
 

@@ -13,10 +13,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -30,9 +28,6 @@ import androidx.transition.TransitionInflater
 import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
-import com.example.traveljournal.databinding.HeaderMemoryDescriptionBinding
-import com.example.traveljournal.experienceDetails.DeleteExperienceDialogFragment
-import com.example.traveljournal.experienceDetails.ExperienceDetailsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -262,6 +257,11 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
+        if(id == R.id.change_memory_cover_photo_menu) {
+            memoryDetailsViewModel.onChangeCoverPhotoClicked()
+            memoryDetailsViewModel.doneImportingImageFromGallery()
+        }
+
         if(id == R.id.delete_all_memory_photos_menu) {
             val dialogFragment = DeleteAllPhotosDialogFragment(memoryDetailsViewModel)
 
@@ -343,7 +343,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
     private fun pickImageFromGallery(requestCode: Int) {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         intent.type = "image/*"
         when(requestCode) {
             READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> startActivityForResult(intent, requestCode)
@@ -368,6 +368,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO && data != null) {
             val srcFile = getRealPathForIntentData(data, requireContext())
+            Log.i("mdf", srcFile.toString())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 

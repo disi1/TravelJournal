@@ -171,6 +171,11 @@ class JourneyDetailsFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
+        if(id == R.id.change_journey_cover_photo_menu) {
+            journeyDetailsViewModel.onChangeCoverPhotoClicked()
+            journeyDetailsViewModel.doneImportingImageFromGallery()
+        }
+
         if(id == R.id.delete_all_experiences_menu) {
             val dialogFragment = DeleteAllExperiencesDialogFragment(journeyDetailsViewModel)
 
@@ -229,7 +234,7 @@ class JourneyDetailsFragment: Fragment() {
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         intent.type = "image/*"
         startActivityForResult(intent, 9000)
     }

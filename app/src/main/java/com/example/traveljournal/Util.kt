@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -74,16 +75,19 @@ fun getRealPathFromUri(data: Uri?, context: Context): File {
 }
 
 fun backupPhoto(srcFile: File, destFile: File, backupPhotoPath: String) {
+    Log.i("mdf", "srcFile: $srcFile")
+    Log.i("mdf", "destFile: $destFile")
     if (!File(backupPhotoPath).exists()) {
         File(backupPhotoPath).mkdirs()
     }
 
     if(!destFile.exists()) {
-        try {
+//        try {
             copyFile(srcFile, destFile)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        } catch (e: Exception) {
+//            Log.i("mdf", e.printStackTrace().toString())
+//            e.printStackTrace()
+//        }
     }
 }
 

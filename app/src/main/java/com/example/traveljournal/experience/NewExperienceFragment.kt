@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
@@ -41,6 +42,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
     private lateinit var bitmapCover: Bitmap
     private lateinit var attributions: String
     private lateinit var newExperienceViewModel: NewExperienceViewModel
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +75,8 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
         binding.newExperienceViewModel = newExperienceViewModel
 
+        progressBar = binding.indeterminateBar
+
         newExperienceViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, androidx.lifecycle.Observer { journeyKey ->
             journeyKey?.let {
                 this.findNavController().navigate(
@@ -87,6 +91,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
                 binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
                 binding.experienceImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.experienceImage.setImageBitmap(bitmapCover)
+                progressBar.visibility = View.GONE
                 binding.createButton.isEnabled = true
             } else if (it == false) {
                 binding.createButton.isEnabled = true
@@ -132,6 +137,8 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
 
     override fun onPlaceSelected(p0: Place) {
         if(p0.photoMetadatas != null) {
+            progressBar.visibility = View.VISIBLE
+
             val photoMetadata = p0.photoMetadatas?.get(0)
             attributions = photoMetadata?.attributions.toString()
 

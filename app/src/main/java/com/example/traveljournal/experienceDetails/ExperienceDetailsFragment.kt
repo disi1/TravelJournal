@@ -199,6 +199,11 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
+        if(id == R.id.change_experience_cover_photo_menu) {
+            experienceDetailsViewModel.onChangeCoverPhotoClicked()
+            experienceDetailsViewModel.doneImportingImageFromGallery()
+        }
+
         if(id == R.id.delete_all_memories_menu) {
             val dialogFragment = DeleteAllMemoriesDialogFragment(experienceDetailsViewModel)
 
@@ -257,7 +262,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         intent.type = "image/*"
         startActivityForResult(intent, 9999)
     }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -22,7 +23,7 @@ import kotlin.coroutines.CoroutineContext
 class BackupDialogFragment(private val settingsViewModel: SettingsViewModel): DialogFragment(), CoroutineScope {
 
     private lateinit var backUpButton: Button
-    private lateinit var cancelButton: Button
+    private lateinit var cancelButton: TextView
     private lateinit var progressBar: ProgressBar
 
     private var job: Job = Job()

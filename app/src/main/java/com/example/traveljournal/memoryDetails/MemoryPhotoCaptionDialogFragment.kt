@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -19,7 +20,7 @@ class MemoryPhotoCaptionDialogFragment(
 
     private lateinit var memoryPhotoCaptionEditText: TextInputEditText
     private lateinit var okButton: Button
-    private lateinit var cancelButton: Button
+    private lateinit var cancelButton: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
