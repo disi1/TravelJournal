@@ -75,19 +75,16 @@ fun getRealPathFromUri(data: Uri?, context: Context): File {
 }
 
 fun backupPhoto(srcFile: File, destFile: File, backupPhotoPath: String) {
-    Log.i("mdf", "srcFile: $srcFile")
-    Log.i("mdf", "destFile: $destFile")
     if (!File(backupPhotoPath).exists()) {
         File(backupPhotoPath).mkdirs()
     }
 
     if(!destFile.exists()) {
-//        try {
+        try {
             copyFile(srcFile, destFile)
-//        } catch (e: Exception) {
-//            Log.i("mdf", e.printStackTrace().toString())
-//            e.printStackTrace()
-//        }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 

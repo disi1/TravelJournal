@@ -368,7 +368,6 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO && data != null) {
             val srcFile = getRealPathForIntentData(data, requireContext())
-            Log.i("mdf", srcFile.toString())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
 
