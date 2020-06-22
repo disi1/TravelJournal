@@ -260,9 +260,17 @@ class MemoryDetailsViewModel(
         }
     }
 
+    private fun deleteMemoryCoverPhoto() {
+        val fileToDelete = File(memory.value?.coverPhotoSrcUri!!)
+        if(fileToDelete.exists()) {
+            fileToDelete.delete()
+        }
+    }
+
     fun onDeleteMemory() {
         uiScope.launch {
             memory.value?.memoryId?.let { deleteMemoryPhotos(it) }
+            deleteMemoryCoverPhoto()
             deleteMemory()
 
             _showSnackbarEventMemoryDeleted.value = true

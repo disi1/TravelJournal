@@ -1,10 +1,13 @@
 package com.example.traveljournal.journeyDetails
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Journey
+import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.File
@@ -116,6 +119,19 @@ class JourneyDetailsViewModel(
         _openCoverPhotoDialogFragment.value = true
     }
 
+    fun onDeleteJourney() {
+        uiScope.launch {
+            deleteJourneyCoverPhoto()
+
+            journey.value?.journeyId?.let { deleteExperiences(it) }
+
+            deleteJourney()
+
+            _showSnackbarEventJourneyDeleted.value = true
+            _navigateToJourneys.value = true
+        }
+    }
+
     fun onDeleteExperiences() {
         uiScope.launch {
             deleteExperiences(journeyKey)
@@ -126,31 +142,62 @@ class JourneyDetailsViewModel(
 
     private suspend fun deleteExperiences(journeyKey: Long) {
         withContext(Dispatchers.IO) {
-            val attachedExperiences = database.getAllExperiencesFromJourney(journeyKey)
-            attachedExperiences.value?.forEach { experience ->
-                val attachedMemories = database.getAllMemoriesFromExperience(experience.experienceId)
-                attachedMemories.value?.forEach { memory ->
-                    database.deleteAllPhotosFromMemory(memory.memoryId)
-                }
-                database.deleteAllMemoriesFromExperience(experience.experienceId)
+            experiences.value?.forEach { experience ->
+                deleteExperienceCoverPhoto(experience)
+
+                deleteMemoriesUnderExperience(experience)
             }
             database.deleteAllExperiencesFromJourney(journeyKey)
         }
     }
 
-    fun onDeleteJourney() {
-        uiScope.launch {
-            journey.value?.journeyId?.let { deleteExperiences(it) }
-            deleteJourney()
+    private suspend fun deleteMemoriesUnderExperience(experience: Experience) {
+        withContext(Dispatchers.IO) {
+            database.getListAllMemoriesFromExperience(experience.experienceId).forEach { memory ->
+                deleteMemoryCoverPhoto(memory)
 
-            _showSnackbarEventJourneyDeleted.value = true
-            _navigateToJourneys.value = true
+                deleteMemoryPhotosUnderMemory(memory)
+            }
+            database.deleteAllMemoriesFromExperience(experience.experienceId)
+        }
+    }
+
+    private suspend fun deleteMemoryPhotosUnderMemory(memory: Memory) {
+        withContext(Dispatchers.IO) {
+            database.getListAllPhotosFromMemory(memory.memoryId).forEach { memoryPhoto ->
+                val memoryPhotoDelete = File(memoryPhoto.photoSrcUri)
+                if (memoryPhotoDelete.exists()) {
+                    memoryPhotoDelete.delete()
+                }
+            }
+            database.deleteAllPhotosFromMemory(memory.memoryId)
         }
     }
 
     private suspend fun deleteJourney() {
         withContext(Dispatchers.IO) {
             journey.value?.let { database.deleteJourney(it) }
+        }
+    }
+
+    private fun deleteJourneyCoverPhoto() {
+        val journeyCoverPhotoDelete = File(journey.value?.coverPhotoSrcUri!!)
+        if(journeyCoverPhotoDelete.exists()) {
+            journeyCoverPhotoDelete.delete()
+        }
+    }
+
+    private fun deleteExperienceCoverPhoto(experience: Experience) {
+        val experienceCoverPhotoDelete = File(experience.coverPhotoSrcUri)
+        if(experienceCoverPhotoDelete.exists()) {
+            experienceCoverPhotoDelete.delete()
+        }
+    }
+
+    private fun deleteMemoryCoverPhoto(memory: Memory) {
+        val memoryCoverPhotoDelete = File(memory.coverPhotoSrcUri)
+        if (memoryCoverPhotoDelete.exists()) {
+            memoryCoverPhotoDelete.delete()
         }
     }
 

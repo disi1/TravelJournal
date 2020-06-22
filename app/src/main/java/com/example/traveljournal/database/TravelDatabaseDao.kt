@@ -31,8 +31,8 @@ interface TravelDatabaseDao {
     fun getJourneyWithId(key: Long): LiveData<Journey>
 
     @Transaction
-    @Query("SELECT * FROM journey_table ORDER BY journeyId DESC")
-    fun getJourneyWithExperiences(): LiveData<List<JourneyWithExperiences>>
+    @Query("SELECT * FROM journey_table")
+    fun getJourneysAndExperiences(): List<JourneyWithExperiences>
 
     // Methods for using the Experience class with Room
     @Insert
@@ -87,6 +87,9 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_table WHERE experience_host_id = :key ORDER BY memoryId DESC")
     fun getAllMemoriesFromExperience(key: Long): LiveData<List<Memory>>
 
+    @Query("SELECT * FROM memory_table WHERE experience_host_id = :key ORDER BY memoryId DESC")
+    fun getListAllMemoriesFromExperience(key: Long): List<Memory>
+
     @Query("SELECT * from memory_table WHERE memoryId = :key")
     fun getMemoryWithId(key: Long): LiveData<Memory>
 
@@ -114,6 +117,9 @@ interface TravelDatabaseDao {
 
     @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
     fun getAllPhotosFromMemory(key: Long): LiveData<List<MemoryPhoto>>
+
+    @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
+    fun getListAllPhotosFromMemory(key: Long): List<MemoryPhoto>
 
     // Methods for using the Notification class with Room
     @Insert

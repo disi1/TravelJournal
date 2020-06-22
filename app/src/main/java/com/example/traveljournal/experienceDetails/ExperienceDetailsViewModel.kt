@@ -2,6 +2,7 @@ package com.example.traveljournal.experienceDetails
 
 import androidx.lifecycle.*
 import com.example.traveljournal.database.Experience
+import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.File
@@ -142,18 +143,10 @@ class ExperienceDetailsViewModel(
         }
     }
 
-    private suspend fun deleteMemories(experienceKey: Long) {
-        withContext(Dispatchers.IO) {
-            val attachedMemories = database.getAllMemoriesFromExperience(experienceKey)
-            attachedMemories.value?.forEach { memory ->
-                database.deleteAllPhotosFromMemory(memory.memoryId)
-            }
-            database.deleteAllMemoriesFromExperience(experienceKey)
-        }
-    }
-
     fun onDeleteExperience() {
         uiScope.launch {
+            deleteExperienceCoverPhoto()
+
             experience.value?.experienceId?.let { deleteMemories(it) }
             deleteExperience()
 
@@ -162,9 +155,46 @@ class ExperienceDetailsViewModel(
         }
     }
 
+    private suspend fun deleteMemories(experienceKey: Long) {
+        withContext(Dispatchers.IO) {
+            memories.value?.forEach { memory ->
+                deleteMemoryCoverPhoto(memory)
+
+                deleteMemoryPhotosUnderMemory(memory)
+            }
+            database.deleteAllMemoriesFromExperience(experienceKey)
+        }
+    }
+
     private suspend fun deleteExperience() {
         withContext(Dispatchers.IO) {
             experience.value?.let { database.deleteExperience(it) }
+        }
+    }
+
+    private fun deleteExperienceCoverPhoto() {
+        val experienceCoverPhotoDelete = File(experience.value?.coverPhotoSrcUri!!)
+        if(experienceCoverPhotoDelete.exists()) {
+            experienceCoverPhotoDelete.delete()
+        }
+    }
+
+    private fun deleteMemoryCoverPhoto(memory: Memory) {
+        val memoryCoverPhotoDelete = File(memory.coverPhotoSrcUri)
+        if (memoryCoverPhotoDelete.exists()) {
+            memoryCoverPhotoDelete.delete()
+        }
+    }
+
+    private suspend fun deleteMemoryPhotosUnderMemory(memory: Memory) {
+        withContext(Dispatchers.IO) {
+            database.getListAllPhotosFromMemory(memory.memoryId).forEach { memoryPhoto ->
+                val memoryPhotoDelete = File(memoryPhoto.photoSrcUri)
+                if (memoryPhotoDelete.exists()) {
+                    memoryPhotoDelete.delete()
+                }
+            }
+            database.deleteAllPhotosFromMemory(memory.memoryId)
         }
     }
 

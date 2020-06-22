@@ -35,7 +35,6 @@
                 android:layout_marginEnd="8dp"
                 android:textSize="16sp"
                 android:maxLines="10"
-                android:inputType="textCapSentences"
                 app:experienceDescription="@{experienceDetailsViewModel.experience}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
