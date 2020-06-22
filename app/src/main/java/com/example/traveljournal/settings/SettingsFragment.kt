@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,8 +19,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentSettingsBinding
-import com.example.traveljournal.journeyDetails.JourneyDetailsFragmentDirections
-import com.example.traveljournal.journeys.JourneysViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment: Fragment() {
@@ -107,6 +104,10 @@ class SettingsFragment: Fragment() {
                     SettingsFragmentDirections.actionSettingsDestinationToJourneysDestination())
                 settingsViewModel.doneNavigatingToJourneys()
             }
+        })
+
+        settingsViewModel.isAlarmOn.observe(viewLifecycleOwner, Observer {
+            binding.reminderFrequencySpinner.isEnabled = it != true
         })
 
         createChannel(getString(R.string.backup_notification_channel_id), getString(R.string.backup_notification_channel_name))

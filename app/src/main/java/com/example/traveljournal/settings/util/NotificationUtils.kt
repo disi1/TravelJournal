@@ -37,6 +37,7 @@ fun NotificationManager.sendNotification(
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setAutoCancel(true)
         .setLargeIcon(appLogoImage)
 

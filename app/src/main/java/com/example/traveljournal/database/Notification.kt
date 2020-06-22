@@ -13,5 +13,8 @@ data class Notification(
     var notificationType: String = "",
 
     @ColumnInfo(name = "notification_state")
-    var notificationState: Boolean = false
+    var notificationState: Boolean = false,
+
+    @ColumnInfo(name = "notification_interval_milliseconds")
+    var notificationIntervalMs: Long = 0L
 )

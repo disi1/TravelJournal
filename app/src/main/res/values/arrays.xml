@@ -2,7 +2,7 @@
 <resources>
 <!--    Text values for backup reminders time intervals-->
     <string-array name="backup_reminder_options">
-        <item>Every 5 seconds</item>
+        <item>Every 10 seconds</item>
         <item>Every 15 days</item>
         <item>Every 30 days</item>
         <item>Every 60 days</item>

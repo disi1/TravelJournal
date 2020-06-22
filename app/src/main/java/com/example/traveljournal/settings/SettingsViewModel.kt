@@ -23,6 +23,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 private const val DATABASE_NAME = "travel_history_database"
+private const val REQUEST_CODE = 0
+private const val TRIGGER_TIME = "TRIGGER_AT"
 
 class SettingsViewModel(
     val database: TravelDatabaseDao,
@@ -34,20 +36,15 @@ class SettingsViewModel(
 
     val journeys = database.getAllJourneys()
 
-    val backupNotification = MutableLiveData<Notification?>()
-
-    private val TRIGGER_TIME = "TRIGGER_AT"
-    private val REQUEST_CODE = 0
+    private val backupNotification = MutableLiveData<Notification?>()
 
     private val second: Long = 1_000L
     private val day: Long = 86_400_000L
 
     private val timerLengthOptions: IntArray
-    private lateinit var notifyPendingIntent: PendingIntent
+    private val notifyPendingIntent: PendingIntent
 
     private val alarmManager = app.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    private var preferences =
-        app.getSharedPreferences("com.example.traveljournal", Context.MODE_PRIVATE)
     private val notifyIntent = Intent(app, AlarmReceiver::class.java)
 
     private var _alarmOn = MutableLiveData<Boolean>()
@@ -57,10 +54,6 @@ class SettingsViewModel(
     private val _timeSelection = MutableLiveData<Int>()
     val timeSelection: LiveData<Int>
         get() = _timeSelection
-
-    private val _elapsedTime = MutableLiveData<Long>()
-    val elapsedTime: LiveData<Long>
-        get() = _elapsedTime
 
     private val _openBackupDialogFragment = MutableLiveData<Boolean?>()
     val openBackupDialogFragment: LiveData<Boolean?>
@@ -78,25 +71,8 @@ class SettingsViewModel(
     val navigateToJourneys: LiveData<Boolean?>
         get() = _navigateToJourneys
 
-    private lateinit var timer: CountDownTimer
-
     init {
         initializeBackupNotification()
-
-        Log.i("svm", "init: backupNotification - ${backupNotification.value}")
-
-//        _alarmOn.value = backupNotification.value?.notificationState
-
-        Log.i("svm", "init0: alarmOn - ${backupNotification.value}")
-
-//        Log.i("svm", "init: alarmOn - ${_alarmOn.value}")
-//        _alarmOn.value = PendingIntent.getBroadcast(
-//            getApplication(),
-//            REQUEST_CODE,
-//            notifyIntent,
-//            PendingIntent.FLAG_NO_CREATE
-//        ) != null
-//        Log.i("svm", "init2: alarmOn - ${_alarmOn.value}")
 
         notifyPendingIntent = PendingIntent.getBroadcast(
             getApplication(),
@@ -104,21 +80,14 @@ class SettingsViewModel(
             notifyIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-        Log.i("svm", "init3: alarmOn - ${_alarmOn.value}")
 
         timerLengthOptions = app.resources.getIntArray(R.array.days_array)
-
-//        if (_alarmOn.value!!) {
-//            createTimer()
-//        }
     }
 
     private fun initializeBackupNotification() {
         uiScope.launch {
             val notification = getLatestBackupNotificationFromDb()
-            Log.i("svm", "initializeBackupNotification: notification - $notification")
             if(notification == null) {
-                Log.i("svm", "initializeBackupNotification: notification is null")
                 val backupNotification = Notification()
                 backupNotification.notificationType = "backup"
                 backupNotification.notificationState = false
@@ -127,7 +96,13 @@ class SettingsViewModel(
             } else {
                 backupNotification.value = notification
                 _alarmOn.value = backupNotification.value!!.notificationState
-                Log.i("svm", "initializeBackupNotification: backupNotification.value - ${backupNotification.value}")
+                _timeSelection.value =  when (backupNotification.value!!.notificationIntervalMs) {
+                    10_000L -> 0
+                    1_296_000_000L -> 1
+                    2_592_000_000 -> 2
+                    5_184_000_000 -> 3
+                    else -> 0
+                }
             }
         }
     }
@@ -141,26 +116,34 @@ class SettingsViewModel(
     fun onCreateOrUpdateBackupNotification(isChecked: Boolean) {
         uiScope.launch {
             if(backupNotification.value == null) {
-                Log.i("svm", "notifications - null")
+                val selectedTimeInterval = when (timeSelection.value) {
+                    0 -> second * 10
+                    else -> timerLengthOptions[timeSelection.value!!] * day
+                }
+
                 val notification = Notification()
                 notification.notificationType = "backup"
                 notification.notificationState = isChecked
+                notification.notificationIntervalMs = selectedTimeInterval
 
                 insertNotification(notification)
 
                 backupNotification.value = getLatestBackupNotificationFromDb()
-                setAlarm(isChecked)
+                setAlarm(isChecked, selectedTimeInterval)
             } else {
-                Log.i("svm", "notifications - diferit de null")
                 val oldNotification = backupNotification.value ?: return@launch
 
+                val selectedTimeInterval = when (timeSelection.value) {
+                    0 -> second * 10
+                    else -> timerLengthOptions[timeSelection.value!!] * day
+                }
+                oldNotification.notificationIntervalMs = selectedTimeInterval
                 oldNotification.notificationState = isChecked
 
                 updateNotification(oldNotification)
 
                 backupNotification.value = getLatestBackupNotificationFromDb()
-                Log.i("svm", "${backupNotification.value}")
-                setAlarm(isChecked)
+                setAlarm(isChecked, selectedTimeInterval)
             }
         }
     }
@@ -177,10 +160,9 @@ class SettingsViewModel(
         }
     }
 
-    fun setAlarm(isChecked: Boolean) {
-        Log.i("svm", "setAlarm isChecked: ${isChecked.toString()}")
+    private fun setAlarm(isChecked: Boolean, selectedTimeInterval: Long) {
         when (isChecked) {
-            true -> timeSelection.value?.let { startTimer(it) }
+            true -> startTimer(selectedTimeInterval)
             false -> cancelNotification()
         }
     }
@@ -189,52 +171,21 @@ class SettingsViewModel(
         _timeSelection.value = timerLengthSelection
     }
 
-    private fun startTimer(timerLengthSelection: Int) {
+    private fun startTimer(selectedTimeInterval: Long) {
         _alarmOn.value?.let {
             if(!it) {
                 _alarmOn.value = true
+                val triggerTime = SystemClock.elapsedRealtime() + selectedTimeInterval
 
-                val selectedInterval = when (timerLengthSelection) {
-                    0 -> second * 5
-                    else -> timerLengthOptions[timerLengthSelection] * day
-                }
-                Log.i("svm", "setAlarm isChecked: ${selectedInterval.toString()}")
-                val triggerTime = SystemClock.elapsedRealtime() + selectedInterval
-
-                alarmManager.setRepeating(
+                alarmManager.setInexactRepeating(
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     triggerTime,
-                    selectedInterval,
+                    selectedTimeInterval,
                     notifyPendingIntent
                 )
-
-                viewModelScope.launch {
-                    saveTime(triggerTime)
-                }
             }
         }
-//        createTimer()
     }
-
-    private fun createTimer() {
-        viewModelScope.launch {
-            val triggerTime = loadTime()
-            timer = object : CountDownTimer(triggerTime, second) {
-                override fun onTick(millisUntilFinished: Long) {
-                    _elapsedTime.value = triggerTime - SystemClock.elapsedRealtime()
-                    if (_elapsedTime.value!! <= 0) {
-                        resetTimer()
-                    }
-                }
-
-                override fun onFinish() {
-                    resetTimer()
-                }
-            }
-            timer.start()
-        }
-    }
-
 
     private fun cancelNotification() {
         val notificationManager = ContextCompat.getSystemService(
@@ -245,22 +196,6 @@ class SettingsViewModel(
         _alarmOn.value = false
         alarmManager.cancel(notifyPendingIntent)
     }
-
-    private fun resetTimer() {
-        timer.cancel()
-        _elapsedTime.value = 0
-        _alarmOn.value = false
-    }
-
-    private suspend fun saveTime(triggerTime: Long) =
-        withContext(Dispatchers.IO) {
-            preferences.edit().putLong(TRIGGER_TIME, triggerTime).apply()
-        }
-
-    private suspend fun loadTime(): Long =
-        withContext(Dispatchers.IO) {
-            preferences.getLong(TRIGGER_TIME, 0)
-        }
 
     fun doneNavigatingToJourneys() {
         _navigateToJourneys.value = null
