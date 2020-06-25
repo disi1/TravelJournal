@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+    <color name="transparent">@android:color/transparent</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="white_text_color">#f0f0f0</color>
     <color name="button_color">#00574B</color>
+    -->
+    <color name="colorPrimary">#546e7a</color>
+    <color name="primaryLightColor">#819ca9</color>
+    <color name="colorPrimaryDark">#29434e</color>
+    <color name="button_color">#00b8d4</color>
+    <color name="colorAccent">#62ebff</color>
+    <color name="secondaryDarkColor">#0088a3</color>
+    <color name="white_text_color">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="primaryColor">#03a9f4</color>
+
+    <color name="backgroundColor">#121212</color>
+    <color name="cardsBackgroundColor">#303030</color>
+    <color name="secondaryColor">#03dac6</color>
+    <color name="errorColor">#CF6679</color>
+    <color name="black_alpha_40">#66000000</color>
+    <color name="black_alpha_70">#B3000000</color>
+    <color name="danger_color_dark">#CC0000</color>
+    <color name="card_primary_color">#2e2a33</color>
+    <color name="card_secondary_color">#1f312e</color>
+
 </resources>

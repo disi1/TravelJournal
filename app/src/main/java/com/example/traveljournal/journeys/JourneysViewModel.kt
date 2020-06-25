@@ -2,15 +2,15 @@ package com.example.traveljournal.journeys
 
 import android.app.Application
 import android.content.Context
+import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.traveljournal.database.Journey
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.*
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
+import java.util.zip.ZipInputStream
+
 
 private const val DATABASE_NAME = "travel_history_database"
 
@@ -20,88 +20,24 @@ class JourneysViewModel(
 
     private var viewModelJob = Job()
 
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
     val journeys = database.getAllJourneys()
 
-    private var _showSnackbarEvent = MutableLiveData<Boolean>()
-    val showSnackbarEvent: LiveData<Boolean>
-        get() = _showSnackbarEvent
+    val backupFilePath = MutableLiveData<String>()
 
-    private var _showSnackBarEventJourneyDeleted = MutableLiveData<Boolean>()
-    val showSnackBarEventJourneyDeleted: LiveData<Boolean>
-        get() = _showSnackBarEventJourneyDeleted
-
-    private var _showSnackBarEventDataBackedUp = MutableLiveData<Boolean>()
-    val showSnackBarEventDataBackedUp: LiveData<Boolean>
-        get() = _showSnackBarEventDataBackedUp
-
-    private var _showSnackBarEventDataRestored = MutableLiveData<Boolean>()
-    val showSnackBarEventDataRestored: LiveData<Boolean>
-        get() = _showSnackBarEventDataRestored
+    private val _navigateToSettings = MutableLiveData<Boolean?>()
+    val navigateToSettings: LiveData<Boolean?>
+        get() = _navigateToSettings
 
     private val _navigateToNewJourney = MutableLiveData<Boolean?>()
     val navigateToNewJourney: LiveData<Boolean?>
         get() = _navigateToNewJourney
 
-    private val _navigateToJourneyDetails = MutableLiveData<Long>()
-    val navigateToJourneyDetails: LiveData<Long>
-        get() = _navigateToJourneyDetails
-
-    private val _launchLocalStorageBackupMechanism = MutableLiveData<Boolean?>()
-    val launchLocalStorageBackupMechanism: LiveData<Boolean?>
-        get() = _launchLocalStorageBackupMechanism
-
-    private val _launchRestoreMechanism = MutableLiveData<Boolean?>()
-    val launchRestoreMechanism: LiveData<Boolean?>
-        get() = _launchRestoreMechanism
-
-    private val _openBackupMethodsDialogFragment = MutableLiveData<Boolean?>()
-    val openBackupMethodsDialogFragment: LiveData<Boolean?>
-        get() = _openBackupMethodsDialogFragment
-
-    private val _openLocalStorageBackupDialogFragment = MutableLiveData<Boolean?>()
-    val openLocalStorageBackupDialogFragment: LiveData<Boolean?>
-        get() = _openLocalStorageBackupDialogFragment
-
     private val _openRestoreDialogFragment = MutableLiveData<Boolean?>()
     val openRestoreDialogFragment: LiveData<Boolean?>
         get() = _openRestoreDialogFragment
 
-    fun doneShowingBackupMethodsDialogFragment() {
-        _openBackupMethodsDialogFragment.value = false
-    }
-
-    fun doneShowingLocalStorageBackupDialogFragment() {
-        _openLocalStorageBackupDialogFragment.value = false
-    }
-
     fun doneShowingRestoreDialogFragment() {
         _openRestoreDialogFragment.value = false
-    }
-
-    fun doneShowingSnackbar() {
-        _showSnackbarEvent.value = false
-    }
-
-    fun doneShowingSnackbarJourneyDeleted() {
-        _showSnackBarEventJourneyDeleted.value = false
-    }
-
-    fun doneShowingSnackbarDataBackedUp() {
-        _showSnackBarEventDataBackedUp.value = false
-    }
-
-    fun doneShowingSnackbarDataRestored() {
-        _showSnackBarEventDataRestored.value = false
-    }
-
-    fun onBackupMechanismDone() {
-        _launchLocalStorageBackupMechanism.value = false
-    }
-
-    fun onRestoreMechanismDone() {
-        _launchRestoreMechanism.value = false
     }
 
     fun doneNavigating() {
@@ -112,121 +48,68 @@ class JourneysViewModel(
         _navigateToNewJourney.value = true
     }
 
-    fun onClear() {
-        uiScope.launch {
-            clear()
-            _showSnackbarEvent.value = true
-        }
+    fun onNavigateToSettings() {
+        _navigateToSettings.value = true
     }
 
-    private suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            journeys.value?.forEach {
-                val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
-                    fileToDelete.delete()
-                }
-            }
-
-            database.getAllExperiences().value?.forEach{
-                val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
-                    fileToDelete.delete()
-                }
-            }
-
-            database.getAllMemories().value?.forEach{
-                val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
-                    fileToDelete.delete()
-                }
-            }
-
-            database.getAllMemoryPhotos().value?.forEach {
-                val fileToDelete = File(it.photoSrcUri)
-                if(fileToDelete.exists()) {
-                    fileToDelete.delete()
-                }
-            }
-
-            database.deletePhotos()
-            database.deleteMemories()
-            database.deleteExperiences()
-            database.deleteJourneys()
-        }
+    fun onDoneNavigatingToSettings() {
+        _navigateToSettings.value = false
     }
 
-    fun onDeleteJourney(journey: Journey) {
-        uiScope.launch {
-            deleteJourney(journey)
-
-            _showSnackBarEventJourneyDeleted.value = true
-        }
-    }
-
-    private suspend fun deleteJourney(journey: Journey) {
-        withContext(Dispatchers.IO) {
-            database.deleteJourney(journey)
-        }
-    }
-
-    fun onJourneyClicked(id: Long) {
-        _navigateToJourneyDetails.value = id
-    }
-
-    fun onJourneyDetailsNavigated() {
-        _navigateToJourneyDetails.value = null
-    }
-
-    fun onBackupButtonClicked() {
-        _openBackupMethodsDialogFragment.value = true
-    }
-
-    fun onLocalStorageBackupDialogOkButtonClicked() {
-        _launchLocalStorageBackupMechanism.value = true
-    }
-
-    fun onDialogBackupMethodsLocalStorageClicked() {
-        _openLocalStorageBackupDialogFragment.value = true
-    }
-
-    fun onRestoreButtonClicked() {
+    fun onRestoreMechanismInitialized() {
         _openRestoreDialogFragment.value = true
     }
 
-    fun onDialogRestoreButtonClicked() {
-        _launchRestoreMechanism.value = true
+    fun onRestore(context: Context, backupStoragePath: String) {
+        unzipFile(backupFilePath.value.toString(), backupStoragePath, context)
+        restoreDB(context, backupStoragePath)
     }
 
-    fun localStorageBackup(context: Context, backupPath: String) {
-        val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
-        val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
-        val dbWalFilePath = context.getDatabasePath("$DATABASE_NAME-wal").path
-
-        val file = File(backupPath)
-        if (!file.exists()) {
-            file.mkdirs()
+    private fun unzipFile(backupFilePath: String, backupStoragePath: String, context: Context) {
+        val backupStorageDir = File(backupStoragePath)
+        if(backupStorageDir.exists()) {
+            try {
+                backupStorageDir.deleteRecursively()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        if (!backupStorageDir.exists()) {
+            backupStorageDir.mkdir()
         }
 
-        val dbFileExternalPath = backupPath + DATABASE_NAME
-        val dbShmFileExternalPath = backupPath + DATABASE_NAME + "-shm"
-        val dbWalFileExternalPath = backupPath + DATABASE_NAME + "-wal"
+        val fileInputStream = context.contentResolver.openInputStream(backupFilePath.toUri())
+        val zipInputStream = ZipInputStream(fileInputStream)
 
-        try {
-            copyFile(dbFilePath, dbFileExternalPath)
-            copyFile(dbShmFilePath, dbShmFileExternalPath)
-            copyFile(dbWalFilePath, dbWalFileExternalPath)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        var entry = zipInputStream.nextEntry
+        while(entry != null) {
+            val filePath: String = backupStoragePath + File.separator.toString() + entry.name
+            if(entry.isDirectory) {
+                val dir = File(filePath)
+                dir.mkdirs()
+            } else {
+                val buffer = ByteArray(2048)
+
+                val fileOutputStream = FileOutputStream(filePath)
+                val bufferedOutputStream = BufferedOutputStream(fileOutputStream)
+                var read = 0
+                while (zipInputStream.read(buffer).also { read = it } != -1) {
+                    bufferedOutputStream.write(buffer, 0, read)
+                }
+
+                bufferedOutputStream.close()
+                fileOutputStream.close()
+            }
+            zipInputStream.closeEntry()
+            entry = zipInputStream.nextEntry
         }
-
-        _showSnackBarEventDataBackedUp.value = true
+        zipInputStream.close()
     }
 
-    fun restore(context: Context, backupPath: String) {
+    private fun restoreDB(context: Context, backupPath: String) {
         val dbFileExternalPath = backupPath + DATABASE_NAME
-        val dbShmFileExternalPath = backupPath + DATABASE_NAME + "-shm"
-        val dbWalFileExternalPath = backupPath + DATABASE_NAME + "-wal"
+        val dbShmFileExternalPath = "$backupPath$DATABASE_NAME-shm"
+        val dbWalFileExternalPath = "$backupPath$DATABASE_NAME-wal"
 
         val dbFilePath = context.getDatabasePath(DATABASE_NAME).path
         val dbShmFilePath = context.getDatabasePath("$DATABASE_NAME-shm").path
@@ -239,8 +122,6 @@ class JourneysViewModel(
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-        _showSnackBarEventDataRestored.value = true
     }
 
     private fun copyFile(fromPath: String, toPath: String) {
@@ -254,57 +135,6 @@ class JourneysViewModel(
 
         inStream.close()
         outStream.close()
-    }
-
-    fun onZipFiles(directory: String, zipFile: String) {
-        val sourceFile = File(directory)
-
-        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { it ->
-            it.use {
-                zipFiles(it, sourceFile, "")
-            }
-        }
-    }
-
-    private fun zipFiles(zipOut: ZipOutputStream, sourceFile: File, parentDirPath: String) {
-        val data = ByteArray(2048)
-
-        for(f in sourceFile.listFiles()!!) {
-            if(f.isDirectory) {
-                val entry = ZipEntry(f.name + File.separator)
-                entry.time = f.lastModified()
-                entry.isDirectory
-                entry.size = f.length()
-
-                zipOut.putNextEntry(entry)
-
-                zipFiles(zipOut, f, f.name)
-            } else {
-
-                if (!f.name.contains(".zip")) {
-                    FileInputStream(f).use { fi ->
-                        BufferedInputStream(fi).use { origin ->
-                            val path = parentDirPath + File.separator + f.name
-                            val entry = ZipEntry(path)
-                            entry.time = f.lastModified()
-                            entry.isDirectory
-                            entry.size = f.length()
-                            zipOut.putNextEntry(entry)
-                            while (true) {
-                                val readBytes = origin.read(data)
-                                if (readBytes == -1) {
-                                    break
-                                }
-                                zipOut.write(data, 0, readBytes)
-                            }
-                        }
-                    }
-                } else {
-                    zipOut.closeEntry()
-                    zipOut.close()
-                }
-            }
-        }
     }
 
     override fun onCleared() {

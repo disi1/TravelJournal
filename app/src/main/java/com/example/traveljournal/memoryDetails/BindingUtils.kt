@@ -1,11 +1,16 @@
 package com.example.traveljournal.memoryDetails
 
+import android.text.SpannableString
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 import com.example.traveljournal.R
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
 import java.io.File
@@ -17,5 +22,27 @@ fun setMemoryImage(imageView: ImageView, item: MemoryPhoto?) {
         Glide.with(imageView.context)
             .load(File(imageUri.path!!))
             .into(imageView)
+    }
+}
+
+@BindingAdapter("memoryPhotoCaption")
+fun TextView.setMemoryPhotoCaption(item: MemoryPhoto?) {
+    item?.let {
+        text = if(item.photoCaption != "") {
+            item.photoCaption
+        } else {
+            resources.getString(R.string.add_a_caption_here)
+        }
+    }
+}
+
+@BindingAdapter("editTextMemoryPhotoCaption")
+fun TextView.setMemoryPhotoCaptionOnEditText(item: MemoryPhoto?) {
+    item?.let {
+        text = if(item.photoCaption != "") {
+            item.photoCaption
+        } else {
+            ""
+        }
     }
 }

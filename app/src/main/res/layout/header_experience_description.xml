@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> experienceDetailsViewModel.onDescriptionTextClicked()}"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:paddingBottom="8dp">
 
         <TextView
@@ -20,32 +22,70 @@
             style="@style/LabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
-            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_icon"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            android:text="@string/description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/edit_text_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_height="0dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="@+id/experience_description_label"
-            app:layout_constraintStart_toEndOf="@+id/experience_description_label"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/experience_description_label" />
 
         <TextView
             android:id="@+id/experience_description_text"
-            style="@style/TextStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_rounded_corners"
+            android:minLines="2"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            android:transitionName="@{@string/transition_experience_description(experienceDetailsViewModel.experience.experienceId)}"
             app:experienceDescription="@{experienceDetailsViewModel.experience}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/experience_description_label"
-            tools:text="Memory description" />
+            android:hint="@string/experienceDescription"
+            app:layout_constraintTop_toBottomOf="@+id/experience_description_label"/>
+
+        <View
+            android:id="@+id/line_separator_right"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="26dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/memories_title_text"
+            app:layout_constraintTop_toBottomOf="@+id/experience_description_text" />
+
+        <TextView
+            android:id="@+id/memories_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.60"
+            android:text="Memories"
+            android:textColor="?attr/colorOnBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/experience_description_text" />
+
+        <ImageView
+            android:id="@+id/empty_memories_list_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_memories_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/experience_description_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

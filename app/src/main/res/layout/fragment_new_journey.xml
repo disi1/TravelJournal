@@ -12,30 +12,34 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         tools:context=".journey.NewJourneyFragment">
+
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/journey_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_undraw_destinations"
+            android:src="@drawable/ic_undraw_journey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent=".25"
+            app:layout_constraintHeight_percent=".30"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="1"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_undraw_destinations" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent">
-        </androidx.cardview.widget.CardView>
+            tools:src="@drawable/ic_undraw_journey" />
 
         <fragment
             android:id="@+id/autocomplete_fragment"
@@ -49,17 +53,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/journey_image" />
 
+        <View
+            android:id="@+id/line_separator"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:background="@color/secondaryColor"
+            app:layout_constraintEnd_toEndOf="@+id/autocomplete_fragment"
+            app:layout_constraintStart_toStartOf="@+id/autocomplete_fragment"
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
+
+        <TextView
+            android:id="@+id/cancel_button"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.87"
+            android:onClick="@{() -> newJourneyViewModel.onCancelJourney()}"
+            android:text="@string/cancel_upper_case"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/create_button"
+            app:layout_constraintEnd_toStartOf="@id/create_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/create_button" />
+
         <Button
             android:id="@+id/create_button"
-            style="@style/TravelButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:enabled="false"
             android:onClick="@{() -> newJourneyViewModel.onCreateJourney()}"
             android:text="@string/create_journey_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/cancel_button" />
+
+        <TextView
+            android:id="@+id/credits_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:shadowColor="@android:color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/journey_image"
+            app:layout_constraintStart_toStartOf="@+id/journey_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

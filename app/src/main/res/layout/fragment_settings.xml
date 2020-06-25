@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="settingsViewModel"
+            type="com.example.traveljournal.settings.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/backup_reminder_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/backup_reminder"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/turn_on_or_off_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/turn_on_or_off"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/backup_reminder_text" />
+
+                <Switch
+                    android:id="@+id/backup_reminder_toggle_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:checked="@{settingsViewModel.isAlarmOn}"
+                    android:onCheckedChanged="@{(button, on) -> settingsViewModel.onCreateOrUpdateBackupNotification(on)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/turn_on_or_off_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/turn_on_or_off_text"/>
+
+                <TextView
+                    android:id="@+id/reminder_frequency_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="36dp"
+                    android:alpha="0.87"
+                    android:text="@string/reminder_frequency"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/turn_on_or_off_text" />
+
+                <Spinner
+                    android:id="@+id/reminder_frequency_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:entries="@array/backup_reminder_options"
+                    android:onItemSelected="@{(parent, view, selection, id)-> settingsViewModel.setTimeSelected(selection)}"
+                    android:selectedItemPosition="@{settingsViewModel.timeSelection}"
+                    app:layout_constraintBottom_toBottomOf="@+id/reminder_frequency_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/reminder_frequency_text" />
+
+                <View
+                    android:id="@+id/first_line_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/reminder_frequency_text" />
+
+                <TextView
+                    android:id="@+id/back_up_data_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/back_up_data"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/first_line_separator" />
+
+                <TextView
+                    android:id="@+id/back_up_data_info_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:text="@string/back_up_data_info"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/back_up_data_text" />
+
+                <Button
+                    android:id="@+id/back_up_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="@{() -> settingsViewModel.onBackupButtonClicked()}"
+                    android:text="@string/backup"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/back_up_data_info_text" />
+
+                <View
+                    android:id="@+id/second_line_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/back_up_button" />
+
+                <TextView
+                    android:id="@+id/restore_data_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/restore_data"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/second_line_separator" />
+
+                <TextView
+                    android:id="@+id/restore_data_info_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/restore_data_info"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/restore_data_text" />
+
+                <View
+                    android:id="@+id/third_line_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/restore_data_info_text" />
+
+                <TextView
+                    android:id="@+id/delete_data_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/delete_data"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/third_line_separator" />
+
+                <ImageView
+                    android:id="@+id/warning_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="26dp"
+                    android:src="@drawable/ic_warning"
+                    app:layout_constraintBottom_toBottomOf="@+id/delete_data_info_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/delete_data_info_text" />
+
+                <TextView
+                    android:id="@+id/delete_data_info_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/delete_data_info"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.87"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/warning_icon"
+                    app:layout_constraintTop_toBottomOf="@id/delete_data_text" />
+
+                <Button
+                    android:id="@+id/delete_data_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/errorColor"
+                    android:onClick="@{() -> settingsViewModel.onDeleteDataButtonClicked()}"
+                    android:text="@string/delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_data_info_text" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

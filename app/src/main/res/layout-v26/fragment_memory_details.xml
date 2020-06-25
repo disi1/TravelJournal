@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="memoryDetailsViewModel"
+            type="com.example.traveljournal.memoryDetails.MemoryDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".memoryDetails.MemoryDetailsFragment">
+
+        <ImageView
+            android:id="@+id/memory_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="@{() -> memoryDetailsViewModel.onMemoryCoverClicked()}"
+            android:scaleType="centerCrop"
+            android:transitionName="@{@string/transition_memory_image(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.30"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="1"
+            app:memoryImage="@{memoryDetailsViewModel.memory}"
+            tools:src="@drawable/ic_undraw_memory" />
+
+        <ImageView
+            android:id="@+id/gradient"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/custom_gradient"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/memory_name" />
+
+        <TextView
+            android:id="@+id/memory_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:paddingTop="16dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:transitionName="@{@string/transition_memory_name(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toTopOf="@+id/memory_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
+            app:memoryName="@{memoryDetailsViewModel.memory}"
+            tools:text="Outdoor" />
+
+        <TextView
+            android:id="@+id/memory_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.6"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            android:transitionName="@{@string/transition_memory_date(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
+            app:memoryDate="@{memoryDetailsViewModel.memory}"
+            tools:text="June 28, 2020" />
+
+        <ImageView
+            android:id="@+id/calendar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_baseline_today"
+            android:tint="?attr/colorOnBackground"
+            android:transitionName="@{@string/transition_memory_calendar_icon(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toBottomOf="@id/memory_image"
+            app:layout_constraintStart_toStartOf="@id/memory_image"
+            app:layout_constraintTop_toTopOf="@id/memory_date"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/memory_photos_grid"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memory_image"
+            tools:itemCount="4"
+            tools:listitem="@layout/list_item_memory_photo" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_memory_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="18dp"
+            android:contentDescription="@string/add_a_photo"
+            android:tooltipText="Add a photo"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add_attach" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_photo_from_gallery_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="18dp"
+            android:onClick="@{() -> memoryDetailsViewModel.onAddPhotoFromGalleryButtonClicked()}"
+            app:borderWidth="0dp"
+            app:elevation="12dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/add_memory_photo_button"
+            app:layout_constraintEnd_toEndOf="@+id/add_memory_photo_button"
+            app:layout_constraintStart_toStartOf="@+id/add_memory_photo_button"
+            app:srcCompat="@drawable/ic_gallery" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_photo_from_camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="18dp"
+            android:layout_marginEnd="360dp"
+            android:onClick="@{() -> memoryDetailsViewModel.onAddPhotoFromCameraButtonClicked()}"
+            app:borderWidth="0dp"
+            app:elevation="12dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/add_photo_from_gallery_button"
+            app:layout_constraintEnd_toEndOf="@+id/add_photo_from_gallery_button"
+            app:layout_constraintStart_toStartOf="@+id/add_photo_from_gallery_button"
+            app:srcCompat="@drawable/ic_camera" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

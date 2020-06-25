@@ -1,15 +1,19 @@
 package com.example.traveljournal.memory
 
 import android.app.DatePickerDialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +34,11 @@ class NewMemoryFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_memory)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor))
+        )
 
         val binding: FragmentNewMemoryBinding = DataBindingUtil.inflate(
             inflater,
@@ -39,7 +48,7 @@ class NewMemoryFragment: Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        val arguments = NewMemoryFragmentArgs.fromBundle(arguments!!)
+        val arguments = NewMemoryFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
 
@@ -51,8 +60,13 @@ class NewMemoryFragment: Fragment() {
 
         binding.newMemoryViewModel = newMemoryViewModel
 
+        val currentTime = Calendar.getInstance().time
+        binding.memoryDate.text = DateFormat.getDateInstance(DateFormat.LONG).format(currentTime)
+        newMemoryViewModel.memoryTimestamp.value = currentTime.time
+
         binding.memoryNameInputText.afterTextChanged { memoryName ->
             newMemoryViewModel.memoryName.value = memoryName
+            binding.createButton.isEnabled = true
         }
 
         binding.memoryDescriptionInputText.afterTextChanged { memoryDescription ->
@@ -90,18 +104,18 @@ class NewMemoryFragment: Fragment() {
     }
 
     private fun showDatePickerDialog(memoryDateTextView: TextView) {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)
+        val year = calendar.get(Calendar.YEAR)
 
-        val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
-            c[thisYear, thisMonth] = thisDay
+        val datePickerDialog = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
+            calendar[thisYear, thisMonth] = thisDay
 
-            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(c.time)
+            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.time)
 
-            newMemoryViewModel.memoryTimestamp.value = c.time.time
+            newMemoryViewModel.memoryTimestamp.value = calendar.time.time
         }, year, month, day)
-        dpd.show()
+        datePickerDialog.show()
     }
 }

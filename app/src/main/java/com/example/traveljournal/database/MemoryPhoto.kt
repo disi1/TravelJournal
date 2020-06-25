@@ -12,6 +12,9 @@ data class MemoryPhoto (
     @ColumnInfo(name = "photo_src_uri")
     var photoSrcUri: String = "",
 
+    @ColumnInfo(name = "photo_caption")
+    var photoCaption: String = "",
+
     @ColumnInfo(name = "memory_host_id")
     var memoryHostId: Long
 )

@@ -26,6 +26,9 @@ data class Experience(
     @ColumnInfo(name = "cover_photo_src_uri")
     var coverPhotoSrcUri: String = "",
 
+    @ColumnInfo(name = "cover_photo_attributions")
+    var coverPhotoAttributions: String = "",
+
     @ColumnInfo(name = "journey_host_id")
     var journeyHostId: Long
 )

@@ -1,7 +1,10 @@
 package com.example.traveljournal.journeys
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -27,7 +30,7 @@ fun TextView.setJourneyDestinationAddress(item: Journey?) {
 fun setJourneyImage(imageView: ImageView, item: Journey?) {
     item?.let {
         if(item.coverPhotoSrcUri == "") {
-            imageView.setImageResource(R.drawable.ic_undraw_destinations)
+            imageView.setImageResource(R.drawable.ic_undraw_journey)
         } else {
             val imageUri = item.coverPhotoSrcUri.toUri()
             Glide.with(imageView.context)

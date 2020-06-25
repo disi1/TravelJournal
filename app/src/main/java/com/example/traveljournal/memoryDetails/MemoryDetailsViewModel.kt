@@ -1,9 +1,8 @@
 package com.example.traveljournal.memoryDetails
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.database.TravelDatabaseDao
@@ -30,11 +29,17 @@ class MemoryDetailsViewModel(
 
     val memoryDescription = MutableLiveData<String>()
 
+    val memoryPhotoCaption = MutableLiveData<String>()
+
     val coverPhotoSrcUri = MutableLiveData<String>()
 
     private var _initiateImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateImageImportFromGallery: LiveData<Boolean?>
         get() = _initiateImageImportFromGallery
+
+    private var _initiateImageImportFromCamera = MutableLiveData<Boolean?>()
+    val initiateImageImportFromCamera: LiveData<Boolean?>
+        get() = _initiateImageImportFromCamera
 
     private var _initiateCoverImageImportFromGallery = MutableLiveData<Boolean?>()
     val initiateCoverImageImportFromGallery: LiveData<Boolean?>
@@ -44,24 +49,76 @@ class MemoryDetailsViewModel(
     val showSnackbarEventMemoryPhotosDeleted: LiveData<Boolean>
         get() = _showSnackbarEventMemoryPhotosDeleted
 
-    private val _openDialogFragment = MutableLiveData<Boolean?>()
-    val openDialogFragment: LiveData<Boolean?>
-        get() = _openDialogFragment
+    private var _showSnackbarEventMemoryDeleted = MutableLiveData<Boolean>()
+    val showSnackbarEventMemoryDeleted: LiveData<Boolean>
+        get() = _showSnackbarEventMemoryDeleted
+
+    private val _openDescriptionDialogFragment = MutableLiveData<Boolean?>()
+    val openDescriptionDialogFragment: LiveData<Boolean?>
+        get() = _openDescriptionDialogFragment
+
+    private val _openPhotoDialogFragment = MutableLiveData<MemoryPhoto?>()
+    val openPhotoDialogFragment: LiveData<MemoryPhoto?>
+        get() = _openPhotoDialogFragment
+
+    private val _openCoverPhotoDialogFragment = MutableLiveData<Boolean?>()
+    val openCoverPhotoDialogFragment: LiveData<Boolean?>
+        get() = _openCoverPhotoDialogFragment
+
+    private val _memoryPhotoDeleted = MutableLiveData<Boolean?>()
+    val memoryPhotoDeleted: LiveData<Boolean?>
+        get() = _memoryPhotoDeleted
+
+    private val _navigateToExperienceDetails = MutableLiveData<Long>()
+    val navigateToExperienceDetails: LiveData<Long>
+        get() = _navigateToExperienceDetails
+
+    private val _openMemoryPhotoCaptionDialogFragment = MutableLiveData<Boolean?>()
+    val openMemoryPhotoCaptionDialogFragment: LiveData<Boolean?>
+        get() = _openMemoryPhotoCaptionDialogFragment
+
+    private val _navigateToJourneys = MutableLiveData<Boolean?>()
+    val navigateToJourneys: LiveData<Boolean?>
+        get() = _navigateToJourneys
+
+    fun doneDeletingMemoryPhoto() {
+        _memoryPhotoDeleted.value = null
+    }
 
     fun doneShowingSnackbarMemoryPhotosDeleted() {
         _showSnackbarEventMemoryPhotosDeleted.value = false
     }
 
-    fun doneShowingDialogFragment() {
-        _openDialogFragment.value = false
+    fun doneShowingSnackbarMemoryDeleted() {
+        _showSnackbarEventMemoryDeleted.value = false
+    }
+
+    fun doneShowingDescriptionDialogFragment() {
+        _openDescriptionDialogFragment.value = false
     }
 
     fun doneImportingImageFromGallery() {
         _initiateImageImportFromGallery.value = null
     }
 
+    fun doneImportingImageFromCamera() {
+        _initiateImageImportFromCamera.value = null
+    }
+
     fun doneImportingCoverImageFromGallery() {
         _initiateCoverImageImportFromGallery.value = null
+    }
+
+    fun doneShowingMemoryPhotoCaptionDialogFragment() {
+        _openMemoryPhotoCaptionDialogFragment.value = null
+    }
+
+    fun doneNavigatingToExperienceDetails() {
+        _navigateToExperienceDetails.value = null
+    }
+
+    fun doneNavigatingToJourneysHome() {
+        _navigateToJourneys.value = null
     }
 
     init {
@@ -83,10 +140,17 @@ class MemoryDetailsViewModel(
         }
     }
 
-    fun onUpdateMemory() {
+    fun onUpdateMemoryDescription() {
         uiScope.launch {
             val oldMemory = memory.value ?: return@launch
             oldMemory.memoryDescription = memoryDescription.value.toString()
+            updateMemory(oldMemory)
+        }
+    }
+
+    fun onUpdateMemoryCoverPhoto() {
+        uiScope.launch {
+            val oldMemory = memory.value ?: return@launch
             oldMemory.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             updateMemory(oldMemory)
         }
@@ -113,30 +177,82 @@ class MemoryDetailsViewModel(
         }
     }
 
-    fun onMemoryPhotoClicked(memoryPhoto: MemoryPhoto) {
-
+    fun onUpdateMemoryPhotoCaption(memoryPhoto: MemoryPhoto) {
+        uiScope.launch {
+            val oldMemoryPhoto = memoryPhoto ?: return@launch
+            oldMemoryPhoto.photoCaption = memoryPhotoCaption.value.toString()
+            updateMemoryPhoto(oldMemoryPhoto)
+        }
     }
 
-    fun onNewMemoryPhotoClicked() {
+    private suspend fun updateMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        withContext(Dispatchers.IO) {
+            database.updateMemoryPhoto(memoryPhoto)
+        }
+    }
+
+    fun onAddCaptionHereClicked() {
+        _openMemoryPhotoCaptionDialogFragment.value = true
+    }
+
+    fun onMemoryPhotoClicked(memoryPhoto: MemoryPhoto) {
+        _openPhotoDialogFragment.value = memoryPhoto
+    }
+
+    fun onAddPhotoFromGalleryButtonClicked() {
         _initiateImageImportFromGallery.value = true
     }
 
-    fun onDescriptionTextClicked() {
-        _openDialogFragment.value = true
+    fun onAddPhotoFromCameraButtonClicked() {
+        _initiateImageImportFromCamera.value = true
     }
 
-    fun onClear() {
+    fun onDescriptionTextClicked() {
+        _openDescriptionDialogFragment.value = true
+    }
+
+    fun onMemoryCoverClicked() {
+        _openCoverPhotoDialogFragment.value = true
+    }
+
+    fun onCloseMemoryCoverDialog() {
+        _openCoverPhotoDialogFragment.value = false
+    }
+
+    fun onCloseMemoryPhotoDialog() {
+        _openPhotoDialogFragment.value = null
+    }
+
+    fun onNavigateToJourneysHome() {
+        _navigateToJourneys.value = true
+    }
+
+    fun onDeleteMemoryPhotos() {
         uiScope.launch {
-            clearMemoryPhotos(memoryKey)
+            deleteMemoryPhotos(memoryKey)
 
             _showSnackbarEventMemoryPhotosDeleted.value = true
         }
     }
 
-    private suspend fun clearMemoryPhotos(memoryKey: Long) {
+    private suspend fun deleteMemoryPhotos(memoryKey: Long) {
         withContext(Dispatchers.IO) {
             deletePhotosFromBackup()
             database.deleteAllPhotosFromMemory(memoryKey)
+        }
+    }
+
+    fun onDeleteMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        uiScope.launch {
+            deleteMemoryPhoto(memoryPhoto)
+            _memoryPhotoDeleted.value = true
+        }
+    }
+
+    private suspend fun deleteMemoryPhoto(memoryPhoto: MemoryPhoto) {
+        withContext(Dispatchers.IO) {
+            deletePhotoFromBackup(memoryPhoto)
+            database.deleteMemoryPhotoWithId(memoryPhoto.photoId)
         }
     }
 
@@ -146,6 +262,37 @@ class MemoryDetailsViewModel(
             if(fileToDelete.exists()) {
                 fileToDelete.delete()
             }
+        }
+    }
+
+    private fun deletePhotoFromBackup(memoryPhoto: MemoryPhoto) {
+        val fileToDelete = File(memoryPhoto.photoSrcUri)
+        if(fileToDelete.exists()) {
+            fileToDelete.delete()
+        }
+    }
+
+    private fun deleteMemoryCoverPhoto() {
+        val fileToDelete = File(memory.value?.coverPhotoSrcUri!!)
+        if(fileToDelete.exists()) {
+            fileToDelete.delete()
+        }
+    }
+
+    fun onDeleteMemory() {
+        uiScope.launch {
+            memory.value?.memoryId?.let { deleteMemoryPhotos(it) }
+            deleteMemoryCoverPhoto()
+            deleteMemory()
+
+            _showSnackbarEventMemoryDeleted.value = true
+            _navigateToExperienceDetails.value = memory.value?.experienceHostId
+        }
+    }
+
+    private suspend fun deleteMemory() {
+        withContext(Dispatchers.IO) {
+            memory.value?.let { database.deleteMemory(it) }
         }
     }
 

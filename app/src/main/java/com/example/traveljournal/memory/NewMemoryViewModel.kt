@@ -45,7 +45,11 @@ class NewMemoryViewModel (
                 memoryTimestamp = memoryTimestamp.value!!.toLong())
 
             memory.memoryName = memoryName.value.toString()
-            memory.memoryDescription = memoryDescription.value.toString()
+            if(memoryDescription.value == null) {
+                memory.memoryDescription = ""
+            } else {
+                memory.memoryDescription = memoryDescription.value.toString()
+            }
 
             insertMemory(memory)
 
@@ -57,6 +61,10 @@ class NewMemoryViewModel (
         withContext(Dispatchers.IO) {
             database.insertMemory(memory)
         }
+    }
+
+    fun onCancelNewMemory() {
+        _navigateToExperienceDetails.value = experienceKey
     }
 
     override fun onCleared() {

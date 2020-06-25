@@ -1,79 +1,53 @@
 package com.example.traveljournal.journeys
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.database.Journey
-import com.example.traveljournal.databinding.HeaderEmptyJourneyListBinding
 import com.example.traveljournal.databinding.ListItemJourneyBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.util.*
 
-private const val ITEM_VIEW_TYPE_EMPTY_LIST_HEADER = 0
-private const val ITEM_VIEW_TYPE_ITEM = 1
 
 class JourneyAdapter(
-    val clickListener: JourneyListener,
-    val longClickListener: JourneyLongClickListener,
-    val journeysViewModel: JourneysViewModel): ListAdapter<DataItem, RecyclerView.ViewHolder>(JourneyDiffCallback()) {
+    var journeysList: List<Journey>?
+): ListAdapter<Journey, JourneyAdapter.ViewHolder>(JourneyDiffCallback()), Filterable {
 
-//    @TODO longClickListener for RecyclerView items does not work
+    var journeysFilteredList: List<Journey>?
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType) {
-            ITEM_VIEW_TYPE_EMPTY_LIST_HEADER -> EmptyListHeaderViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
-            else -> throw ClassCastException("Unknown viewType ${viewType}")
-        }
+    init {
+        journeysFilteredList = journeysList
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is ViewHolder -> {
-                val journeyItem = getItem(position) as DataItem.JourneyItem
-                holder.bind(journeyItem.journey, clickListener, longClickListener)
-            }
-            is EmptyListHeaderViewHolder -> {
-                holder.bind(journeysViewModel)
-            }
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is DataItem.EmptyListHeader -> ITEM_VIEW_TYPE_EMPTY_LIST_HEADER
-            is DataItem.JourneyItem -> ITEM_VIEW_TYPE_ITEM
-        }
-    }
-
-    fun addHeaderAndSubmitList(list: List<Journey>?) {
-        adapterScope.launch {
-            val items = when(list) {
-                null -> listOf(DataItem.EmptyListHeader)
-                else -> list.map {DataItem.JourneyItem(it)}
-            }
-            withContext(Dispatchers.Main) {
-                submitList(items)
-            }
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position)!!)
     }
 
     class ViewHolder private constructor(val binding: ListItemJourneyBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: Journey,
-            clickListener: JourneyListener,
-            longClickListener: JourneyLongClickListener
+            item: Journey
         ) {
+            binding.clickListener = View.OnClickListener {
+                val destination = JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(item.journeyId)
+                val extras = FragmentNavigatorExtras(
+                    binding.journeyDestinationName to binding.journeyDestinationName.transitionName,
+                    binding.journeyDestinationAddress to binding.journeyDestinationAddress.transitionName,
+                    binding.journeyImage to binding.journeyImage.transitionName,
+                    binding.locationIcon to binding.locationIcon.transitionName
+                )
+                it.findNavController().navigate(destination, extras)
+            }
             binding.journey = item
-            binding.clickListener = clickListener
-            binding.longClickListener = longClickListener
             binding.executePendingBindings()
         }
 
@@ -86,52 +60,45 @@ class JourneyAdapter(
         }
     }
 
-    class EmptyListHeaderViewHolder(val binding: HeaderEmptyJourneyListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: JourneysViewModel) {
-            binding.journeysViewModel = item
-            binding.executePendingBindings()
-        }
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if(charSearch.isEmpty()) {
+                    journeysFilteredList = journeysList
+                } else {
+                    journeysList?.let {
+                        val resultList = arrayListOf<Journey>()
+                        for(journey in journeysList!!) {
+                            if ((journey.placeName.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) || (journey.placeAddress.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)))) {
+                                resultList.add(journey)
+                            }
+                        }
+                        journeysFilteredList = resultList
+                    }
+                }
+                val filterResults = FilterResults()
 
-        companion object {
-            fun from(parent: ViewGroup): EmptyListHeaderViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = HeaderEmptyJourneyListBinding.inflate(layoutInflater, parent, false)
+                filterResults.values = journeysFilteredList
+                return filterResults
+            }
 
-                return EmptyListHeaderViewHolder(binding)
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                journeysFilteredList = results?.values as List<Journey>?
+                submitList(journeysFilteredList)
             }
         }
     }
 }
 
-class JourneyDiffCallback: DiffUtil.ItemCallback<DataItem>() {
-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.id == newItem.id
+class JourneyDiffCallback: DiffUtil.ItemCallback<Journey>() {
+    override fun areItemsTheSame(oldItem: Journey, newItem: Journey): Boolean {
+        return oldItem.journeyId == newItem.journeyId
     }
 
-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+    override fun areContentsTheSame(oldItem: Journey, newItem: Journey): Boolean {
         return oldItem == newItem
     }
 
-}
-
-class JourneyListener(val clickListener: (journeyId: Long) -> Unit) {
-    fun onClick(journey: Journey) = clickListener(journey.journeyId)
-}
-
-//class JourneyLongClickListener(val longClickListener: (journey: Journey) -> Unit) {
-//    fun onLongClick(journey: Journey) = longClickListener(journey)
-//}
-class JourneyLongClickListener(val longClickListener: (Boolean) -> Unit) {
-    fun onLongClick(boolean: Boolean) = longClickListener(boolean)
-}
-
-sealed class DataItem {
-    data class JourneyItem(val journey: Journey): DataItem() {
-        override val id = journey.journeyId
-    }
-    object EmptyListHeader: DataItem() {
-        override val id = Long.MIN_VALUE
-    }
-
-    abstract val id: Long
 }

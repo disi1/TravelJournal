@@ -9,10 +9,31 @@
             type="com.example.traveljournal.experience.NewExperienceViewModel" />
     </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        tools:context=".experience.NewExperienceFragment">
+
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".experience.NewExperienceFragment">
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/create_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/experience_image"
@@ -22,7 +43,7 @@
                 android:src="@drawable/ic_undraw_experience"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent=".25"
+                app:layout_constraintHeight_percent=".30"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_default="percent"
@@ -30,38 +51,19 @@
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/ic_undraw_experience" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/experience_name_edit_text"
-                style="@style/TextStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/add_experience_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/experience_image" />
-
             <TextView
-                android:id="@+id/whereToQuestion"
-                style="@style/TextStyle"
-                android:layout_width="0dp"
+                android:id="@+id/credits_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/where_to"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/experience_name_edit_text" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent">
-            </androidx.cardview.widget.CardView>
+                android:layout_marginBottom="8dp"
+                android:shadowColor="@android:color/white"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/experience_image"
+                app:layout_constraintStart_toStartOf="@+id/experience_image" />
 
             <fragment
                 android:id="@+id/experience_autocomplete_fragment"
@@ -73,18 +75,77 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/whereToQuestion" />
+                app:layout_constraintTop_toBottomOf="@+id/experience_image" />
 
-            <Button
-                android:id="@+id/create_button"
-                style="@style/TravelButtons"
-                android:layout_width="wrap_content"
+            <View
+                android:id="@+id/line_separator"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/secondaryColor"
+                app:layout_constraintEnd_toEndOf="@+id/experience_name_edit_text"
+                app:layout_constraintStart_toStartOf="@+id/experience_name_edit_text"
+                app:layout_constraintTop_toBottomOf="@+id/experience_autocomplete_fragment" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/experience_name_edit_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:onClick="@{() -> newExperienceViewModel.onCreateExperience()}"
-                android:text="@string/create_experience_button"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:maxLength="50"
+                android:maxLines="5"
+                android:hint="@string/add_experience_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/experience_autocomplete_fragment" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/experience_description_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/describe_your_experience"
+                android:maxLines="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/experience_name_edit_text" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:alpha="0.87"
+            android:onClick="@{() -> newExperienceViewModel.onCancelExperience()}"
+            android:text="@string/cancel_upper_case"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/create_button"
+            app:layout_constraintEnd_toStartOf="@id/create_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/create_button" />
+
+        <Button
+            android:id="@+id/create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:enabled="false"
+            android:onClick="@{() -> newExperienceViewModel.onCreateExperience()}"
+            android:text="@string/add_upper_case"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cancel_button"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -14,16 +14,18 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:orientation="vertical"
         app:cardElevation="2dp"
         app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/cardsBackgroundColor"
+        android:onClick="@{() -> clickListener.onClick(memoryPhoto)}"
         app:cardUseCompatPadding="true">
 
         <ImageView
             android:id="@+id/memory_uploaded_image"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:memoryImageUrl="@{memoryPhoto}"

@@ -3,12 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/journeys_destination">
+    app:startDestination="@id/splash_destination">
+
+
+    <fragment
+        android:id="@+id/splash_destination"
+        android:name="com.example.traveljournal.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/splash_destination"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/journeys_destination"
         android:name="com.example.traveljournal.journeys.JourneysFragment"
-        android:label="@string/my_journeys"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_journeys">
         <action
             android:id="@+id/action_journeys_destination_to_new_journey_destination"
@@ -19,7 +33,12 @@
             android:id="@+id/action_journeys_destination_to_journey_details_destination"
             app:destination="@id/journey_details_destination"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"/>
+        <action
+            android:id="@+id/action_journeys_destination_to_settings_destination"
+            app:destination="@id/settings_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"/>
     </fragment>
 
     <fragment
@@ -32,13 +51,14 @@
             app:destination="@id/journeys_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journeys_destination"
-            app:popUpToInclusive="true" />
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/journey_details_destination"
         android:name="com.example.traveljournal.journeyDetails.JourneyDetailsFragment"
-        android:label="@string/journey_details"
         tools:layout="@layout/fragment_journey_details">
         <argument
             android:name="journeyKey"
@@ -48,6 +68,8 @@
             app:destination="@id/journeys_destination"
             app:launchSingleTop="false"
             app:popUpTo="@id/journeys_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_journey_details_destination_to_new_experience_destination"
@@ -78,23 +100,27 @@
     <fragment
         android:id="@+id/experience_details_destination"
         android:name="com.example.traveljournal.experienceDetails.ExperienceDetailsFragment"
-        android:label="@string/experience_details"
         tools:layout="@layout/fragment_experience_details">
         <argument
             android:name="experienceKey"
             app:argType="long" />
         <action
             android:id="@+id/action_experience_details_destination_to_journey_details_destination"
-            app:destination="@id/journey_details_destination"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/journey_details_destination"
-            app:popUpToInclusive="true" />
+            app:destination="@id/journey_details_destination" />
         <action
             android:id="@+id/action_experience_details_destination_to_new_memory_destination"
             app:destination="@id/new_memory_destination" />
         <action
             android:id="@+id/action_experience_details_destination_to_memoryDetailsFragment"
             app:destination="@id/memory_details_destination" />
+        <action
+            android:id="@+id/action_experience_details_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/journeys_destination"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -116,7 +142,6 @@
     <fragment
         android:id="@+id/memory_details_destination"
         android:name="com.example.traveljournal.memoryDetails.MemoryDetailsFragment"
-        android:label="@string/memory_details"
         tools:layout="@layout/fragment_memory_details">
         <argument
             android:name="memoryKey"
@@ -127,6 +152,29 @@
             app:launchSingleTop="false"
             app:popUpTo="@id/journey_details_destination"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_memory_details_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/journeys_destination"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settings_destination"
+        android:name="com.example.traveljournal.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_destination_to_journeys_destination"
+            app:destination="@id/journeys_destination"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/journeys_destination"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>

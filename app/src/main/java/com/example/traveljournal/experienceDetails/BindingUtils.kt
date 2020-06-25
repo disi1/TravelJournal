@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 import com.example.traveljournal.R
+import com.example.traveljournal.database.Experience
 import com.example.traveljournal.database.Memory
 import java.io.File
 import java.text.DateFormat
@@ -45,17 +46,6 @@ fun setMemoryImage(imageView: ImageView, item: Memory?) {
             Glide.with(imageView.context)
                 .load(File(imageUri.path!!))
                 .into(imageView)
-        }
-    }
-}
-
-@BindingAdapter("visible")
-fun TextView.setVisibility(item: Boolean) {
-    item.let {
-        visibility = when (item) {
-            true -> View.VISIBLE
-            false -> View.GONE
-            else -> throw IllegalArgumentException("Unknown VISIBILITY type: $item")
         }
     }
 }

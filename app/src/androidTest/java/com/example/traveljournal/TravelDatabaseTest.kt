@@ -37,14 +37,4 @@ class TravelDatabaseTest {
     fun closeDb() {
         db.close()
     }
-
-    @Test
-    @Throws(Exception::class)
-    fun insertAndGetJourney() {
-        val journey = Journey()
-        travelDao.insertJourney(journey)
-        val lastJourney = travelDao.getLastJourney()
-        Log.i("LAST", ""+lastJourney.toString());
-        assertEquals(lastJourney?.placeId, "")
-    }
 }

@@ -31,8 +31,8 @@ interface TravelDatabaseDao {
     fun getJourneyWithId(key: Long): LiveData<Journey>
 
     @Transaction
-    @Query("SELECT * FROM journey_table ORDER BY journeyId DESC")
-    fun getJourneyWithExperiences(): LiveData<List<JourneyWithExperiences>>
+    @Query("SELECT * FROM journey_table")
+    fun getJourneysAndExperiences(): List<JourneyWithExperiences>
 
     // Methods for using the Experience class with Room
     @Insert
@@ -87,6 +87,9 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_table WHERE experience_host_id = :key ORDER BY memoryId DESC")
     fun getAllMemoriesFromExperience(key: Long): LiveData<List<Memory>>
 
+    @Query("SELECT * FROM memory_table WHERE experience_host_id = :key ORDER BY memoryId DESC")
+    fun getListAllMemoriesFromExperience(key: Long): List<Memory>
+
     @Query("SELECT * from memory_table WHERE memoryId = :key")
     fun getMemoryWithId(key: Long): LiveData<Memory>
 
@@ -97,15 +100,37 @@ interface TravelDatabaseDao {
     @Query("SELECT * FROM memory_photo_table WHERE photoId = :key")
     fun getMemoryPhoto(key: Long): MemoryPhoto
 
+    @Update
+    fun updateMemoryPhoto(memoryPhoto: MemoryPhoto)
+
     @Query("SELECT * FROM memory_photo_table ORDER BY photoId DESC")
     fun getAllMemoryPhotos(): LiveData<List<MemoryPhoto>>
 
     @Query("DELETE FROM memory_photo_table")
     fun deletePhotos()
 
+    @Query("DELETE FROM memory_photo_table WHERE photoId = :key")
+    fun deleteMemoryPhotoWithId(key: Long)
+
     @Query("DELETE FROM memory_photo_table WHERE memory_host_id = :key")
     fun deleteAllPhotosFromMemory(key: Long)
 
     @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
     fun getAllPhotosFromMemory(key: Long): LiveData<List<MemoryPhoto>>
+
+    @Query("SELECT * FROM memory_photo_table WHERE memory_host_id = :key ORDER BY photoId DESC")
+    fun getListAllPhotosFromMemory(key: Long): List<MemoryPhoto>
+
+    // Methods for using the Notification class with Room
+    @Insert
+    fun insertNotification(notification: Notification)
+
+    @Update
+    fun updateNotification(notification: Notification)
+
+    @Query("SELECT * FROM notification_table ORDER BY notificationId DESC")
+    fun getAllNotifications(): LiveData<List<Notification>>
+
+    @Query("SELECT * FROM notification_table WHERE notification_name = :key ORDER BY notificationId DESC LIMIT 1")
+    fun getBackupNotification(key: String): Notification?
 }

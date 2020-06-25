@@ -10,8 +10,9 @@ import androidx.room.TypeConverters
     Journey::class,
     Experience::class,
     Memory::class,
-    MemoryPhoto::class
-], version = 11, exportSchema = false)
+    MemoryPhoto::class,
+    Notification::class
+], version = 19, exportSchema = true)
 abstract class TravelDatabase : RoomDatabase() {
 
     abstract val travelDatabaseDao : TravelDatabaseDao

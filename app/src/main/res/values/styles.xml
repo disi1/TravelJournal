@@ -1,11 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
 
     <!-- Basic buttons styling-->
@@ -14,11 +22,6 @@
         <item name="colorAccent">@color/button_color</item>
         <item name="colorControlHighlight">@color/button_color</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="LabelStyle" parent = "Widget.AppCompat.TextView">
@@ -30,5 +33,4 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:paddingBottom">32dp</item>
     </style>
-
 </resources>

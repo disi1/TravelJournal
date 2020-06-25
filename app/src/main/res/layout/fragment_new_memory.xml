@@ -12,91 +12,104 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
-        <ScrollView
+        <ImageView
+            android:id="@+id/memory_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/create_button"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_undraw_memory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent=".30"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="1"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_undraw_memory" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/memory_name_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/memoryName"
+            android:maxLength="50"
+            android:maxLines="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/memory_date" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/edit_text_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:onClick="@{() -> newMemoryViewModel.onChooseDateTextViewClicked()}"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/memory_date" />
 
-                <ImageView
-                    android:id="@+id/memory_image"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_undraw_memory"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHeight_default="percent"
-                    app:layout_constraintHeight_percent=".25"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_default="percent"
-                    app:layout_constraintWidth_percent="1"
-                    tools:ignore="ContentDescription"
-                    tools:src="@drawable/ic_undraw_memory" />
+        <TextView
+            android:id="@+id/memory_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:onClick="@{() -> newMemoryViewModel.onChooseDateTextViewClicked()}"
+            app:layout_constraintEnd_toStartOf="@id/edit_text_icon"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintTop_toBottomOf="@+id/memory_image"
+            tools:text="When did this happen?" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/memory_name_input_text"
-                    style="@style/TextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:hint="@string/memoryName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/memory_date" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/memory_description_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/describeMemory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memory_name_input_text" />
 
-                <TextView
-                    android:id="@+id/memory_date"
-                    style="@style/TextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:onClick="@{() -> newMemoryViewModel.onChooseDateTextViewClicked()}"
-                    android:text="@string/memory_date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintTop_toBottomOf="@+id/memory_image"
-                    tools:text="When did this happen?" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/memory_description_input_text"
-                    style="@style/TextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:hint="@string/describeMemory"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/memory_name_input_text" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:alpha="0.87"
+            android:onClick="@{() -> newMemoryViewModel.onCancelNewMemory()}"
+            android:text="@string/cancel_upper_case"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/create_button"
+            app:layout_constraintEnd_toStartOf="@id/create_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/create_button" />
 
         <Button
             android:id="@+id/create_button"
-            style="@style/TravelButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{() -> newMemoryViewModel.onCreateMemory()}"
-            android:text="Create"
+            android:text="@string/add_upper_case"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:enabled="false"
+            app:layout_constraintStart_toEndOf="@id/cancel_button"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

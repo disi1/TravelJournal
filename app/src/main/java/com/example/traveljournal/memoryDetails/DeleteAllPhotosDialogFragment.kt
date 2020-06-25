@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -12,7 +13,7 @@ import com.example.traveljournal.databinding.FragmentDialogDeleteAllPhotosBindin
 class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
 
     private lateinit var deleteButton: Button
-    private lateinit var cancelButton: Button
+    private lateinit var cancelButton: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +26,6 @@ class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsVie
             container,
             false
         )
-
-        binding.memoryDetailsViewModel = memoryDetailsViewModel
 
         cancelButton = binding.cancelButton
         deleteButton = binding.deleteButton
@@ -43,7 +42,7 @@ class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsVie
         super.onViewCreated(view, savedInstanceState)
 
         deleteButton.setOnClickListener {
-            memoryDetailsViewModel.onClear()
+            memoryDetailsViewModel.onDeleteMemoryPhotos()
             dismiss()
         }
 

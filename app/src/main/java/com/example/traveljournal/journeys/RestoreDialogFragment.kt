@@ -1,17 +1,36 @@
 package com.example.traveljournal.journeys
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import com.example.traveljournal.MainActivity
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogRestoreBinding
+import com.example.traveljournal.getBackupPath
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backupPath: String):DialogFragment() {
-    private lateinit var cancelButton: Button
+class RestoreDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment(), CoroutineScope {
+    private lateinit var cancelButton: TextView
     private lateinit var restoreButton: Button
+    private lateinit var progressBar: ProgressBar
+
+    private var job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +48,7 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backup
 
         cancelButton = binding.cancelButton
         restoreButton = binding.restoreButton
-        binding.backupPathText.text = backupPath
+        progressBar = binding.indeterminateBar
 
         return binding.root
     }
@@ -38,9 +57,18 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backup
         super.onViewCreated(view, savedInstanceState)
 
         restoreButton.setOnClickListener {
-            journeysViewModel.onDialogRestoreButtonClicked()
-            journeysViewModel.doneShowingRestoreDialogFragment()
-            dismiss()
+            progressBar.visibility = View.VISIBLE
+
+            launch {
+                withContext(Dispatchers.IO) {
+                    journeysViewModel.onRestore(requireContext(), getBackupPath(requireContext()))
+                }
+
+                journeysViewModel.doneShowingRestoreDialogFragment()
+                dismiss()
+
+                triggerRestart(requireContext())
+            }
         }
 
         cancelButton.setOnClickListener {
@@ -60,5 +88,15 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel, val backup
         window.setGravity(Gravity.CENTER)
 
         super.onResume()
+    }
+
+    private fun triggerRestart(context: Context) {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        if (context is Activity) {
+            context.finish()
+        }
+        Runtime.getRuntime().exit(0)
     }
 }

@@ -17,7 +17,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/add_memory_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +36,9 @@
                     app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent="1"
 					app:experienceImage="@{experienceDetailsViewModel.experience}"
-                    tools:src="@drawable/ic_undraw_experience" />
+                    android:onClick="@{() -> experienceDetailsViewModel.onExperienceCoverClicked()}"
+                    android:transitionName="@{@string/transition_experience_image(experienceDetailsViewModel.experience.experienceId)}"
+                    tools:src="@drawable/ic_undraw_experience"/>
 
                 <ImageView
                     android:id="@+id/gradient"
@@ -44,7 +46,7 @@
                     android:layout_height="0dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_custom_gradient"
+                    android:src="@drawable/custom_gradient"
                     app:layout_constraintBottom_toBottomOf="@+id/experience_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,73 +56,90 @@
                     android:id="@+id/experience_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:textStyle="bold"
-                    style="@style/TextStyle"
-                    android:paddingTop="36dp"
+                    android:paddingTop="20dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="20sp"
                     app:experienceName="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_name"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
-                    app:layout_constraintStart_toStartOf="@+id/experience_image"
-                    tools:text="Outdoor Swimming" />
+                    app:layout_constraintStart_toEndOf="@+id/location_icon"
+                    android:transitionName="@{@string/transition_experience_name(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experienceNameVisibility="@{experienceDetailsViewModel.experience}"
+                    tools:text="Outdoor Swimming"/>
+
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_baseline_location_on"
+                    android:tint="?attr/colorOnBackground"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/experience_image"
+                    app:layout_constraintStart_toStartOf="@id/experience_image"
+                    android:transitionName="@{@string/transition_experience_location_marker(experienceDetailsViewModel.experience.experienceId)}"
+                    app:layout_constraintTop_toTopOf="@id/experience_place_address"/>
 
                 <TextView
                     android:id="@+id/experience_place_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    style="@style/TextStyle"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="14sp"
                     app:experiencePlaceName="@{experienceDetailsViewModel.experience}"
                     app:layout_constraintBottom_toTopOf="@+id/experience_place_address"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
-                    app:layout_constraintStart_toStartOf="@+id/experience_image"
+                    app:layout_constraintStart_toStartOf="@+id/experience_place_address"
+                    android:transitionName="@{@string/transition_experience_place_name(experienceDetailsViewModel.experience.experienceId)}"
+                    app:experiencePlaceNameVisibility="@{experienceDetailsViewModel.experience}"
                     tools:text="Lake Zürich"/>
 
                 <TextView
                     android:id="@+id/experience_place_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                    style="@style/TextStyle"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:alpha="0.6"
+                    android:textSize="12sp"
                     app:experiencePlaceAddress="@{experienceDetailsViewModel.experience}"
-                    app:layout_constraintBottom_toBottomOf="@+id/experience_image"
+                    app:layout_constraintBottom_toBottomOf="@+id/location_icon"
                     app:layout_constraintEnd_toEndOf="@+id/experience_image"
-                    app:layout_constraintStart_toStartOf="@+id/experience_image"
-                    tools:text="Lake Zürich, Switzerland" />
+                    app:layout_constraintStart_toEndOf="@+id/location_icon"
+                    android:transitionName="@{@string/transition_experience_place_address(experienceDetailsViewModel.experience.experienceId)}"
+                    tools:text="Lake Zürich, Switzerland"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/memories_list"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/experience_image"
                     tools:listitem="@layout/list_item_memory"/>
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/new_memory_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="18dp"
+                    android:contentDescription="@string/new_journey"
+                    android:tooltipText="Add a memory"
+                    android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/ic_add_memory" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/add_memory_button"
-            style="@style/TravelButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/new_memory"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> experienceDetailsViewModel.onNewMemory()}"
-            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
