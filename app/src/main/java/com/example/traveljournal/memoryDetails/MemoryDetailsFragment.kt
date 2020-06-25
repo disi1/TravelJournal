@@ -28,6 +28,7 @@ import androidx.transition.TransitionInflater
 import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentMemoryDetailsBinding
+import com.example.traveljournal.journeyDetails.JourneyDetailsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -54,7 +55,8 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         binding = DataBindingUtil.inflate(
@@ -107,6 +109,14 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         binding.memoryPhotosGrid.adapter = adapter
 
         backupPhotoPath = getBackupPath(requireContext()) + "Media/"
+
+        memoryDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController().navigate(
+                    MemoryDetailsFragmentDirections.actionMemoryDetailsDestinationToJourneysDestination())
+                memoryDetailsViewModel.doneNavigatingToJourneysHome()
+            }
+        })
 
         memoryDetailsViewModel.openPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -256,6 +266,10 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+
+        if(id == R.id.home_menu) {
+            memoryDetailsViewModel.onNavigateToJourneysHome()
+        }
 
         if(id == R.id.change_memory_cover_photo_menu) {
             memoryDetailsViewModel.onChangeCoverPhotoClicked()

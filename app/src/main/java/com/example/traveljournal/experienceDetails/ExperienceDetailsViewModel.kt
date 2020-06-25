@@ -59,6 +59,10 @@ class ExperienceDetailsViewModel(
     val openCoverPhotoDialogFragment: LiveData<Boolean?>
         get() = _openCoverPhotoDialogFragment
 
+    private val _navigateToJourneys = MutableLiveData<Boolean?>()
+    val navigateToJourneys: LiveData<Boolean?>
+        get() = _navigateToJourneys
+
     fun doneShowingSnackbarMemoriesDeleted() {
         _showSnackbarEventMemoriesDeleted.value = false
     }
@@ -81,6 +85,14 @@ class ExperienceDetailsViewModel(
 
     fun doneShowingDialogFragment() {
         _openDialogFragment.value = false
+    }
+
+    fun doneNavigatingToJourneysHome() {
+        _navigateToJourneys.value = null
+    }
+
+    fun onNavigateToJourneysHome() {
+        _navigateToJourneys.value = true
     }
 
     fun onNewMemory() {

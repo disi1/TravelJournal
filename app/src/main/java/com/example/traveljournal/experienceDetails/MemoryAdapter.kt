@@ -100,8 +100,12 @@ class DescriptionHeaderViewHolder(val binding: HeaderExperienceDescriptionBindin
         if (memoriesList != null) {
             if(memoriesList.isNotEmpty()) {
                 binding.emptyMemoriesListImage.visibility = View.GONE
+                binding.lineSeparatorRight.visibility = View.VISIBLE
+                binding.memoriesTitleText.visibility = View.VISIBLE
             } else {
                 binding.emptyMemoriesListImage.visibility = View.VISIBLE
+                binding.lineSeparatorRight.visibility = View.GONE
+                binding.memoriesTitleText.visibility = View.GONE
             }
         }
 

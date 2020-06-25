@@ -1,10 +1,13 @@
 package com.example.traveljournal.journeyDetails
 
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -27,9 +30,17 @@ class DeleteJourneyDialogFragment(val journeyDetailsViewModel: JourneyDetailsVie
             false
         )
 
-        binding.deleteJourneyQuestion.text = getString(R.string.delete_journey_question,
-            journeyDetailsViewModel.getJourney().value?.placeName
-        )
+        val deleteJourneyQuestionFirstPart = getString(R.string.delete_journey_question)
+        val journeyName = journeyDetailsViewModel.getJourney().value?.placeName
+
+        val deleteJourneyQuestion = "$deleteJourneyQuestionFirstPart <b>$journeyName</b>?"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.deleteJourneyQuestion.text = Html.fromHtml(deleteJourneyQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        } else {
+            binding.deleteJourneyQuestion.text = Html.fromHtml(deleteJourneyQuestion)
+        }
+        
         deleteButton = binding.deleteButton
         cancelButton = binding.cancelButton
 

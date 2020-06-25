@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveljournal.database.Experience
+import com.example.traveljournal.database.Memory
 import com.example.traveljournal.databinding.ListItemExperienceBinding
 import com.example.traveljournal.journeys.JourneysFragmentDirections
 

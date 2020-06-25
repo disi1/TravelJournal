@@ -110,6 +110,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
             binding.creditsText.text = ""
             binding.journeyImage.setImageResource(R.drawable.ic_undraw_journey)
             binding.createButton.isEnabled = false
+            progressBar.visibility = View.GONE
         }
 
         return binding.root

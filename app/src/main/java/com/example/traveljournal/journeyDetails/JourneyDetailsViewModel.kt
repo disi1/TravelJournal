@@ -83,6 +83,10 @@ class JourneyDetailsViewModel(
         _navigateToNewExperience.value = journeyKey
     }
 
+    fun onNavigateToJourneysHome() {
+        _navigateToJourneys.value = true
+    }
+
     fun onChangeCoverPhotoClicked() {
         _initiateImageImportFromGallery.value = true
     }

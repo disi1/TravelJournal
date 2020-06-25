@@ -1,14 +1,22 @@
 package com.example.traveljournal.experienceDetails
 
 import android.graphics.Point
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteExperienceBinding
+
 
 class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
 
@@ -27,9 +35,17 @@ class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceD
             false
         )
 
-        binding.deleteExperienceQuestion.text = getString(R.string.delete_experience_question,
-            experienceDetailsViewModel.getExperience().value?.experienceName
-        )
+        val deleteQuestionFirstPart = getString(R.string.delete_question_first_part)
+        val experienceName = experienceDetailsViewModel.getExperience().value?.experienceName
+
+        val deleteExperienceQuestion = "$deleteQuestionFirstPart <b>$experienceName</b>?"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.deleteExperienceQuestion.text = Html.fromHtml(deleteExperienceQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        } else {
+            binding.deleteExperienceQuestion.text = Html.fromHtml(deleteExperienceQuestion)
+        }
+
         deleteButton = binding.deleteButton
         cancelButton = binding.cancelButton
 

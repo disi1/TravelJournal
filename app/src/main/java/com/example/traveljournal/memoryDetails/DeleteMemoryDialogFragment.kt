@@ -1,10 +1,13 @@
 package com.example.traveljournal.memoryDetails
 
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
@@ -27,8 +30,17 @@ class DeleteMemoryDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewMo
             false
         )
 
-        binding.deleteMemoryQuestion.text = getString(R.string.delete_memory_question,
-            memoryDetailsViewModel.getMemory().value?.memoryName)
+        val deleteMemoryQuestionFirstPart = getString(R.string.delete_question_first_part)
+        val memoryName = memoryDetailsViewModel.getMemory().value?.memoryName
+
+        val deleteMemoryQuestion = "$deleteMemoryQuestionFirstPart <b>$memoryName</b>?"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.deleteMemoryQuestion.text = Html.fromHtml(deleteMemoryQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        } else {
+            binding.deleteMemoryQuestion.text = Html.fromHtml(deleteMemoryQuestion)
+        }
+
         deleteButton = binding.deleteButton
         cancelButton = binding.cancelButton
 

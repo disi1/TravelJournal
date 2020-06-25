@@ -53,7 +53,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/backup_reminder_text" />
 
-                <ToggleButton
+                <Switch
                     android:id="@+id/backup_reminder_toggle_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,9 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="26dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="36dp"
+                    android:alpha="0.87"
                     android:text="@string/reminder_frequency"
                     android:textColor="?attr/colorOnBackground"
-                    android:alpha="0.87"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/turn_on_or_off_text" />

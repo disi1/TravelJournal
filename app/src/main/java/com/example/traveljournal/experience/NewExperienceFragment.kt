@@ -121,6 +121,7 @@ class NewExperienceFragment: Fragment(), PlaceSelectionListener {
             binding.creditsText.text = ""
             binding.experienceImage.setImageResource(R.drawable.ic_undraw_experience)
             binding.createButton.isEnabled = false
+            progressBar.visibility = View.GONE
         }
 
         binding.experienceNameEditText.afterTextChanged { experienceName ->

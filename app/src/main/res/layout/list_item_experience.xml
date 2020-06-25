@@ -19,9 +19,9 @@
         app:cardElevation="2dp"
         app:cardCornerRadius="10dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="5dp"
-        android:backgroundTint="@color/cardsBackgroundColor">
+        android:backgroundTint="@color/card_primary_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,6 +34,7 @@
                 android:layout_height="@dimen/experience_icon_height"
                 android:orientation="vertical"
                 app:cardCornerRadius="5dp"
+                android:backgroundTint="@color/backgroundColor"
                 app:cardUseCompatPadding="true"
                 android:layout_marginStart="0.5dp"
                 app:layout_constraintBottom_toBottomOf="parent"

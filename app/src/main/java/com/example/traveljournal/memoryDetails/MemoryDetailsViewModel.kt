@@ -77,6 +77,10 @@ class MemoryDetailsViewModel(
     val openMemoryPhotoCaptionDialogFragment: LiveData<Boolean?>
         get() = _openMemoryPhotoCaptionDialogFragment
 
+    private val _navigateToJourneys = MutableLiveData<Boolean?>()
+    val navigateToJourneys: LiveData<Boolean?>
+        get() = _navigateToJourneys
+
     fun doneDeletingMemoryPhoto() {
         _memoryPhotoDeleted.value = null
     }
@@ -111,6 +115,10 @@ class MemoryDetailsViewModel(
 
     fun doneNavigatingToExperienceDetails() {
         _navigateToExperienceDetails.value = null
+    }
+
+    fun doneNavigatingToJourneysHome() {
+        _navigateToJourneys.value = null
     }
 
     init {
@@ -213,6 +221,10 @@ class MemoryDetailsViewModel(
 
     fun onCloseMemoryPhotoDialog() {
         _openPhotoDialogFragment.value = null
+    }
+
+    fun onNavigateToJourneysHome() {
+        _navigateToJourneys.value = true
     }
 
     fun onDeleteMemoryPhotos() {

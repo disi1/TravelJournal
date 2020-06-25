@@ -37,8 +37,11 @@ class JourneysFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowCustomEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(android.R.attr.background.toDrawable())
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
 
         val intent = (activity as AppCompatActivity).intent
 

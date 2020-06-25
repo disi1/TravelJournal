@@ -22,6 +22,7 @@ import androidx.transition.TransitionInflater
 import com.example.traveljournal.*
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentExperienceDetailsBinding
+import com.example.traveljournal.journeyDetails.JourneyDetailsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
@@ -44,7 +45,8 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         binding = DataBindingUtil.inflate(
@@ -70,6 +72,14 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         binding.memoriesList.layoutManager = manager
         adapter = MemoryAdapter(experienceDetailsViewModel, experienceDetailsViewModel.memories.value)
         binding.memoriesList.adapter = adapter
+
+        experienceDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                this.findNavController().navigate(
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneysDestination())
+                experienceDetailsViewModel.doneNavigatingToJourneysHome()
+            }
+        })
 
         experienceDetailsViewModel.memories.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -198,6 +208,10 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+
+        if(id == R.id.home_menu) {
+            experienceDetailsViewModel.onNavigateToJourneysHome()
+        }
 
         if(id == R.id.change_experience_cover_photo_menu) {
             experienceDetailsViewModel.onChangeCoverPhotoClicked()

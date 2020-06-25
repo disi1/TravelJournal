@@ -41,7 +41,7 @@ class JourneyDetailsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
         binding = DataBindingUtil.inflate(
@@ -78,8 +78,12 @@ class JourneyDetailsFragment: Fragment() {
             it?.let {
                 adapter.submitList(it)
                 if(it.isNotEmpty()) {
+                    binding.experienceTitleText?.visibility = View.VISIBLE
+                    binding.lineSeparatorRight?.visibility = View.VISIBLE
                     binding.emptyExperiencesListImage.visibility = ConstraintLayout.GONE
                 } else {
+                    binding.experienceTitleText?.visibility = View.GONE
+                    binding.lineSeparatorRight?.visibility = View.GONE
                     binding.emptyExperiencesListImage.visibility = ConstraintLayout.VISIBLE
                 }
             }
@@ -170,6 +174,10 @@ class JourneyDetailsFragment: Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+
+        if(id == R.id.home_menu) {
+            journeyDetailsViewModel.onNavigateToJourneysHome()
+        }
 
         if(id == R.id.change_journey_cover_photo_menu) {
             journeyDetailsViewModel.onChangeCoverPhotoClicked()

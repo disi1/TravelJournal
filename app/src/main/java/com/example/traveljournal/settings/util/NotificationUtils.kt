@@ -24,11 +24,6 @@ fun NotificationManager.sendNotification(
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val appLogoImage = BitmapFactory.decodeResource(
-        applicationContext.resources,
-        R.drawable.ic_logo
-    )
-
     val builder = NotificationCompat.Builder(
         applicationContext,
         applicationContext.getString(R.string.backup_notification_channel_id)
@@ -37,9 +32,8 @@ fun NotificationManager.sendNotification(
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setPriority(NotificationCompat.PRIORITY_LOW)
         .setAutoCancel(true)
-        .setLargeIcon(appLogoImage)
 
     notify(NOTIFICATION_ID, builder.build())
 }

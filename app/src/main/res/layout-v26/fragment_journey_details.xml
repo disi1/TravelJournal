@@ -19,17 +19,17 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
+            android:onClick="@{() -> journeyDetailsViewModel.onJourneyCoverClicked()}"
+            android:scaleType="centerCrop"
+            android:transitionName="@{@string/transition_journey_image(journeyDetailsViewModel.journey.journeyId)}"
+            app:journeyImage="@{journeyDetailsViewModel.journey}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent=".30"
-            app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="1"
-            android:scaleType="centerCrop"
-            app:journeyImage="@{journeyDetailsViewModel.journey}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-			android:onClick="@{() -> journeyDetailsViewModel.onJourneyCoverClicked()}"
-            android:transitionName="@{@string/transition_journey_image(journeyDetailsViewModel.journey.journeyId)}"
+			app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="1"
             tools:background="@drawable/ic_undraw_journey"/>
 
         <ImageView
@@ -50,10 +50,10 @@
             android:layout_height="0dp"
             android:src="@drawable/ic_baseline_location_on"
             android:tint="?attr/colorOnBackground"
+            android:transitionName="@{@string/transition_journey_location_marker(journeyDetailsViewModel.journey.journeyId)}"
             app:layout_constraintBottom_toBottomOf="@id/journey_destination_address"
             app:layout_constraintEnd_toStartOf="@id/journey_destination_address"
             app:layout_constraintStart_toStartOf="@id/journey_image"
-            android:transitionName="@{@string/transition_journey_location_marker(journeyDetailsViewModel.journey.journeyId)}"
             app:layout_constraintTop_toTopOf="@id/journey_destination_address"/>
 
         <TextView
@@ -65,11 +65,11 @@
             android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:transitionName="@{@string/transition_journey_destination_name(journeyDetailsViewModel.journey.journeyId)}"
             app:journeyDestinationName="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toTopOf="@+id/journey_destination_address"
             app:layout_constraintEnd_toEndOf="@+id/journey_image"
             app:layout_constraintStart_toEndOf="@+id/location_icon"
-            android:transitionName="@{@string/transition_journey_destination_name(journeyDetailsViewModel.journey.journeyId)}"
             tools:text="Zürich"/>
 
         <TextView
@@ -78,14 +78,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="?attr/colorOnBackground"
             android:alpha="0.6"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="14sp"
+            android:transitionName="@{@string/transition_journey_destination_address(journeyDetailsViewModel.journey.journeyId)}"
             app:journeyDestinationAddress="@{journeyDetailsViewModel.journey}"
             app:layout_constraintBottom_toBottomOf="@+id/journey_image"
             app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
             app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
-            android:transitionName="@{@string/transition_journey_destination_address(journeyDetailsViewModel.journey.journeyId)}"
             tools:text="Zürich, Switzerland"/>
 
         <View
@@ -146,11 +146,11 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="18dp"
             android:contentDescription="@string/new_journey"
+            android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"
+            android:tooltipText="Add an experience"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_experience"
-            android:tooltipText="Add an experience"
-            android:onClick="@{() -> journeyDetailsViewModel.onNewExperience()}"/>
+            app:srcCompat="@drawable/ic_add_experience"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

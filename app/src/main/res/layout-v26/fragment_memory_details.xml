@@ -66,11 +66,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="?attr/colorOnBackground"
             android:alpha="0.6"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
             android:transitionName="@{@string/transition_memory_date(memoryDetailsViewModel.memory.memoryId)}"
+            app:layout_constraintBottom_toBottomOf="@+id/memory_image"
             app:layout_constraintStart_toEndOf="@+id/calendar_icon"
             app:memoryDate="@{memoryDetailsViewModel.memory}"
             tools:text="June 28, 2020" />
@@ -109,8 +109,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="18dp"
             android:contentDescription="@string/add_a_photo"
-            app:fabSize="normal"
             android:tooltipText="Add a photo"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add_attach" />

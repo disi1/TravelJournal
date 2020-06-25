@@ -19,11 +19,11 @@
             android:id="@+id/empty_journey_list_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_empty_journeys_list"
             app:layout_constraintBottom_toTopOf="@id/new_journey_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
@@ -31,10 +31,10 @@
             android:layout_height="wrap_content"
             android:textCursorDrawable="@null"
             app:iconifiedByDefault="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@null"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:queryHint="@string/search_journeys"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -58,11 +58,11 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="18dp"
             android:contentDescription="@string/new_journey"
+            android:onClick="@{() -> journeysViewModel.onNewJourney()}"
+            android:tooltipText="Add a journey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_journey"
-            android:tooltipText="Add a journey"
-            android:onClick="@{() -> journeysViewModel.onNewJourney()}"/>
+            app:srcCompat="@drawable/ic_add_journey"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
