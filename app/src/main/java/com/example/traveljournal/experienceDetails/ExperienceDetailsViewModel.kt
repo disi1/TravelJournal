@@ -112,11 +112,12 @@ class ExperienceDetailsViewModel(
         }
     }
 
-    fun onUpdateExperienceDescription() {
+    fun onUpdateExperienceDescription(newDescription: String) {
         uiScope.launch {
             val oldExperience = experience.value ?: return@launch
-            oldExperience.experienceDescription = experienceDescription.value.toString()
+            oldExperience.experienceDescription = newDescription
             updateExperience(oldExperience)
+            experienceDescription.value = newDescription
         }
     }
 

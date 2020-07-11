@@ -55,7 +55,6 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
@@ -431,8 +430,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     }
 
     override fun onFinishEditDialog(inputText: String) {
-        memoryDetailsViewModel.memoryDescription.value = inputText
-        memoryDetailsViewModel.onUpdateMemoryDescription()
+        memoryDetailsViewModel.onUpdateMemoryDescription(inputText)
         memoryDetailsViewModel.doneShowingDescriptionDialogFragment()
     }
 }

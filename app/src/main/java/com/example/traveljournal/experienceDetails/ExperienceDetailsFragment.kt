@@ -45,7 +45,6 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
@@ -287,7 +286,6 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
 
-
             backupPhoto(srcFile, destFile, backupPhotoPath)
             experienceDetailsViewModel.coverPhotoSrcUri.value = destFile.toString()
             experienceDetailsViewModel.onCoverPhotoChanged()
@@ -297,8 +295,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     }
 
     override fun onFinishEditDialog(inputText: String) {
-        experienceDetailsViewModel.experienceDescription.value = inputText
-        experienceDetailsViewModel.onUpdateExperienceDescription()
+        experienceDetailsViewModel.onUpdateExperienceDescription(inputText)
         experienceDetailsViewModel.doneShowingDialogFragment()
     }
 }

@@ -39,9 +39,9 @@
             android:layout_height="30dp"
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_warning"
-            app:layout_constraintBottom_toBottomOf="@+id/line_separator"
+            app:layout_constraintBottom_toBottomOf="@+id/delete_all_data_question"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/delete_all_data_question" />
 
         <TextView
             android:id="@+id/delete_all_data_question"

@@ -140,11 +140,12 @@ class MemoryDetailsViewModel(
         }
     }
 
-    fun onUpdateMemoryDescription() {
+    fun onUpdateMemoryDescription(newDescription: String) {
         uiScope.launch {
             val oldMemory = memory.value ?: return@launch
-            oldMemory.memoryDescription = memoryDescription.value.toString()
+            oldMemory.memoryDescription = newDescription
             updateMemory(oldMemory)
+            memoryDescription.value = newDescription
         }
     }
 
