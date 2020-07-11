@@ -52,57 +52,57 @@ class SplashFragment: Fragment() {
             context?.let {
                 findNavController().navigate(SplashFragmentDirections.actionSplashDestinationToJourneysDestination())
             }
-        }, 3000)
+        }, 2300)
     }
 
     private fun faderRetripImage() {
         val animator = ObjectAnimator.ofFloat(retripImage, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 1000
+        animator.duration = 800
         animator.start()
     }
 
     private fun faderRetrieve() {
         val animator = ObjectAnimator.ofFloat(retrieve, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 1000
+        animator.duration = 800
         animator.addListener(onStart = {
             retrieve.visibility = View.VISIBLE
         })
-        animator.startDelay = 700
+        animator.startDelay = 500
         animator.start()
     }
 
     private fun faderRemember() {
         val animator = ObjectAnimator.ofFloat(remember, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 1000
+        animator.duration = 800
         animator.addListener(onStart = {
             remember.visibility = View.VISIBLE
         })
-        animator.startDelay = 700
+        animator.startDelay = 500
         animator.start()
     }
 
     private fun faderRelive() {
         val animator = ObjectAnimator.ofFloat(relive, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 1000
+        animator.duration = 800
         animator.addListener(onStart = {
             relive.visibility = View.VISIBLE
         })
-        animator.startDelay = 700
+        animator.startDelay = 500
         animator.start()
     }
 
     private fun faderRetrip() {
         val animator = ObjectAnimator.ofFloat(retrip, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 1000
+        animator.duration = 800
         animator.addListener(onStart = {
             retrip.visibility = View.VISIBLE
         })
-        animator.startDelay = 1700
+        animator.startDelay = 1300
         animator.start()
     }
 }
