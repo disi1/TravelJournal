@@ -10,3 +10,6 @@ Let yourself be fully immersed in a new experience, while resting assured that y
 </p>
 
 ## Application main flow
+<p align="center">
+  <img src="./assets/MainFlow.png">
+</p>
