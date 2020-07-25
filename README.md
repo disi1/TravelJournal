@@ -30,3 +30,6 @@ Take a look at some of the things you can do with this app:
 <p align="center">
   <img src="./assets/MainFlow.png">
 </p>
+
+## Get in touch
+Reach out at [diana.sica29@gmail.com](mailto:diana.sica29@gmail.com)
