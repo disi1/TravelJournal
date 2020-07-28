@@ -41,6 +41,7 @@ class JourneyDetailsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey_details)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
 
@@ -78,12 +79,12 @@ class JourneyDetailsFragment: Fragment() {
             it?.let {
                 adapter.submitList(it)
                 if(it.isNotEmpty()) {
-                    binding.experienceTitleText?.visibility = View.VISIBLE
-                    binding.lineSeparatorRight?.visibility = View.VISIBLE
+                    binding.experienceTitleText.visibility = View.VISIBLE
+                    binding.lineSeparatorRight.visibility = View.VISIBLE
                     binding.emptyExperiencesListImage.visibility = ConstraintLayout.GONE
                 } else {
-                    binding.experienceTitleText?.visibility = View.GONE
-                    binding.lineSeparatorRight?.visibility = View.GONE
+                    binding.experienceTitleText.visibility = View.GONE
+                    binding.lineSeparatorRight.visibility = View.GONE
                     binding.emptyExperiencesListImage.visibility = ConstraintLayout.VISIBLE
                 }
             }

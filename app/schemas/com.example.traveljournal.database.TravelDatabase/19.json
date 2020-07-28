@@ -1,0 +1,246 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 19,
+    "identityHash": "eedeaf81e2ea4b8a12bc09d932d8a821",
+    "entities": [
+      {
+        "tableName": "journey_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`journeyId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `place_name` TEXT NOT NULL, `place_address` TEXT NOT NULL, `cover_photo_src_uri` TEXT NOT NULL, `cover_photo_attributions` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "journeyId",
+            "columnName": "journeyId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "placeName",
+            "columnName": "place_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "placeAddress",
+            "columnName": "place_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverPhotoSrcUri",
+            "columnName": "cover_photo_src_uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverPhotoAttributions",
+            "columnName": "cover_photo_attributions",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "journeyId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "experience_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`experienceId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `experience_name` TEXT NOT NULL, `experience_place_name` TEXT NOT NULL, `experience_place_address` TEXT NOT NULL, `experience_description` TEXT NOT NULL, `cover_photo_src_uri` TEXT NOT NULL, `cover_photo_attributions` TEXT NOT NULL, `journey_host_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "experienceId",
+            "columnName": "experienceId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experienceName",
+            "columnName": "experience_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experiencePlaceName",
+            "columnName": "experience_place_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experiencePlaceAddress",
+            "columnName": "experience_place_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experienceDescription",
+            "columnName": "experience_description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverPhotoSrcUri",
+            "columnName": "cover_photo_src_uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverPhotoAttributions",
+            "columnName": "cover_photo_attributions",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "journeyHostId",
+            "columnName": "journey_host_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "experienceId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "memory_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`memoryId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `memory_name` TEXT NOT NULL, `memory_description` TEXT NOT NULL, `memory_timestamp` INTEGER NOT NULL, `cover_photo_src_uri` TEXT NOT NULL, `experience_host_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "memoryId",
+            "columnName": "memoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "memoryName",
+            "columnName": "memory_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "memoryDescription",
+            "columnName": "memory_description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "memoryTimestamp",
+            "columnName": "memory_timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverPhotoSrcUri",
+            "columnName": "cover_photo_src_uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experienceHostId",
+            "columnName": "experience_host_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "memoryId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "memory_photo_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`photoId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `photo_src_uri` TEXT NOT NULL, `photo_caption` TEXT NOT NULL, `memory_host_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "photoId",
+            "columnName": "photoId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoSrcUri",
+            "columnName": "photo_src_uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoCaption",
+            "columnName": "photo_caption",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "memoryHostId",
+            "columnName": "memory_host_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "photoId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "notification_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`notificationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `notification_name` TEXT NOT NULL, `notification_state` INTEGER NOT NULL, `notification_interval_milliseconds` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "notificationId",
+            "columnName": "notificationId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationType",
+            "columnName": "notification_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationState",
+            "columnName": "notification_state",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationIntervalMs",
+            "columnName": "notification_interval_milliseconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "notificationId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eedeaf81e2ea4b8a12bc09d932d8a821')"
+    ]
+  }
+}

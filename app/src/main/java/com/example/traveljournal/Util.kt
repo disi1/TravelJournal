@@ -177,29 +177,4 @@ fun init(view: View) {
     view.alpha = 0F
 }
 
-//fun ImageView.setJourneyImage(item: Journey?, onLoadingFinished: () -> Unit = {}) {
-//    item?.let {
-//        if(item.coverPhotoSrcUri == "") {
-//            this.setImageResource(R.drawable.ic_undraw_destinations)
-//        } else {
-//            val listener = object : RequestListener<Drawable> {
-//                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-//                    onLoadingFinished()
-//                    return false
-//                }
-//
-//                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-//                    onLoadingFinished()
-//                    return false
-//                }
-//            }
-//            val imageUri = item.coverPhotoSrcUri.toUri()
-//            Glide.with(this.context)
-//                .load(File(imageUri.path!!))
-//                .listener(listener)
-//                .into(this)
-//        }
-//    }
-//}
-
 

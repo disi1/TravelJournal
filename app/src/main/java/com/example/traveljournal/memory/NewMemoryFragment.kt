@@ -83,7 +83,6 @@ class NewMemoryFragment: Fragment() {
             experienceKey?.let {
                 this.findNavController().navigate(
                     NewMemoryFragmentDirections.actionNewMemoryDestinationToExperienceDetailsDestination(experienceKey))
-
                 newMemoryViewModel.doneNavigatingToExperienceDetails()
             }
         })
