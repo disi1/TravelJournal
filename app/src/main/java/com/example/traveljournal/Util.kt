@@ -59,11 +59,11 @@ fun getRealPathFromUri(data: Uri?, context: Context): File {
     val cursor = data?.let {
         context.contentResolver.query(
             it,
-        arrayOf(MediaStore.Images.ImageColumns.DATA),
-        null,
-        null,
-        null
-    )
+            arrayOf(MediaStore.Images.ImageColumns.DATA),
+            null,
+            null,
+            null
+        )
     }
     cursor!!.moveToFirst()
 
@@ -79,7 +79,7 @@ fun backupPhoto(srcFile: File, destFile: File, backupPhotoPath: String) {
         File(backupPhotoPath).mkdirs()
     }
 
-    if(!destFile.exists()) {
+    if (!destFile.exists()) {
         try {
             copyFile(srcFile, destFile)
         } catch (e: Exception) {
@@ -108,7 +108,7 @@ fun saveBitmap(bitmapImage: Bitmap, imageName: String, backupPhotoPath: String):
     }
 
     val imageFile = File(backupPhotoPath, imageName)
-    if(!imageFile.exists()) {
+    if (!imageFile.exists()) {
         try {
             val outStream = FileOutputStream(imageFile)
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outStream)

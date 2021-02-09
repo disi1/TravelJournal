@@ -11,7 +11,10 @@ import com.example.traveljournal.R
 import com.example.traveljournal.database.MemoryPhoto
 import com.example.traveljournal.databinding.FragmentDialogDeletePhotoBinding
 
-class DeletePhotoDialogFragment(val memoryPhoto: MemoryPhoto, val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
+class DeletePhotoDialogFragment(
+    val memoryPhoto: MemoryPhoto,
+    val memoryDetailsViewModel: MemoryDetailsViewModel
+) : DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView

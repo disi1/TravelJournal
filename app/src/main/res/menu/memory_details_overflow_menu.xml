@@ -5,14 +5,14 @@
         android:id="@+id/home_menu"
         android:icon="@drawable/ic_baseline_home"
         android:title="@string/journeys"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/change_memory_cover_photo_menu"
-        android:title="@string/change_cover_photo"/>
+        android:title="@string/change_cover_photo" />
     <item
         android:id="@+id/delete_memory_menu"
-        android:title="@string/delete_memory"/>
+        android:title="@string/delete_memory" />
     <item
         android:id="@+id/delete_all_memory_photos_menu"
-        android:title="@string/delete_all_memory_photos"/>
+        android:title="@string/delete_all_memory_photos" />
 </menu>

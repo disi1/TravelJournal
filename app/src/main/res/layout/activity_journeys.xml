@@ -15,7 +15,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimarySurface"
         android:elevation="5dp"
-        android:minHeight="?attr/actionBarSize"/>
+        android:minHeight="?attr/actionBarSize" />
 
     <fragment
         android:id="@+id/navHostFragment"

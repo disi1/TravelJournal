@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.traveljournal.BuildConfig
 import com.example.traveljournal.R
 import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentNewJourneyBinding
@@ -42,10 +43,18 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
     private lateinit var newJourneyViewModel: NewJourneyViewModel
     private lateinit var progressBar: ProgressBar
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_journey)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(requireContext(), R.color.backgroundColor)))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor)
+            )
+        )
 
         val binding: FragmentNewJourneyBinding = DataBindingUtil.inflate(
             inflater,
@@ -60,47 +69,66 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
         newJourneyViewModel =
             ViewModelProviders.of(
-                this, viewModelFactory).get(NewJourneyViewModel::class.java)
+                this, viewModelFactory
+            ).get(NewJourneyViewModel::class.java)
 
         binding.newJourneyViewModel = newJourneyViewModel
 
         progressBar = binding.indeterminateBar
 
         newJourneyViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
-                    NewJourneyFragmentDirections.actionNewJourneyDestinationToJourneysDestination())
+                    NewJourneyFragmentDirections.actionNewJourneyDestinationToJourneysDestination()
+                )
                 newJourneyViewModel.doneNavigating()
             }
         })
 
         newJourneyViewModel.bitmapCoverLoaded.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                binding.creditsText.text = HtmlCompat.fromHtml(getString(R.string.credits_to, attributions), HtmlCompat.FROM_HTML_MODE_LEGACY)
+            if (it == true) {
+                binding.creditsText.text = HtmlCompat.fromHtml(
+                    getString(R.string.credits_to, attributions),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
                 binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
                 binding.journeyImage.scaleType = ImageView.ScaleType.CENTER_CROP
                 binding.journeyImage.setImageBitmap(bitmapCover)
                 progressBar.visibility = View.GONE
                 binding.createButton.isEnabled = true
-            } else if(it == false) {
+            } else if (it == false) {
                 binding.createButton.isEnabled = true
             }
         })
 
         if (!Places.isInitialized()) {
-            this.context?.let { Places.initialize(it, getString(R.string.apiKey), Locale.US) }
+            this.context?.let { Places.initialize(it, BuildConfig.API_KEY, Locale.US) }
         }
 
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                 as? AutocompleteSupportFragment
         autocompleteFragment?.setOnPlaceSelectedListener(this)
         autocompleteFragment!!.setHint(getString(R.string.where_question))
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS))
-        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setTextColor(Color.WHITE)
-        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setHintTextColor(Color.GRAY)
-        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).textSize = 18f
+        autocompleteFragment.setPlaceFields(
+            listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.PHOTO_METADATAS
+            )
+        )
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setTextColor(
+            Color.WHITE
+        )
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).setHintTextColor(
+            Color.GRAY
+        )
+        (autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_search_input) as EditText).textSize =
+            18f
 
-        val clearButton = autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
+        val clearButton =
+            autocompleteFragment.view?.findViewById<View>(R.id.places_autocomplete_clear_button)
         clearButton?.setOnClickListener {
             autocompleteFragment.setText("")
             newJourneyViewModel.coverPhotoAttributions.value = null
@@ -118,7 +146,7 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
     @ExperimentalStdlibApi
     override fun onPlaceSelected(p0: Place) {
-        if(p0.photoMetadatas != null) {
+        if (p0.photoMetadatas != null) {
             progressBar.visibility = View.VISIBLE
 
             val photoMetadata = p0.photoMetadatas?.get(0)
@@ -135,7 +163,11 @@ class NewJourneyFragment : Fragment(), PlaceSelectionListener {
 
                     bitmapCover = it.bitmap
                     newJourneyViewModel.onBitmapCoverLoaded(true)
-                    val savedBitmapPath = saveBitmap(bitmapCover, "${System.currentTimeMillis() / 1000L}.png", backupPhotoPath)
+                    val savedBitmapPath = saveBitmap(
+                        bitmapCover,
+                        "${System.currentTimeMillis() / 1000L}.png",
+                        backupPhotoPath
+                    )
                     newJourneyViewModel.coverPhotoSrcUri.value = savedBitmapPath
                     newJourneyViewModel.coverPhotoAttributions.value = attributions
 

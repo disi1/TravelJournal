@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 class MemoryPhotoCaptionDialogFragment(
     val memoryDetailsViewModel: MemoryDetailsViewModel,
     val memoryPhoto: MemoryPhoto
-): DialogFragment() {
+) : DialogFragment() {
 
     private lateinit var memoryPhotoCaptionEditText: TextInputEditText
     private lateinit var okButton: Button

@@ -13,7 +13,7 @@ import java.io.File
 class MemoryDetailsViewModel(
     private val memoryKey: Long = 0L,
     dataSource: TravelDatabaseDao
-): ViewModel() {
+) : ViewModel() {
 
     val database = dataSource
 
@@ -132,9 +132,9 @@ class MemoryDetailsViewModel(
     }
 
     fun onCoverPhotoChanged() {
-        if(memory.value?.coverPhotoSrcUri != "") {
+        if (memory.value?.coverPhotoSrcUri != "") {
             val fileToDelete = File(memory.value?.coverPhotoSrcUri!!)
-            if(fileToDelete.exists()) {
+            if (fileToDelete.exists()) {
                 fileToDelete.delete()
             }
         }
@@ -260,7 +260,7 @@ class MemoryDetailsViewModel(
     private fun deletePhotosFromBackup() {
         memoryPhotos.value?.forEach {
             val fileToDelete = File(it.photoSrcUri)
-            if(fileToDelete.exists()) {
+            if (fileToDelete.exists()) {
                 fileToDelete.delete()
             }
         }
@@ -268,14 +268,14 @@ class MemoryDetailsViewModel(
 
     private fun deletePhotoFromBackup(memoryPhoto: MemoryPhoto) {
         val fileToDelete = File(memoryPhoto.photoSrcUri)
-        if(fileToDelete.exists()) {
+        if (fileToDelete.exists()) {
             fileToDelete.delete()
         }
     }
 
     private fun deleteMemoryCoverPhoto() {
         val fileToDelete = File(memory.value?.coverPhotoSrcUri!!)
-        if(fileToDelete.exists()) {
+        if (fileToDelete.exists()) {
             fileToDelete.delete()
         }
     }

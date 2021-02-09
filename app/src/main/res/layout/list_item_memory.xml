@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="memory"
             type="com.example.traveljournal.database.Memory" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -53,7 +55,7 @@
                     app:memoryImage="@{memory}"
                     app:srcCompat="@drawable/ic_undraw_memory"
                     android:transitionName="@{@string/transition_memory_image(memory.memoryId)}"
-                    tools:srcCompat="@drawable/ic_undraw_memory"/>
+                    tools:srcCompat="@drawable/ic_undraw_memory" />
 
             </androidx.cardview.widget.CardView>
 
@@ -72,7 +74,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:memoryName="@{memory}"
                 android:transitionName="@{@string/transition_memory_name(memory.memoryId)}"
-                tools:text="Outdoor Swimming for the first time"/>
+                tools:text="Outdoor Swimming for the first time" />
 
             <TextView
                 android:id="@+id/memory_description"
@@ -89,7 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@id/memory_name"
                 app:memoryDescription="@{memory}"
                 android:transitionName="@{@string/transition_memory_description(memory.memoryId)}"
-                tools:text="Memory description"/>
+                tools:text="Memory description" />
 
             <TextView
                 android:id="@+id/memory_date"
@@ -104,7 +106,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:memoryDate="@{memory}"
                 android:transitionName="@{@string/transition_memory_date(memory.memoryId)}"
-                tools:text="June 28, 2020"/>
+                tools:text="June 28, 2020" />
 
             <ImageView
                 android:id="@+id/calendar_icon"
@@ -112,11 +114,11 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="1dp"
                 android:src="@drawable/ic_baseline_today"
-                android:tint="@android:color/white"
                 android:transitionName="@{@string/transition_memory_calendar_icon(memory.memoryId)}"
                 app:layout_constraintBottom_toBottomOf="@+id/memory_image_card_view"
                 app:layout_constraintStart_toEndOf="@id/memory_image_card_view"
-                app:layout_constraintTop_toTopOf="@id/memory_date"/>
+                app:layout_constraintTop_toTopOf="@id/memory_date"
+                app:tint="@android:color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

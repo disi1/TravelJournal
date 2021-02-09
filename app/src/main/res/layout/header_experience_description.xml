@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="experienceDetailsViewModel"
             type="com.example.traveljournal.experienceDetails.ExperienceDetailsViewModel" />
@@ -52,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:hint="@string/experienceDescription"
-            app:layout_constraintTop_toBottomOf="@+id/experience_description_label"/>
+            app:layout_constraintTop_toBottomOf="@+id/experience_description_label" />
 
         <View
             android:id="@+id/line_separator_right"
@@ -84,7 +85,7 @@
             android:src="@drawable/ic_empty_memories_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/experience_description_text"/>
+            app:layout_constraintTop_toBottomOf="@id/experience_description_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

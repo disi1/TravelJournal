@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="settingsViewModel"
             type="com.example.traveljournal.settings.SettingsViewModel" />
@@ -53,7 +54,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/backup_reminder_text" />
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/backup_reminder_toggle_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
                     android:onCheckedChanged="@{(button, on) -> settingsViewModel.onCreateOrUpdateBackupNotification(on)}"
                     app:layout_constraintBottom_toBottomOf="@+id/turn_on_or_off_text"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/turn_on_or_off_text"/>
+                    app:layout_constraintTop_toTopOf="@+id/turn_on_or_off_text" />
 
                 <TextView
                     android:id="@+id/reminder_frequency_text"

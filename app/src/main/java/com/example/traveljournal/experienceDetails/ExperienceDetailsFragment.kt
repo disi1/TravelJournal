@@ -44,9 +44,14 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.experience_details)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
+        (activity as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.experience_details)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.toolbar_background
+            )
+        )
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -57,10 +62,12 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         val arguments = ExperienceDetailsFragmentArgs.fromBundle(requireArguments())
 
         val dataSource = TravelDatabase.getInstance(application).travelDatabaseDao
-        val viewModelFactory = ExperienceDetailsViewModelFactory(arguments.experienceKey, dataSource)
+        val viewModelFactory =
+            ExperienceDetailsViewModelFactory(arguments.experienceKey, dataSource)
 
         experienceDetailsViewModel = ViewModelProviders.of(
-            this, viewModelFactory).get(ExperienceDetailsViewModel::class.java)
+            this, viewModelFactory
+        ).get(ExperienceDetailsViewModel::class.java)
 
         binding.experienceDetailsViewModel = experienceDetailsViewModel
         binding.lifecycleOwner = this
@@ -69,13 +76,15 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
         val manager = LinearLayoutManager(activity)
         binding.memoriesList.layoutManager = manager
-        adapter = MemoryAdapter(experienceDetailsViewModel, experienceDetailsViewModel.memories.value)
+        adapter =
+            MemoryAdapter(experienceDetailsViewModel, experienceDetailsViewModel.memories.value)
         binding.memoriesList.adapter = adapter
 
         experienceDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
-                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneysDestination())
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneysDestination()
+                )
                 experienceDetailsViewModel.doneNavigatingToJourneysHome()
             }
         })
@@ -96,48 +105,66 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
-        experienceDetailsViewModel.showSnackbarEventMemoriesDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cleared_memories_message,
-                        experienceDetailsViewModel.getExperience().value?.experienceName),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                experienceDetailsViewModel.doneShowingSnackbarMemoriesDeleted()
-            }
-        })
+        experienceDetailsViewModel.showSnackbarEventMemoriesDeleted.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    Snackbar.make(
+                        requireActivity().findViewById(android.R.id.content),
+                        getString(
+                            R.string.cleared_memories_message,
+                            experienceDetailsViewModel.getExperience().value?.experienceName
+                        ),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    experienceDetailsViewModel.doneShowingSnackbarMemoriesDeleted()
+                }
+            })
 
-        experienceDetailsViewModel.showSnackbarEventExperienceDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.experience_deleted,
-                        experienceDetailsViewModel.getExperience().value?.experienceName),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                experienceDetailsViewModel.doneShowingSnackbarExperienceDeleted()
-            }
-        })
+        experienceDetailsViewModel.showSnackbarEventExperienceDeleted.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    Snackbar.make(
+                        requireActivity().findViewById(android.R.id.content),
+                        getString(
+                            R.string.experience_deleted,
+                            experienceDetailsViewModel.getExperience().value?.experienceName
+                        ),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    experienceDetailsViewModel.doneShowingSnackbarExperienceDeleted()
+                }
+            })
 
-        experienceDetailsViewModel.navigateToJourneyDetails.observe(viewLifecycleOwner, androidx.lifecycle.Observer { journeyKey ->
-            journeyKey?.let {
-                this.findNavController().navigate(
-                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneyDetailsDestination(journeyKey))
-                experienceDetailsViewModel.doneNavigatingToJourneyDetails()
-            }
-        })
+        experienceDetailsViewModel.navigateToJourneyDetails.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { journeyKey ->
+                journeyKey?.let {
+                    this.findNavController().navigate(
+                        ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToJourneyDetailsDestination(
+                            journeyKey
+                        )
+                    )
+                    experienceDetailsViewModel.doneNavigatingToJourneyDetails()
+                }
+            })
 
-        experienceDetailsViewModel.navigateToNewMemory.observe(viewLifecycleOwner, Observer { experienceKey ->
-            experienceKey?.let {
-                this.findNavController().navigate(
-                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToNewMemoryDestination(experienceKey))
-                experienceDetailsViewModel.doneNavigatingToNewMemory()
-            }
-        })
+        experienceDetailsViewModel.navigateToNewMemory.observe(
+            viewLifecycleOwner,
+            Observer { experienceKey ->
+                experienceKey?.let {
+                    this.findNavController().navigate(
+                        ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToNewMemoryDestination(
+                            experienceKey
+                        )
+                    )
+                    experienceDetailsViewModel.doneNavigatingToNewMemory()
+                }
+            })
 
         experienceDetailsViewModel.openDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 val dialogFragment = ExperienceDescriptionDialogFragment(experienceDetailsViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
@@ -154,29 +181,33 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             }
         })
 
-        experienceDetailsViewModel.initiateImageImportFromGallery.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                requestStoragePermission()
-            }
-        })
-
-        experienceDetailsViewModel.openCoverPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                val dialogFragment = ExperienceCoverDialogFragment(experienceDetailsViewModel)
-
-                val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("photoDialog")
-
-                if (prev != null) {
-                    ft.remove(prev)
+        experienceDetailsViewModel.initiateImageImportFromGallery.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    requestStoragePermission()
                 }
-                ft.addToBackStack(null)
+            })
 
-                dialogFragment.setTargetFragment(this, 300)
+        experienceDetailsViewModel.openCoverPhotoDialogFragment.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    val dialogFragment = ExperienceCoverDialogFragment(experienceDetailsViewModel)
 
-                dialogFragment.show(ft, "photoDialog")
-            }
-        })
+                    val ft = parentFragmentManager.beginTransaction()
+                    val prev = parentFragmentManager.findFragmentByTag("photoDialog")
+
+                    if (prev != null) {
+                        ft.remove(prev)
+                    }
+                    ft.addToBackStack(null)
+
+                    dialogFragment.setTargetFragment(this, 300)
+
+                    dialogFragment.show(ft, "photoDialog")
+                }
+            })
 
         setHasOptionsMenu(true)
 
@@ -193,13 +224,29 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
         inflater.inflate(R.menu.experience_details_overflow_menu, menu)
 
         val deleteAllMemoriesMenu = menu.findItem(R.id.delete_all_memories_menu)
-        val spannableDeleteAllMemoriesMenuString = SpannableString(deleteAllMemoriesMenu.title.toString())
-        spannableDeleteAllMemoriesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteAllMemoriesMenuString.length, 0)
+        val spannableDeleteAllMemoriesMenuString =
+            SpannableString(deleteAllMemoriesMenu.title.toString())
+        spannableDeleteAllMemoriesMenuString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannableDeleteAllMemoriesMenuString.length, 0
+        )
         deleteAllMemoriesMenu.title = spannableDeleteAllMemoriesMenuString
 
         val deleteExperienceMenu = menu.findItem(R.id.delete_experience_menu)
-        val spannableDeleteExperienceMenuString = SpannableString(deleteExperienceMenu.title.toString())
-        spannableDeleteExperienceMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteExperienceMenuString.length, 0)
+        val spannableDeleteExperienceMenuString =
+            SpannableString(deleteExperienceMenu.title.toString())
+        spannableDeleteExperienceMenuString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannableDeleteExperienceMenuString.length, 0
+        )
         deleteExperienceMenu.title = spannableDeleteExperienceMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -208,16 +255,16 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.home_menu) {
+        if (id == R.id.home_menu) {
             experienceDetailsViewModel.onNavigateToJourneysHome()
         }
 
-        if(id == R.id.change_experience_cover_photo_menu) {
+        if (id == R.id.change_experience_cover_photo_menu) {
             experienceDetailsViewModel.onChangeCoverPhotoClicked()
             experienceDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(id == R.id.delete_all_memories_menu) {
+        if (id == R.id.delete_all_memories_menu) {
             val dialogFragment = DeleteAllMemoriesDialogFragment(experienceDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -235,7 +282,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
             return true
         }
 
-        if(id == R.id.delete_experience_menu) {
+        if (id == R.id.delete_experience_menu) {
             val dialogFragment = DeleteExperienceDialogFragment(experienceDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -282,7 +329,7 @@ class ExperienceDetailsFragment : Fragment(), ExperienceDescriptionDialogFragmen
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == 9999) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 9999) {
             val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
 

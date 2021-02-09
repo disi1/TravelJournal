@@ -45,7 +45,7 @@ class MemoryPhotoGridAdapter(
 
     fun addHeaderAndSubmitList(list: List<MemoryPhoto>?) {
         adapterScope.launch {
-            val items = when(list) {
+            val items = when (list) {
                 null -> listOf(DataItem.DescriptionHeader)
                 else -> listOf(DataItem.DescriptionHeader) + list.map { DataItem.MemoryPhotoItem(it) }
             }
@@ -67,7 +67,8 @@ class MemoryPhotoGridAdapter(
         }
     }
 
-    class ViewHolder private constructor(val binding: ListItemMemoryPhotoBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ListItemMemoryPhotoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: MemoryPhoto,
             clickListener: MemoryPhotoListener
@@ -86,10 +87,11 @@ class MemoryPhotoGridAdapter(
         }
     }
 
-    class DescriptionHeaderViewHolder(val binding: HeaderMemoryDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
+    class DescriptionHeaderViewHolder(val binding: HeaderMemoryDescriptionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MemoryDetailsViewModel, memoryPhotosList: List<MemoryPhoto>?) {
             if (memoryPhotosList != null) {
-                if(memoryPhotosList.isNotEmpty()) {
+                if (memoryPhotosList.isNotEmpty()) {
                     binding.emptyMemoryPhotosListImage.visibility = View.GONE
                 } else {
                     binding.emptyMemoryPhotosListImage.visibility = View.VISIBLE
@@ -111,7 +113,7 @@ class MemoryPhotoGridAdapter(
     }
 }
 
-class MemoryPhotoDiffCallback: DiffUtil.ItemCallback<DataItem>() {
+class MemoryPhotoDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem === newItem
     }
@@ -126,14 +128,14 @@ class MemoryPhotoListener(val clickListener: (memoryPhoto: MemoryPhoto) -> Unit)
     fun onClick(memoryPhoto: MemoryPhoto) = clickListener(memoryPhoto)
 }
 
-sealed class  DataItem {
-    data class MemoryPhotoItem(val memoryPhoto: MemoryPhoto): DataItem(){
+sealed class DataItem {
+    data class MemoryPhotoItem(val memoryPhoto: MemoryPhoto) : DataItem() {
         override val id = memoryPhoto.photoId
     }
 
-    object DescriptionHeader: DataItem() {
+    object DescriptionHeader : DataItem() {
         override val id = Long.MIN_VALUE
     }
 
-    abstract  val id : Long
+    abstract val id: Long
 }

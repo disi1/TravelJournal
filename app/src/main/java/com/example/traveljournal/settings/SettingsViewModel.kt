@@ -28,7 +28,8 @@ private const val TRIGGER_TIME = "TRIGGER_AT"
 
 class SettingsViewModel(
     val database: TravelDatabaseDao,
-    private val app: Application) : AndroidViewModel(app) {
+    private val app: Application
+) : AndroidViewModel(app) {
 
     private var viewModelJob = Job()
 
@@ -87,7 +88,7 @@ class SettingsViewModel(
     private fun initializeBackupNotification() {
         uiScope.launch {
             val notification = getLatestBackupNotificationFromDb()
-            if(notification == null) {
+            if (notification == null) {
                 val backupNotification = Notification()
                 backupNotification.notificationType = "backup"
                 backupNotification.notificationState = false
@@ -96,7 +97,7 @@ class SettingsViewModel(
             } else {
                 backupNotification.value = notification
                 _alarmOn.value = backupNotification.value!!.notificationState
-                _timeSelection.value =  when (backupNotification.value!!.notificationIntervalMs) {
+                _timeSelection.value = when (backupNotification.value!!.notificationIntervalMs) {
                     10_000L -> 0
                     1_296_000_000L -> 1
                     2_592_000_000 -> 2
@@ -115,7 +116,7 @@ class SettingsViewModel(
 
     fun onCreateOrUpdateBackupNotification(isChecked: Boolean) {
         uiScope.launch {
-            if(backupNotification.value == null) {
+            if (backupNotification.value == null) {
                 val selectedTimeInterval = when (timeSelection.value) {
                     0 -> second * 10
                     else -> timerLengthOptions[timeSelection.value!!] * day
@@ -173,7 +174,7 @@ class SettingsViewModel(
 
     private fun startTimer(selectedTimeInterval: Long) {
         _alarmOn.value?.let {
-            if(!it) {
+            if (!it) {
                 _alarmOn.value = true
                 val triggerTime = SystemClock.elapsedRealtime() + selectedTimeInterval
 
@@ -233,28 +234,28 @@ class SettingsViewModel(
         withContext(Dispatchers.IO) {
             journeys.value?.forEach {
                 val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
+                if (fileToDelete.exists()) {
                     fileToDelete.delete()
                 }
             }
 
-            database.getAllExperiences().value?.forEach{
+            database.getAllExperiences().value?.forEach {
                 val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
+                if (fileToDelete.exists()) {
                     fileToDelete.delete()
                 }
             }
 
-            database.getAllMemories().value?.forEach{
+            database.getAllMemories().value?.forEach {
                 val fileToDelete = File(it.coverPhotoSrcUri)
-                if(fileToDelete.exists()) {
+                if (fileToDelete.exists()) {
                     fileToDelete.delete()
                 }
             }
 
             database.getAllMemoryPhotos().value?.forEach {
                 val fileToDelete = File(it.photoSrcUri)
-                if(fileToDelete.exists()) {
+                if (fileToDelete.exists()) {
                     fileToDelete.delete()
                 }
             }
@@ -265,7 +266,7 @@ class SettingsViewModel(
             database.deleteJourneys()
 
             val backupStorageDir = File(backupPath)
-            if(backupStorageDir.exists()) {
+            if (backupStorageDir.exists()) {
                 try {
                     backupStorageDir.deleteRecursively()
                 } catch (e: Exception) {
@@ -313,10 +314,14 @@ class SettingsViewModel(
         }
     }
 
-    private fun zipFiles(zipOutputStream: ZipOutputStream, sourceFile: File, parentDirPath: String) {
+    private fun zipFiles(
+        zipOutputStream: ZipOutputStream,
+        sourceFile: File,
+        parentDirPath: String
+    ) {
         val buffer = ByteArray(2048)
         sourceFile.listFiles()?.forEach { file ->
-            if(file.isDirectory) {
+            if (file.isDirectory) {
                 val zipEntry = ZipEntry(file.name + File.separator)
                 zipEntry.time = file.lastModified()
                 zipEntry.isDirectory

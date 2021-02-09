@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="memoryPhoto"
             type="com.example.traveljournal.database.MemoryPhoto" />
+
         <variable
             name="clickListener"
             type="com.example.traveljournal.memoryDetails.MemoryPhotoListener" />
@@ -29,7 +31,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:memoryImageUrl="@{memoryPhoto}"
-            tools:srcCompat="@drawable/ic_img_placeholder"/>
+            tools:srcCompat="@drawable/ic_img_placeholder" />
 
     </androidx.cardview.widget.CardView>
 </layout>

@@ -11,7 +11,8 @@ import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogMemoryDescriptionBinding
 import com.google.android.material.textfield.TextInputEditText
 
-class MemoryDescriptionDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
+class MemoryDescriptionDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel) :
+    DialogFragment() {
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var doneButton: Button
     private lateinit var cancelButton: TextView

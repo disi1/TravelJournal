@@ -7,10 +7,10 @@ import com.example.traveljournal.database.Memory
 import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 
-class NewMemoryViewModel (
+class NewMemoryViewModel(
     private val experienceKey: Long = 0L,
     val database: TravelDatabaseDao
-): ViewModel() {
+) : ViewModel() {
 
     val memoryName = MutableLiveData<String>()
 
@@ -42,10 +42,11 @@ class NewMemoryViewModel (
         uiScope.launch {
             val memory = Memory(
                 experienceHostId = experienceKey,
-                memoryTimestamp = memoryTimestamp.value!!.toLong())
+                memoryTimestamp = memoryTimestamp.value!!.toLong()
+            )
 
             memory.memoryName = memoryName.value.toString()
-            if(memoryDescription.value == null) {
+            if (memoryDescription.value == null) {
                 memory.memoryDescription = ""
             } else {
                 memory.memoryDescription = memoryDescription.value.toString()

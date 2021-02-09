@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="memoryDetailsViewModel"
             type="com.example.traveljournal.memoryDetails.MemoryDetailsViewModel" />

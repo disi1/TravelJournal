@@ -13,7 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogJourneyCoverBinding
 
-class JourneyCoverDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel): DialogFragment() {
+class JourneyCoverDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var changeCoverPhotoButton: ImageButton
     private lateinit var closeCoverPhotoDialogButton: ImageButton
@@ -31,12 +32,17 @@ class JourneyCoverDialogFragment(val journeyDetailsViewModel: JourneyDetailsView
             false
         )
 
-        if(journeyDetailsViewModel.getJourney().value?.coverPhotoAttributions == "") {
+        if (journeyDetailsViewModel.getJourney().value?.coverPhotoAttributions == "") {
             binding.creditsText.visibility = TextView.GONE
         }
 
         binding.journeyDetailsViewModel = journeyDetailsViewModel
-        binding.creditsText.text = HtmlCompat.fromHtml(getString(R.string.credits_to, journeyDetailsViewModel.getJourney().value?.coverPhotoAttributions), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        binding.creditsText.text = HtmlCompat.fromHtml(
+            getString(
+                R.string.credits_to,
+                journeyDetailsViewModel.getJourney().value?.coverPhotoAttributions
+            ), HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
         binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
         changeCoverPhotoButton = binding.changeCoverButton
         closeCoverPhotoDialogButton = binding.closeCoverPhotoButton

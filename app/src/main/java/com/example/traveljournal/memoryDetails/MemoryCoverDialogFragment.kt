@@ -10,7 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogMemoryCoverBinding
 
-class MemoryCoverDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
+class MemoryCoverDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var changeCoverPhotoButton: ImageButton
     private lateinit var closeCoverPhotoDialogButton: ImageButton

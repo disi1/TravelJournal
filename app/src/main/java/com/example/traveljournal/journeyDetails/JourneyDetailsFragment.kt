@@ -24,7 +24,7 @@ import com.example.traveljournal.databinding.FragmentJourneyDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
-class JourneyDetailsFragment: Fragment() {
+class JourneyDetailsFragment : Fragment() {
     private lateinit var journeyDetailsViewModel: JourneyDetailsViewModel
     private lateinit var backupPhotoPath: String
     private lateinit var binding: FragmentJourneyDetailsBinding
@@ -40,10 +40,15 @@ class JourneyDetailsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.journey_details)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
+        (activity as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.journey_details)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.toolbar_background
+            )
+        )
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_journey_details, container, false
@@ -56,7 +61,8 @@ class JourneyDetailsFragment: Fragment() {
         val viewModelFactory = JourneyDetailsViewModelFactory(arguments.journeyKey, dataSource)
 
         journeyDetailsViewModel = ViewModelProviders.of(
-            this, viewModelFactory).get(JourneyDetailsViewModel::class.java)
+            this, viewModelFactory
+        ).get(JourneyDetailsViewModel::class.java)
 
         binding.journeyDetailsViewModel = journeyDetailsViewModel
         binding.executePendingBindings()
@@ -68,9 +74,10 @@ class JourneyDetailsFragment: Fragment() {
         backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
         journeyDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
-                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToJourneysDestination())
+                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToJourneysDestination()
+                )
                 journeyDetailsViewModel.doneNavigatingToJourneys()
             }
         })
@@ -78,7 +85,7 @@ class JourneyDetailsFragment: Fragment() {
         journeyDetailsViewModel.experiences.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.experienceTitleText.visibility = View.VISIBLE
                     binding.lineSeparatorRight.visibility = View.VISIBLE
                     binding.emptyExperiencesListImage.visibility = ConstraintLayout.GONE
@@ -90,43 +97,58 @@ class JourneyDetailsFragment: Fragment() {
             }
         })
 
-        journeyDetailsViewModel.navigateToNewExperience.observe(viewLifecycleOwner, Observer { journeyKey ->
-            journeyKey?.let {
-                this.findNavController().navigate(
-                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToNewExperienceDestination(journeyKey))
-                journeyDetailsViewModel.doneNavigatingToNewExperience()
-            }
-        })
+        journeyDetailsViewModel.navigateToNewExperience.observe(
+            viewLifecycleOwner,
+            Observer { journeyKey ->
+                journeyKey?.let {
+                    this.findNavController().navigate(
+                        JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToNewExperienceDestination(
+                            journeyKey
+                        )
+                    )
+                    journeyDetailsViewModel.doneNavigatingToNewExperience()
+                }
+            })
 
-        journeyDetailsViewModel.showSnackbarEventExperiencesDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cleared_experiences_message,
-                        journeyDetailsViewModel.getJourney().value?.placeName),
+        journeyDetailsViewModel.showSnackbarEventExperiencesDeleted.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    Snackbar.make(
+                        requireActivity().findViewById(android.R.id.content),
+                        getString(
+                            R.string.cleared_experiences_message,
+                            journeyDetailsViewModel.getJourney().value?.placeName
+                        ),
                         Snackbar.LENGTH_SHORT
                     ).show()
-                journeyDetailsViewModel.doneShowingSnackbarExperiencesDeleted()
-            }
-        })
+                    journeyDetailsViewModel.doneShowingSnackbarExperiencesDeleted()
+                }
+            })
 
-        journeyDetailsViewModel.showSnackbarEventJourneyDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.journey_deleted,
-                        journeyDetailsViewModel.getJourney().value?.placeName),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                journeyDetailsViewModel.doneShowingSnackbarJourneyDeleted()
-            }
-        })
+        journeyDetailsViewModel.showSnackbarEventJourneyDeleted.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    Snackbar.make(
+                        requireActivity().findViewById(android.R.id.content),
+                        getString(
+                            R.string.journey_deleted,
+                            journeyDetailsViewModel.getJourney().value?.placeName
+                        ),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    journeyDetailsViewModel.doneShowingSnackbarJourneyDeleted()
+                }
+            })
 
-        journeyDetailsViewModel.initiateImageImportFromGallery.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                requestStoragePermission()
-            }
-        })
+        journeyDetailsViewModel.initiateImageImportFromGallery.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    requestStoragePermission()
+                }
+            })
 
         journeyDetailsViewModel.openCoverPhotoDialogFragment.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -161,13 +183,28 @@ class JourneyDetailsFragment: Fragment() {
         inflater.inflate(R.menu.journey_details_overflow_menu, menu)
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_experiences_menu)
-        val spannabledeleteAllExperiencesMenuString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannabledeleteAllExperiencesMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannabledeleteAllExperiencesMenuString.length, 0)
+        val spannabledeleteAllExperiencesMenuString =
+            SpannableString(deleteAllExperiencesMenu.title.toString())
+        spannabledeleteAllExperiencesMenuString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannabledeleteAllExperiencesMenuString.length, 0
+        )
         deleteAllExperiencesMenu.title = spannabledeleteAllExperiencesMenuString
 
         val deleteJourneyMenu = menu.findItem(R.id.delete_journey_menu)
         val spannabledeleteJourneyMenuString = SpannableString(deleteJourneyMenu.title.toString())
-        spannabledeleteJourneyMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannabledeleteJourneyMenuString.length, 0)
+        spannabledeleteJourneyMenuString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannabledeleteJourneyMenuString.length, 0
+        )
         deleteJourneyMenu.title = spannabledeleteJourneyMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -176,16 +213,16 @@ class JourneyDetailsFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.home_menu) {
+        if (id == R.id.home_menu) {
             journeyDetailsViewModel.onNavigateToJourneysHome()
         }
 
-        if(id == R.id.change_journey_cover_photo_menu) {
+        if (id == R.id.change_journey_cover_photo_menu) {
             journeyDetailsViewModel.onChangeCoverPhotoClicked()
             journeyDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(id == R.id.delete_all_experiences_menu) {
+        if (id == R.id.delete_all_experiences_menu) {
             val dialogFragment = DeleteAllExperiencesDialogFragment(journeyDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -203,7 +240,7 @@ class JourneyDetailsFragment: Fragment() {
             return true
         }
 
-        if(id == R.id.delete_journey_menu) {
+        if (id == R.id.delete_journey_menu) {
             val dialogFragment = DeleteJourneyDialogFragment(journeyDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -250,7 +287,7 @@ class JourneyDetailsFragment: Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == 9000) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 9000) {
             val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)

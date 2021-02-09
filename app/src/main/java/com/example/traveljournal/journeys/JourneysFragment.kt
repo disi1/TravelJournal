@@ -20,11 +20,12 @@ class JourneysFragment : Fragment() {
     private lateinit var journeysViewModel: JourneysViewModel
     private lateinit var binding: FragmentJourneysBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowCustomEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(android.R.attr.background.toDrawable())
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
@@ -33,7 +34,8 @@ class JourneysFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_journeys, container, false)
+            R.layout.fragment_journeys, container, false
+        )
 
         val application = requireNotNull(this.activity).application
 
@@ -41,12 +43,13 @@ class JourneysFragment : Fragment() {
 
         val viewModelFactory = JourneysViewModelFactory(dataSource, application)
 
-        journeysViewModel = ViewModelProviders.of(this, viewModelFactory).get(JourneysViewModel::class.java)
+        journeysViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(JourneysViewModel::class.java)
 
         binding.journeysViewModel = journeysViewModel
         binding.lifecycleOwner = this
 
-        if(intent.data != null) {
+        if (intent.data != null) {
             journeysViewModel.backupFilePath.value = intent.data.toString()
             intent.data = null
             journeysViewModel.onRestoreMechanismInitialized()
@@ -63,11 +66,11 @@ class JourneysFragment : Fragment() {
 
         journeysViewModel.journeys.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if(adapter.journeysList == null) {
+                if (adapter.journeysList == null) {
                     adapter.journeysList = it
                 }
                 adapter.submitList(it)
-                if(it.isNotEmpty()) {
+                if (it.isNotEmpty()) {
                     binding.emptyJourneyListImage.visibility = ConstraintLayout.GONE
                     binding.searchView.visibility = ConstraintLayout.VISIBLE
                 } else {
@@ -79,7 +82,8 @@ class JourneysFragment : Fragment() {
 
         binding.searchView.isFocusable = false
 
-        binding.searchView.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -92,25 +96,27 @@ class JourneysFragment : Fragment() {
         })
 
         journeysViewModel.navigateToNewJourney.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
                     JourneysFragmentDirections
-                        .actionJourneysDestinationToNewJourneyDestination())
+                        .actionJourneysDestinationToNewJourneyDestination()
+                )
                 journeysViewModel.doneNavigating()
             }
         })
 
         journeysViewModel.navigateToSettings.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
                     JourneysFragmentDirections
-                        .actionJourneysDestinationToSettingsDestination())
+                        .actionJourneysDestinationToSettingsDestination()
+                )
                 journeysViewModel.onDoneNavigatingToSettings()
             }
         })
 
         journeysViewModel.openRestoreDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 val dialogFragment = RestoreDialogFragment(journeysViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
@@ -145,7 +151,7 @@ class JourneysFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.settings_menu) {
+        if (id == R.id.settings_menu) {
             journeysViewModel.onNavigateToSettings()
             return true
         }

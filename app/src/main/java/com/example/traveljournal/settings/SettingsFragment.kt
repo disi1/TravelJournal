@@ -21,7 +21,7 @@ import com.example.traveljournal.database.TravelDatabase
 import com.example.traveljournal.databinding.FragmentSettingsBinding
 import com.google.android.material.snackbar.Snackbar
 
-class SettingsFragment: Fragment() {
+class SettingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,8 @@ class SettingsFragment: Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
             ColorDrawable(
-                ContextCompat.getColor(requireContext(), R.color.backgroundColor))
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor)
+            )
         )
 
         val binding: FragmentSettingsBinding = DataBindingUtil.inflate(
@@ -46,7 +47,8 @@ class SettingsFragment: Fragment() {
 
         val viewModelFactory = SettingsViewModelFactory(dataSource, application)
 
-        val settingsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SettingsViewModel::class.java)
+        val settingsViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(SettingsViewModel::class.java)
 
         binding.settingsViewModel = settingsViewModel
         binding.lifecycleOwner = this
@@ -63,7 +65,7 @@ class SettingsFragment: Fragment() {
         })
 
         settingsViewModel.openBackupDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 val dialogFragment = BackupDialogFragment(settingsViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
@@ -81,7 +83,7 @@ class SettingsFragment: Fragment() {
         })
 
         settingsViewModel.openDeleteDataDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 val dialogFragment = DeleteAllDataDialogFragment(settingsViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
@@ -99,9 +101,10 @@ class SettingsFragment: Fragment() {
         })
 
         settingsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
-                    SettingsFragmentDirections.actionSettingsDestinationToJourneysDestination())
+                    SettingsFragmentDirections.actionSettingsDestinationToJourneysDestination()
+                )
                 settingsViewModel.doneNavigatingToJourneys()
             }
         })
@@ -110,13 +113,16 @@ class SettingsFragment: Fragment() {
             binding.reminderFrequencySpinner.isEnabled = it != true
         })
 
-        createChannel(getString(R.string.backup_notification_channel_id), getString(R.string.backup_notification_channel_name))
+        createChannel(
+            getString(R.string.backup_notification_channel_id),
+            getString(R.string.backup_notification_channel_name)
+        )
 
         return binding.root
     }
 
     private fun createChannel(channelId: String, channelName: String) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 channelId,
                 channelName,

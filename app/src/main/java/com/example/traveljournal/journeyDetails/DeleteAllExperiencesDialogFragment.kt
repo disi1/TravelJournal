@@ -10,7 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteAllExperiencesBinding
 
-class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel): DialogFragment() {
+class DeleteAllExperiencesDialogFragment(val journeyDetailsViewModel: JourneyDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView

@@ -10,7 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteAllPhotosBinding
 
-class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
+class DeleteAllPhotosDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView

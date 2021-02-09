@@ -4,6 +4,5 @@
     <item
         android:id="@+id/createJourneyButton"
         android:title="@string/create_journey_button"
-        app:showAsAction="always"
-        />
+        app:showAsAction="always" />
 </menu>
