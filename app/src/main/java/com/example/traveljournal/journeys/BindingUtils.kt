@@ -29,7 +29,7 @@ fun TextView.setJourneyDestinationAddress(item: Journey?) {
 @BindingAdapter("journeyImage")
 fun setJourneyImage(imageView: ImageView, item: Journey?) {
     item?.let {
-        if(item.coverPhotoSrcUri == "") {
+        if (item.coverPhotoSrcUri == "") {
             imageView.setImageResource(R.drawable.ic_undraw_journey)
         } else {
             val imageUri = item.coverPhotoSrcUri.toUri()

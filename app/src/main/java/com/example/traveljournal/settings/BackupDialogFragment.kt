@@ -20,7 +20,8 @@ import kotlinx.coroutines.*
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-class BackupDialogFragment(private val settingsViewModel: SettingsViewModel): DialogFragment(), CoroutineScope {
+class BackupDialogFragment(private val settingsViewModel: SettingsViewModel) : DialogFragment(),
+    CoroutineScope {
 
     private lateinit var backUpButton: Button
     private lateinit var cancelButton: TextView
@@ -64,12 +65,18 @@ class BackupDialogFragment(private val settingsViewModel: SettingsViewModel): Di
 
         backUpButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
+            backUpButton.isEnabled = false
+            cancelButton.isEnabled = false
 
             val zipBackupFile = getBackupPath(requireContext()) + "TravelDiaryBackup.bdia"
 
             launch {
                 withContext(Dispatchers.IO) {
-                    settingsViewModel.onExternalStorageBackup(getBackupPath(requireContext()), zipBackupFile, requireContext())
+                    settingsViewModel.onExternalStorageBackup(
+                        getBackupPath(requireContext()),
+                        zipBackupFile,
+                        requireContext()
+                    )
                 }
 
                 backUpDataExternally(zipBackupFile, requireContext())
@@ -100,16 +107,17 @@ class BackupDialogFragment(private val settingsViewModel: SettingsViewModel): Di
 
     private fun backUpDataExternally(backupZipFilePath: String, context: Context) {
         val backupZipFile = File(backupZipFilePath)
-            val contentUri: Uri = getUriForFile(context, "com.example.traveljournal.fileprovider", backupZipFile)
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_SUBJECT, "Travel Diary Backup")
-                putExtra(Intent.EXTRA_TEXT, "You backed up your data at ${getCurrentDateAndTime()}.")
-                putExtra(Intent.EXTRA_STREAM, contentUri)
-                type = "application/bdia"
-            }
+        val contentUri: Uri =
+            getUriForFile(context, "com.example.traveljournal.fileprovider", backupZipFile)
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_SUBJECT, "Travel Diary Backup")
+            putExtra(Intent.EXTRA_TEXT, "You backed up your data at ${getCurrentDateAndTime()}.")
+            putExtra(Intent.EXTRA_STREAM, contentUri)
+            type = "application/bdia"
+        }
 
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 }

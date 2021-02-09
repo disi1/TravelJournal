@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.traveljournal.AppPreferences
 import com.example.traveljournal.R
 import kotlinx.android.synthetic.main.fragment_splash.*
 
 
-class SplashFragment: Fragment() {
+class SplashFragment : Fragment() {
     lateinit var retripImage: ImageView
     lateinit var retrieve: TextView
     lateinit var remember: TextView
@@ -52,57 +53,59 @@ class SplashFragment: Fragment() {
             context?.let {
                 findNavController().navigate(SplashFragmentDirections.actionSplashDestinationToJourneysDestination())
             }
-        }, 2300)
+        }, 3800)
+
+        AppPreferences.firstTimeOpeningApp = false
     }
 
     private fun faderRetripImage() {
         val animator = ObjectAnimator.ofFloat(retripImage, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 800
+        animator.duration = 1500
         animator.start()
     }
 
     private fun faderRetrieve() {
         val animator = ObjectAnimator.ofFloat(retrieve, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 800
+        animator.duration = 1500
         animator.addListener(onStart = {
             retrieve.visibility = View.VISIBLE
         })
-        animator.startDelay = 500
+        animator.startDelay = 1200
         animator.start()
     }
 
     private fun faderRemember() {
         val animator = ObjectAnimator.ofFloat(remember, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 800
+        animator.duration = 1500
         animator.addListener(onStart = {
             remember.visibility = View.VISIBLE
         })
-        animator.startDelay = 500
+        animator.startDelay = 1200
         animator.start()
     }
 
     private fun faderRelive() {
         val animator = ObjectAnimator.ofFloat(relive, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 800
+        animator.duration = 1500
         animator.addListener(onStart = {
             relive.visibility = View.VISIBLE
         })
-        animator.startDelay = 500
+        animator.startDelay = 1200
         animator.start()
     }
 
     private fun faderRetrip() {
         val animator = ObjectAnimator.ofFloat(retrip, View.ALPHA, 0f, 1f)
         animator.repeatCount = 0
-        animator.duration = 800
+        animator.duration = 1500
         animator.addListener(onStart = {
             retrip.visibility = View.VISIBLE
         })
-        animator.startDelay = 1300
+        animator.startDelay = 2000
         animator.start()
     }
 }

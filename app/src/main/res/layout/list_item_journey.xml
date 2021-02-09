@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="journey"
             type="com.example.traveljournal.database.Journey" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -40,7 +42,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:transitionName="@{@string/transition_journey_image(journey.journeyId)}"
-                tools:srcCompat="@drawable/ic_undraw_journey"/>
+                tools:srcCompat="@drawable/ic_undraw_journey" />
 
             <ImageView
                 android:id="@+id/gradient"
@@ -51,19 +53,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/journey_destination_name"/>
+                app:layout_constraintTop_toTopOf="@id/journey_destination_name" />
 
             <ImageView
                 android:id="@+id/location_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_baseline_location_on"
-                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@id/journey_destination_address"
                 app:layout_constraintEnd_toStartOf="@id/journey_destination_address"
                 app:layout_constraintStart_toStartOf="@id/journey_image"
                 android:transitionName="@{@string/transition_journey_location_marker(journey.journeyId)}"
-                app:layout_constraintTop_toTopOf="@id/journey_destination_address"/>
+                app:layout_constraintTop_toTopOf="@id/journey_destination_address"
+                app:tint="@android:color/white" />
 
             <TextView
                 android:id="@+id/journey_destination_name"
@@ -79,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/journey_image"
                 app:layout_constraintStart_toEndOf="@+id/location_icon"
                 android:transitionName="@{@string/transition_journey_destination_name(journey.journeyId)}"
-                tools:text="Zürich"/>
+                tools:text="Zürich" />
 
             <TextView
                 android:id="@+id/journey_destination_address"
@@ -93,7 +95,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/journey_destination_name"
                 app:layout_constraintStart_toStartOf="@+id/journey_destination_name"
                 android:transitionName="@{@string/transition_journey_destination_address(journey.journeyId)}"
-                tools:text="Zürich, Switzerland"/>
+                tools:text="Zürich, Switzerland" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

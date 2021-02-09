@@ -3,9 +3,9 @@ package com.example.traveljournal.database
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class JourneyWithExperiences (
+data class JourneyWithExperiences(
     @Embedded val journey: Journey,
-    @Relation (
+    @Relation(
         parentColumn = "journeyId",
         entityColumn = "journey_host_id"
     )

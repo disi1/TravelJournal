@@ -18,7 +18,8 @@ import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteExperienceBinding
 
 
-class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
+class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView
@@ -41,7 +42,8 @@ class DeleteExperienceDialogFragment(val experienceDetailsViewModel: ExperienceD
         val deleteExperienceQuestion = "$deleteQuestionFirstPart <b>$experienceName</b>?"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            binding.deleteExperienceQuestion.text = Html.fromHtml(deleteExperienceQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.deleteExperienceQuestion.text =
+                Html.fromHtml(deleteExperienceQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
         } else {
             binding.deleteExperienceQuestion.text = Html.fromHtml(deleteExperienceQuestion)
         }

@@ -7,10 +7,10 @@ import com.example.traveljournal.database.TravelDatabaseDao
 class NewExperienceViewModelFactory(
     private val journeyKey: Long,
     private val dataSource: TravelDatabaseDao
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
-    override  fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(NewExperienceViewModel::class.java)) {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NewExperienceViewModel::class.java)) {
             return NewExperienceViewModel(journeyKey, dataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

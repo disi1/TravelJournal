@@ -15,8 +15,9 @@ import java.util.zip.ZipInputStream
 private const val DATABASE_NAME = "travel_history_database"
 
 class JourneysViewModel(
-        val database: TravelDatabaseDao,
-        application: Application) : AndroidViewModel(application) {
+    val database: TravelDatabaseDao,
+    application: Application
+) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
 
@@ -67,7 +68,7 @@ class JourneysViewModel(
 
     private fun unzipFile(backupFilePath: String, backupStoragePath: String, context: Context) {
         val backupStorageDir = File(backupStoragePath)
-        if(backupStorageDir.exists()) {
+        if (backupStorageDir.exists()) {
             try {
                 backupStorageDir.deleteRecursively()
             } catch (e: Exception) {
@@ -82,9 +83,9 @@ class JourneysViewModel(
         val zipInputStream = ZipInputStream(fileInputStream)
 
         var entry = zipInputStream.nextEntry
-        while(entry != null) {
+        while (entry != null) {
             val filePath: String = backupStoragePath + File.separator.toString() + entry.name
-            if(entry.isDirectory) {
+            if (entry.isDirectory) {
                 val dir = File(filePath)
                 dir.mkdirs()
             } else {

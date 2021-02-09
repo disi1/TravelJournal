@@ -9,10 +9,10 @@ import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.File
 
-class NewExperienceViewModel (
+class NewExperienceViewModel(
     private val journeyKey: Long = 0L,
     val database: TravelDatabaseDao
-): ViewModel() {
+) : ViewModel() {
 
     val selectedExperiencePlaceName = MutableLiveData<String>()
 
@@ -50,37 +50,37 @@ class NewExperienceViewModel (
         uiScope.launch {
             val experience = Experience(journeyHostId = journeyKey)
 
-            if(experienceName.value == null) {
+            if (experienceName.value == null) {
                 experience.experienceName = ""
             } else {
                 experience.experienceName = experienceName.value.toString()
             }
 
-            if(experienceDescription.value == null) {
+            if (experienceDescription.value == null) {
                 experience.experienceDescription = ""
             } else {
                 experience.experienceDescription = experienceDescription.value.toString()
             }
 
-            if(selectedExperiencePlaceName.value == null) {
+            if (selectedExperiencePlaceName.value == null) {
                 experience.experiencePlaceName = ""
             } else {
                 experience.experiencePlaceName = selectedExperiencePlaceName.value.toString()
             }
 
-            if(selectedExperiencePlaceAddress.value == null) {
+            if (selectedExperiencePlaceAddress.value == null) {
                 experience.experiencePlaceAddress = "No location set"
             } else {
                 experience.experiencePlaceAddress = selectedExperiencePlaceAddress.value.toString()
             }
 
-            if(coverPhotoAttributions.value == null) {
+            if (coverPhotoAttributions.value == null) {
                 experience.coverPhotoAttributions = ""
             } else {
                 experience.coverPhotoAttributions = coverPhotoAttributions.value.toString()
             }
 
-            if(coverPhotoSrcUri.value == null) {
+            if (coverPhotoSrcUri.value == null) {
                 experience.coverPhotoSrcUri = ""
             } else {
                 experience.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
@@ -99,9 +99,9 @@ class NewExperienceViewModel (
     }
 
     fun onCancelExperience() {
-        if(coverPhotoSrcUri.value != null) {
+        if (coverPhotoSrcUri.value != null) {
             val fileToDelete = File(coverPhotoSrcUri.value!!)
-            if(fileToDelete.exists()) {
+            if (fileToDelete.exists()) {
                 fileToDelete.delete()
             }
         }

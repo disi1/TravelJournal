@@ -13,7 +13,8 @@ import com.example.traveljournal.databinding.FragmentDialogDeleteAllDataBinding
 import com.example.traveljournal.getBackupPath
 import java.io.File
 
-class DeleteAllDataDialogFragment(private val settingsViewModel: SettingsViewModel): DialogFragment() {
+class DeleteAllDataDialogFragment(private val settingsViewModel: SettingsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView

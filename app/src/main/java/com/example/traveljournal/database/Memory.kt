@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import java.util.*
 
 @Entity(tableName = "memory_table")
-data class Memory (
+data class Memory(
     @PrimaryKey(autoGenerate = true)
     var memoryId: Long = 0L,
 

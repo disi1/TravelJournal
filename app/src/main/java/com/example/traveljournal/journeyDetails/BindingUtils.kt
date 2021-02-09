@@ -35,7 +35,7 @@ fun TextView.setExperiencePlaceAddress(item: Experience?) {
 @BindingAdapter("experienceImage")
 fun setExperienceImage(imageView: ImageView, item: Experience?) {
     item?.let {
-        if(item.coverPhotoSrcUri == "") {
+        if (item.coverPhotoSrcUri == "") {
             imageView.setImageResource(R.drawable.ic_undraw_experience)
         } else {
             val imageUri = item.coverPhotoSrcUri.toUri()
@@ -56,7 +56,7 @@ fun TextView.setExperienceDescription(item: Experience?) {
 @BindingAdapter("experienceNameVisibility")
 fun TextView.setExperienceNameVisibility(item: Experience?) {
     item?.let {
-        visibility = if(it.experienceName == "") {
+        visibility = if (it.experienceName == "") {
             View.INVISIBLE
         } else {
             View.VISIBLE
@@ -67,7 +67,7 @@ fun TextView.setExperienceNameVisibility(item: Experience?) {
 @BindingAdapter("experienceDescriptionVisibility")
 fun TextView.setExperienceDescriptionVisibility(item: Experience?) {
     item?.let {
-        visibility = if(it.experienceDescription == "") {
+        visibility = if (it.experienceDescription == "") {
             View.INVISIBLE
         } else {
             View.VISIBLE
@@ -78,7 +78,7 @@ fun TextView.setExperienceDescriptionVisibility(item: Experience?) {
 @BindingAdapter("experiencePlaceNameVisibility")
 fun TextView.setExperiencePlaceNameVisibility(item: Experience?) {
     item?.let {
-        visibility = if(it.experiencePlaceName == "") {
+        visibility = if (it.experiencePlaceName == "") {
             View.GONE
         } else {
             View.VISIBLE
@@ -89,7 +89,7 @@ fun TextView.setExperiencePlaceNameVisibility(item: Experience?) {
 @BindingAdapter("experiencePlaceAddressVisibility")
 fun TextView.setExperiencePlaceAddressVisibility(item: Experience?) {
     item?.let {
-        visibility = if(it.experiencePlaceAddress == "") {
+        visibility = if (it.experiencePlaceAddress == "") {
             View.GONE
         } else {
             View.VISIBLE
@@ -98,9 +98,9 @@ fun TextView.setExperiencePlaceAddressVisibility(item: Experience?) {
 }
 
 @BindingAdapter("experienceLocationIconVisibility")
-fun ImageView.setExperienceLocationIconVisibility(item:Experience?) {
+fun ImageView.setExperienceLocationIconVisibility(item: Experience?) {
     item?.let {
-        visibility = if(it.experiencePlaceAddress == "") {
+        visibility = if (it.experiencePlaceAddress == "") {
             View.INVISIBLE
         } else {
             View.VISIBLE

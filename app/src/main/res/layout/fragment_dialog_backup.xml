@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="journeysViewModel"
             type="com.example.traveljournal.journeys.JourneysViewModel" />
@@ -26,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/backup_title"
@@ -129,7 +130,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cancel_button"
-            app:layout_constraintTop_toBottomOf="@+id/backup_guideline"/>
+            app:layout_constraintTop_toBottomOf="@+id/backup_guideline" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

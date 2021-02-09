@@ -11,7 +11,8 @@ import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteAllExperiencesBinding
 import com.example.traveljournal.databinding.FragmentDialogDeleteAllMemoriesBinding
 
-class DeleteAllMemoriesDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
+class DeleteAllMemoriesDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView

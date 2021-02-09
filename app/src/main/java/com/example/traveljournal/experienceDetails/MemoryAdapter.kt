@@ -44,7 +44,7 @@ class MemoryAdapter(
 
     fun addHeaderAndSubmitList(list: List<Memory>?) {
         adapterScope.launch {
-            val items = when(list) {
+            val items = when (list) {
                 null -> listOf(DataItem.DescriptionHeader)
                 else -> listOf(DataItem.DescriptionHeader) + list.map { DataItem.MemoryItem(it) }
             }
@@ -66,12 +66,16 @@ class MemoryAdapter(
         }
     }
 
-    class ViewHolder private constructor(val binding: ListItemMemoryBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ListItemMemoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Memory
         ) {
             binding.clickListener = View.OnClickListener {
-                val destination = ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToMemoryDetailsFragment(item.memoryId)
+                val destination =
+                    ExperienceDetailsFragmentDirections.actionExperienceDetailsDestinationToMemoryDetailsFragment(
+                        item.memoryId
+                    )
                 val extras = FragmentNavigatorExtras(
                     binding.memoryImage to binding.memoryImage.transitionName,
                     binding.memoryName to binding.memoryName.transitionName,
@@ -95,10 +99,11 @@ class MemoryAdapter(
     }
 }
 
-class DescriptionHeaderViewHolder(val binding: HeaderExperienceDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
+class DescriptionHeaderViewHolder(val binding: HeaderExperienceDescriptionBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(item: ExperienceDetailsViewModel, memoriesList: List<Memory>?) {
         if (memoriesList != null) {
-            if(memoriesList.isNotEmpty()) {
+            if (memoriesList.isNotEmpty()) {
                 binding.emptyMemoriesListImage.visibility = View.GONE
                 binding.lineSeparatorRight.visibility = View.VISIBLE
                 binding.memoriesTitleText.visibility = View.VISIBLE
@@ -138,9 +143,9 @@ sealed class DataItem {
         override val id = memory.memoryId
     }
 
-    object DescriptionHeader: DataItem() {
+    object DescriptionHeader : DataItem() {
         override val id = Long.MIN_VALUE
     }
 
-    abstract  val id : Long
+    abstract val id: Long
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="memoryDetailsViewModel"
             type="com.example.traveljournal.memoryDetails.MemoryDetailsViewModel" />
@@ -61,7 +62,7 @@
             android:textStyle="bold"
             android:alpha="0.87"
             android:textColor="?attr/colorOnBackground"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/done_button"

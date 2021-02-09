@@ -7,10 +7,11 @@ import java.lang.IllegalArgumentException
 import javax.sql.CommonDataSource
 
 class NewJourneyViewModelFactory(
-        private val dataSource: TravelDatabaseDao) : ViewModelProvider.Factory {
+    private val dataSource: TravelDatabaseDao
+) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
-    override  fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(NewJourneyViewModel::class.java)) {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NewJourneyViewModel::class.java)) {
             return NewJourneyViewModel(dataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

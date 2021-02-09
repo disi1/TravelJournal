@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="experienceDetailsViewModel"
             type="com.example.traveljournal.experienceDetails.ExperienceDetailsViewModel" />

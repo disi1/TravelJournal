@@ -17,7 +17,7 @@ import java.util.*
 
 class JourneyAdapter(
     var journeysList: List<Journey>?
-): ListAdapter<Journey, JourneyAdapter.ViewHolder>(JourneyDiffCallback()), Filterable {
+) : ListAdapter<Journey, JourneyAdapter.ViewHolder>(JourneyDiffCallback()), Filterable {
 
     var journeysFilteredList: List<Journey>?
 
@@ -33,12 +33,16 @@ class JourneyAdapter(
         holder.bind(getItem(position)!!)
     }
 
-    class ViewHolder private constructor(val binding: ListItemJourneyBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ListItemJourneyBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Journey
         ) {
             binding.clickListener = View.OnClickListener {
-                val destination = JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(item.journeyId)
+                val destination =
+                    JourneysFragmentDirections.actionJourneysDestinationToJourneyDetailsDestination(
+                        item.journeyId
+                    )
                 val extras = FragmentNavigatorExtras(
                     binding.journeyDestinationName to binding.journeyDestinationName.transitionName,
                     binding.journeyDestinationAddress to binding.journeyDestinationAddress.transitionName,
@@ -64,13 +68,17 @@ class JourneyAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if(charSearch.isEmpty()) {
+                if (charSearch.isEmpty()) {
                     journeysFilteredList = journeysList
                 } else {
                     journeysList?.let {
                         val resultList = arrayListOf<Journey>()
-                        for(journey in journeysList!!) {
-                            if ((journey.placeName.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) || (journey.placeAddress.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)))) {
+                        for (journey in journeysList!!) {
+                            if ((journey.placeName.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT))) || (journey.placeAddress.toLowerCase(
+                                    Locale.ROOT
+                                ).contains(charSearch.toLowerCase(Locale.ROOT)))
+                            ) {
                                 resultList.add(journey)
                             }
                         }
@@ -92,7 +100,7 @@ class JourneyAdapter(
     }
 }
 
-class JourneyDiffCallback: DiffUtil.ItemCallback<Journey>() {
+class JourneyDiffCallback : DiffUtil.ItemCallback<Journey>() {
     override fun areItemsTheSame(oldItem: Journey, newItem: Journey): Boolean {
         return oldItem.journeyId == newItem.journeyId
     }

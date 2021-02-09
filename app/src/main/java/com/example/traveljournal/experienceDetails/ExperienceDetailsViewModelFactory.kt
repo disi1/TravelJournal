@@ -7,7 +7,7 @@ import com.example.traveljournal.database.TravelDatabaseDao
 class ExperienceDetailsViewModelFactory(
     private val experienceKey: Long = 0L,
     private val dataSource: TravelDatabaseDao
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ExperienceDetailsViewModel::class.java)) {

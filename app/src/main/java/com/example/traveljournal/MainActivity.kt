@@ -17,7 +17,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val navController = this.findNavController(R.id.navHostFragment)
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.journeys_destination))
+
+        if (!AppPreferences.firstTimeOpeningApp) {
+            val navInflater = navController.navInflater
+            val graph = navInflater.inflate(R.navigation.navigation)
+            graph.startDestination = R.id.journeys_destination
+
+            navController.graph = graph
+        }
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
     }

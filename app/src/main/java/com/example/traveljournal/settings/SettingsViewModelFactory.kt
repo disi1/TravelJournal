@@ -7,7 +7,7 @@ import com.example.traveljournal.database.TravelDatabaseDao
 import com.example.traveljournal.journeys.JourneysViewModel
 import java.lang.IllegalArgumentException
 
-class SettingsViewModelFactory (
+class SettingsViewModelFactory(
     private val dataSource: TravelDatabaseDao,
     private val application: Application
 ) : ViewModelProvider.Factory {

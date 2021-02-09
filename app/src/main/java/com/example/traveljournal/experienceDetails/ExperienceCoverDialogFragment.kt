@@ -14,7 +14,8 @@ import com.example.traveljournal.R
 import com.example.traveljournal.database.Experience
 import com.example.traveljournal.databinding.FragmentDialogExperienceCoverBinding
 
-class ExperienceCoverDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
+class ExperienceCoverDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel) :
+    DialogFragment() {
     private lateinit var changeCoverPhotoButton: ImageButton
     private lateinit var closeCoverPhotoDialogButton: ImageButton
 
@@ -31,12 +32,17 @@ class ExperienceCoverDialogFragment(val experienceDetailsViewModel: ExperienceDe
             false
         )
 
-        if(experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions == "") {
+        if (experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions == "") {
             binding.creditsText.visibility = TextView.GONE
         }
 
         binding.experienceDetailsViewModel = experienceDetailsViewModel
-        binding.creditsText.text = HtmlCompat.fromHtml(getString(R.string.credits_to, experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        binding.creditsText.text = HtmlCompat.fromHtml(
+            getString(
+                R.string.credits_to,
+                experienceDetailsViewModel.getExperience().value?.coverPhotoAttributions
+            ), HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
         binding.creditsText.movementMethod = LinkMovementMethod.getInstance()
         changeCoverPhotoButton = binding.changeCoverButton
         closeCoverPhotoDialogButton = binding.closeCoverPhotoButton

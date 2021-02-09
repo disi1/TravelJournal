@@ -13,7 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.traveljournal.R
 import com.example.traveljournal.databinding.FragmentDialogDeleteMemoryBinding
 
-class DeleteMemoryDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel): DialogFragment() {
+class DeleteMemoryDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var deleteButton: Button
     private lateinit var cancelButton: TextView
@@ -36,7 +37,8 @@ class DeleteMemoryDialogFragment(val memoryDetailsViewModel: MemoryDetailsViewMo
         val deleteMemoryQuestion = "$deleteMemoryQuestionFirstPart <b>$memoryName</b>?"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            binding.deleteMemoryQuestion.text = Html.fromHtml(deleteMemoryQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.deleteMemoryQuestion.text =
+                Html.fromHtml(deleteMemoryQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY)
         } else {
             binding.deleteMemoryQuestion.text = Html.fromHtml(deleteMemoryQuestion)
         }

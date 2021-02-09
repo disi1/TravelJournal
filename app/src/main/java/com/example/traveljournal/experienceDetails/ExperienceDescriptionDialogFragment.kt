@@ -12,7 +12,8 @@ import com.example.traveljournal.databinding.FragmentDialogExperienceDescription
 import com.google.android.material.textfield.TextInputEditText
 
 
-class ExperienceDescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel): DialogFragment() {
+class ExperienceDescriptionDialogFragment(val experienceDetailsViewModel: ExperienceDetailsViewModel) :
+    DialogFragment() {
 
     private lateinit var descriptionEditText: TextInputEditText
     private lateinit var doneButton: Button

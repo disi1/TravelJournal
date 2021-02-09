@@ -15,7 +15,7 @@ import java.io.File
 class JourneyDetailsViewModel(
     private val journeyKey: Long = 0L,
     dataSource: TravelDatabaseDao
-): ViewModel() {
+) : ViewModel() {
 
     val database = dataSource
 
@@ -92,9 +92,9 @@ class JourneyDetailsViewModel(
     }
 
     fun onCoverPhotoChanged() {
-        if(journey.value?.coverPhotoSrcUri != "") {
+        if (journey.value?.coverPhotoSrcUri != "") {
             val fileToDelete = File(journey.value?.coverPhotoSrcUri!!)
-            if(fileToDelete.exists()) {
+            if (fileToDelete.exists()) {
                 fileToDelete.delete()
             }
         }
@@ -186,14 +186,14 @@ class JourneyDetailsViewModel(
 
     private fun deleteJourneyCoverPhoto() {
         val journeyCoverPhotoDelete = File(journey.value?.coverPhotoSrcUri!!)
-        if(journeyCoverPhotoDelete.exists()) {
+        if (journeyCoverPhotoDelete.exists()) {
             journeyCoverPhotoDelete.delete()
         }
     }
 
     private fun deleteExperienceCoverPhoto(experience: Experience) {
         val experienceCoverPhotoDelete = File(experience.coverPhotoSrcUri)
-        if(experienceCoverPhotoDelete.exists()) {
+        if (experienceCoverPhotoDelete.exists()) {
             experienceCoverPhotoDelete.delete()
         }
     }

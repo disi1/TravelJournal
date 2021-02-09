@@ -18,7 +18,8 @@ import com.example.traveljournal.getBackupPath
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class RestoreDialogFragment(val journeysViewModel: JourneysViewModel): DialogFragment(), CoroutineScope {
+class RestoreDialogFragment(val journeysViewModel: JourneysViewModel) : DialogFragment(),
+    CoroutineScope {
     private lateinit var cancelButton: TextView
     private lateinit var restoreButton: Button
     private lateinit var progressBar: ProgressBar
@@ -58,6 +59,8 @@ class RestoreDialogFragment(val journeysViewModel: JourneysViewModel): DialogFra
 
         restoreButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
+            restoreButton.isEnabled = false
+            cancelButton.isEnabled = false
 
             launch {
                 withContext(Dispatchers.IO) {

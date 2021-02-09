@@ -13,7 +13,8 @@ import com.example.traveljournal.database.Memory
 import com.example.traveljournal.databinding.ListItemExperienceBinding
 import com.example.traveljournal.journeys.JourneysFragmentDirections
 
-class ExperienceAdapter() : ListAdapter<Experience, ExperienceAdapter.ViewHolder>(ExperienceDiffCallback()) {
+class ExperienceAdapter() :
+    ListAdapter<Experience, ExperienceAdapter.ViewHolder>(ExperienceDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -23,12 +24,16 @@ class ExperienceAdapter() : ListAdapter<Experience, ExperienceAdapter.ViewHolder
         holder.bind(getItem(position)!!)
     }
 
-    class ViewHolder private constructor(val binding: ListItemExperienceBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ListItemExperienceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: Experience
         ) {
             binding.clickListener = View.OnClickListener {
-                val destination = JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToExperienceDetailsDestination(item.experienceId)
+                val destination =
+                    JourneyDetailsFragmentDirections.actionJourneyDetailsDestinationToExperienceDetailsDestination(
+                        item.experienceId
+                    )
                 val extras = FragmentNavigatorExtras(
                     binding.experienceImage to binding.experienceImage.transitionName,
                     binding.experienceName to binding.experienceName.transitionName,

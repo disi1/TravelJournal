@@ -7,7 +7,7 @@ import com.example.traveljournal.database.TravelDatabaseDao
 import kotlinx.coroutines.*
 import java.io.File
 
-class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
+class NewJourneyViewModel(val database: TravelDatabaseDao) : ViewModel() {
 
     val selectedPlaceName = MutableLiveData<String>()
 
@@ -40,25 +40,25 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
         uiScope.launch {
             val journey = Journey()
 
-            if(coverPhotoAttributions.value == null) {
+            if (coverPhotoAttributions.value == null) {
                 journey.coverPhotoAttributions = ""
             } else {
                 journey.coverPhotoAttributions = coverPhotoAttributions.value.toString()
             }
 
-            if(coverPhotoSrcUri.value == null) {
+            if (coverPhotoSrcUri.value == null) {
                 journey.coverPhotoSrcUri = ""
             } else {
                 journey.coverPhotoSrcUri = coverPhotoSrcUri.value.toString()
             }
 
-            if(selectedPlaceName.value == null) {
+            if (selectedPlaceName.value == null) {
                 journey.placeName = ""
             } else {
                 journey.placeName = selectedPlaceName.value.toString()
             }
 
-            if(selectedPlaceAddress.value == null) {
+            if (selectedPlaceAddress.value == null) {
                 journey.placeAddress = ""
             } else {
                 journey.placeAddress = selectedPlaceAddress.value.toString()
@@ -77,9 +77,9 @@ class NewJourneyViewModel (val database: TravelDatabaseDao) : ViewModel() {
     }
 
     fun onCancelJourney() {
-        if(coverPhotoSrcUri.value != null) {
+        if (coverPhotoSrcUri.value != null) {
             val fileToDelete = File(coverPhotoSrcUri.value!!)
-            if(fileToDelete.exists()) {
+            if (fileToDelete.exists()) {
                 fileToDelete.delete()
             }
         }

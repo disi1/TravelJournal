@@ -7,13 +7,15 @@
         <item name="android:windowEnterTransition">@transition/explode</item>
         <item name="android:windowExitTransition">@transition/explode</item>
         <item name="android:windowSharedElementEnterTransition">
-            @transition/change_image_transform</item>
+            @transition/change_image_transform
+        </item>
         <item name="android:windowSharedElementExitTransition">
-            @transition/change_image_transform</item>
+            @transition/change_image_transform
+        </item>
         <!-- Customize your theme here. -->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--        <item name="colorAccent">@color/colorAccent</item>-->
+        <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
 
     <!-- Basic buttons styling-->
@@ -24,11 +26,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="LabelStyle" parent = "Widget.AppCompat.TextView">
+    <style name="LabelStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="EmptyListsHintStyle" parent = "Widget.AppCompat.TextView">
+    <style name="EmptyListsHintStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:paddingBottom">32dp</item>

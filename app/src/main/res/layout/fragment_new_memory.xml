@@ -5,6 +5,7 @@
     tools:context="memory.NewMemoryFragment">
 
     <data>
+
         <variable
             name="newMemoryViewModel"
             type="com.example.traveljournal.memory.NewMemoryViewModel" />
@@ -109,7 +110,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:enabled="false"
-            app:layout_constraintStart_toEndOf="@id/cancel_button"/>
+            app:layout_constraintStart_toEndOf="@id/cancel_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

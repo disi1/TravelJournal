@@ -25,7 +25,7 @@ import com.example.traveljournal.databinding.FragmentNewMemoryBinding
 import java.text.DateFormat
 import java.util.*
 
-class NewMemoryFragment: Fragment() {
+class NewMemoryFragment : Fragment() {
     private lateinit var newMemoryViewModel: NewMemoryViewModel
 
     override fun onCreateView(
@@ -37,14 +37,16 @@ class NewMemoryFragment: Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
             ColorDrawable(
-                ContextCompat.getColor(requireContext(), R.color.backgroundColor))
+                ContextCompat.getColor(requireContext(), R.color.backgroundColor)
+            )
         )
 
         val binding: FragmentNewMemoryBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_new_memory,
             container,
-            false)
+            false
+        )
 
         val application = requireNotNull(this.activity).application
 
@@ -74,24 +76,29 @@ class NewMemoryFragment: Fragment() {
         }
 
         newMemoryViewModel.chooseDateTextViewClickedClicked.observe(viewLifecycleOwner, Observer {
-            if(it==true) {
+            if (it == true) {
                 showDatePickerDialog(binding.memoryDate)
             }
         })
 
-        newMemoryViewModel.navigateToExperienceDetails.observe(viewLifecycleOwner, Observer { experienceKey ->
-            experienceKey?.let {
-                this.findNavController().navigate(
-                    NewMemoryFragmentDirections.actionNewMemoryDestinationToExperienceDetailsDestination(experienceKey))
-                newMemoryViewModel.doneNavigatingToExperienceDetails()
-            }
-        })
+        newMemoryViewModel.navigateToExperienceDetails.observe(
+            viewLifecycleOwner,
+            Observer { experienceKey ->
+                experienceKey?.let {
+                    this.findNavController().navigate(
+                        NewMemoryFragmentDirections.actionNewMemoryDestinationToExperienceDetailsDestination(
+                            experienceKey
+                        )
+                    )
+                    newMemoryViewModel.doneNavigatingToExperienceDetails()
+                }
+            })
 
         return binding.root
     }
 
     private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-        this.addTextChangedListener(object: TextWatcher {
+        this.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 afterTextChanged.invoke(s.toString())
             }
@@ -108,13 +115,20 @@ class NewMemoryFragment: Fragment() {
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
 
-        val datePickerDialog = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
-            calendar[thisYear, thisMonth] = thisDay
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { _, thisYear, thisMonth, thisDay ->
+                calendar[thisYear, thisMonth] = thisDay
 
-            memoryDateTextView.text = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.time)
+                memoryDateTextView.text =
+                    DateFormat.getDateInstance(DateFormat.LONG).format(calendar.time)
 
-            newMemoryViewModel.memoryTimestamp.value = calendar.time.time
-        }, year, month, day)
+                newMemoryViewModel.memoryTimestamp.value = calendar.time.time
+            },
+            year,
+            month,
+            day
+        )
         datePickerDialog.show()
     }
 }

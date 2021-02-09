@@ -28,7 +28,7 @@ fun setMemoryImage(imageView: ImageView, item: MemoryPhoto?) {
 @BindingAdapter("memoryPhotoCaption")
 fun TextView.setMemoryPhotoCaption(item: MemoryPhoto?) {
     item?.let {
-        text = if(item.photoCaption != "") {
+        text = if (item.photoCaption != "") {
             item.photoCaption
         } else {
             resources.getString(R.string.add_a_caption_here)
@@ -39,7 +39,7 @@ fun TextView.setMemoryPhotoCaption(item: MemoryPhoto?) {
 @BindingAdapter("editTextMemoryPhotoCaption")
 fun TextView.setMemoryPhotoCaptionOnEditText(item: MemoryPhoto?) {
     item?.let {
-        text = if(item.photoCaption != "") {
+        text = if (item.photoCaption != "") {
             item.photoCaption
         } else {
             ""

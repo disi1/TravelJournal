@@ -36,7 +36,7 @@ private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 8880
 private const val READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO = 9990
 private const val READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO = 9900
 
-class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogListener {
+class MemoryDetailsFragment : Fragment(), MemoryDescriptionDialogFragment.DialogListener {
     private lateinit var memoryDetailsViewModel: MemoryDetailsViewModel
     private lateinit var backupPhotoPath: String
     private lateinit var binding: FragmentMemoryDetailsBinding
@@ -54,9 +54,13 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.memory_details)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_background))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.toolbar_background
+            )
+        )
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -70,7 +74,8 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         val viewModelFactory = MemoryDetailsViewModelFactory(arguments.memoryKey, dataSource)
 
         memoryDetailsViewModel = ViewModelProviders.of(
-            this, viewModelFactory).get(MemoryDetailsViewModel::class.java)
+            this, viewModelFactory
+        ).get(MemoryDetailsViewModel::class.java)
 
         binding.memoryDetailsViewModel = memoryDetailsViewModel
 
@@ -81,7 +86,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         binding.addMemoryPhotoButton.setOnClickListener { view ->
             isRotated = rotateFAB(view, !isRotated)
-            if(isRotated) {
+            if (isRotated) {
                 showIn(binding.addPhotoFromCameraButton)
                 showIn(binding.addPhotoFromGalleryButton)
             } else {
@@ -92,7 +97,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         val manager = GridLayoutManager(activity, 3)
 
-        manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int) = when (position) {
                 0 -> 3
                 else -> 1
@@ -101,8 +106,8 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         binding.memoryPhotosGrid.layoutManager = manager
 
-        val adapter = MemoryPhotoGridAdapter(MemoryPhotoListener {
-            memoryPhoto ->  memoryDetailsViewModel.onMemoryPhotoClicked(memoryPhoto)
+        val adapter = MemoryPhotoGridAdapter(MemoryPhotoListener { memoryPhoto ->
+            memoryDetailsViewModel.onMemoryPhotoClicked(memoryPhoto)
         }, memoryDetailsViewModel, memoryDetailsViewModel.memoryPhotos.value)
 
         binding.memoryPhotosGrid.adapter = adapter
@@ -110,9 +115,10 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         backupPhotoPath = getBackupPath(requireContext()) + "Media/"
 
         memoryDetailsViewModel.navigateToJourneys.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 this.findNavController().navigate(
-                    MemoryDetailsFragmentDirections.actionMemoryDetailsDestinationToJourneysDestination())
+                    MemoryDetailsFragmentDirections.actionMemoryDetailsDestinationToJourneysDestination()
+                )
                 memoryDetailsViewModel.doneNavigatingToJourneysHome()
             }
         })
@@ -175,11 +181,15 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             }
         })
 
-        memoryDetailsViewModel.initiateCoverImageImportFromGallery.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                requestReadExternalStoragePermission(READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO)
-            }
-        })
+        memoryDetailsViewModel.initiateCoverImageImportFromGallery.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    requestReadExternalStoragePermission(
+                        READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO
+                    )
+                }
+            })
 
         memoryDetailsViewModel.initiateImageImportFromCamera.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -187,40 +197,51 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             }
         })
 
-        memoryDetailsViewModel.showSnackbarEventMemoryPhotosDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cleared_memory_photos_message,
-                        memoryDetailsViewModel.getMemory().value?.memoryName),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                memoryDetailsViewModel.doneShowingSnackbarMemoryPhotosDeleted()
-            }
-        })
+        memoryDetailsViewModel.showSnackbarEventMemoryPhotosDeleted.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    Snackbar.make(
+                        requireActivity().findViewById(android.R.id.content),
+                        getString(
+                            R.string.cleared_memory_photos_message,
+                            memoryDetailsViewModel.getMemory().value?.memoryName
+                        ),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    memoryDetailsViewModel.doneShowingSnackbarMemoryPhotosDeleted()
+                }
+            })
 
         memoryDetailsViewModel.showSnackbarEventMemoryDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 Snackbar.make(
                     requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.memory_deleted,
-                        memoryDetailsViewModel.getMemory().value?.memoryName),
+                    getString(
+                        R.string.memory_deleted,
+                        memoryDetailsViewModel.getMemory().value?.memoryName
+                    ),
                     Snackbar.LENGTH_SHORT
                 ).show()
                 memoryDetailsViewModel.doneShowingSnackbarMemoryDeleted()
             }
         })
 
-        memoryDetailsViewModel.navigateToExperienceDetails.observe(viewLifecycleOwner, androidx.lifecycle.Observer { experienceKey ->
-            experienceKey?.let {
-                this.findNavController().navigate(
-                    MemoryDetailsFragmentDirections.actionMemoryDetailsFragmentToExperienceDetailsDestination(experienceKey))
-                memoryDetailsViewModel.doneNavigatingToExperienceDetails()
-            }
-        })
+        memoryDetailsViewModel.navigateToExperienceDetails.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { experienceKey ->
+                experienceKey?.let {
+                    this.findNavController().navigate(
+                        MemoryDetailsFragmentDirections.actionMemoryDetailsFragmentToExperienceDetailsDestination(
+                            experienceKey
+                        )
+                    )
+                    memoryDetailsViewModel.doneNavigatingToExperienceDetails()
+                }
+            })
 
         memoryDetailsViewModel.openDescriptionDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 val dialogFragment = MemoryDescriptionDialogFragment(memoryDetailsViewModel)
 
                 val ft = parentFragmentManager.beginTransaction()
@@ -252,12 +273,26 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
 
         val deleteAllExperiencesMenu = menu.findItem(R.id.delete_all_memory_photos_menu)
         val spannableString = SpannableString(deleteAllExperiencesMenu.title.toString())
-        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableString.length, 0)
+        spannableString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannableString.length, 0
+        )
         deleteAllExperiencesMenu.title = spannableString
 
         val deleteMemoryMenu = menu.findItem(R.id.delete_memory_menu)
         val spannableDeleteMemoryMenuString = SpannableString(deleteMemoryMenu.title.toString())
-        spannableDeleteMemoryMenuString.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.errorColor)), 0, spannableDeleteMemoryMenuString.length, 0)
+        spannableDeleteMemoryMenuString.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorColor
+                )
+            ), 0, spannableDeleteMemoryMenuString.length, 0
+        )
         deleteMemoryMenu.title = spannableDeleteMemoryMenuString
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -266,16 +301,16 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if(id == R.id.home_menu) {
+        if (id == R.id.home_menu) {
             memoryDetailsViewModel.onNavigateToJourneysHome()
         }
 
-        if(id == R.id.change_memory_cover_photo_menu) {
+        if (id == R.id.change_memory_cover_photo_menu) {
             memoryDetailsViewModel.onChangeCoverPhotoClicked()
             memoryDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(id == R.id.delete_all_memory_photos_menu) {
+        if (id == R.id.delete_all_memory_photos_menu) {
             val dialogFragment = DeleteAllPhotosDialogFragment(memoryDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -293,7 +328,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             return true
         }
 
-        if(id == R.id.delete_memory_menu) {
+        if (id == R.id.delete_memory_menu) {
             val dialogFragment = DeleteMemoryDialogFragment(memoryDetailsViewModel)
 
             val ft = parentFragmentManager.beginTransaction()
@@ -317,21 +352,33 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     private fun requestReadExternalStoragePermission(requestCode: Int) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PERMISSION_DENIED) {
+            if (checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PERMISSION_DENIED
+            ) {
                 val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
-                when(requestCode) {
-                    READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> requestPermissions(permission, requestCode)
-                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> requestPermissions(permission, requestCode)
+                when (requestCode) {
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> requestPermissions(
+                        permission,
+                        requestCode
+                    )
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> requestPermissions(
+                        permission,
+                        requestCode
+                    )
                 }
             } else {
-                when(requestCode) {
+                when (requestCode) {
                     READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> pickImageFromGallery(requestCode)
-                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> pickImageFromGallery(requestCode)
+                    READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> pickImageFromGallery(
+                        requestCode
+                    )
                 }
             }
         } else {
-            when(requestCode) {
+            when (requestCode) {
                 READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> pickImageFromGallery(requestCode)
                 READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> pickImageFromGallery(requestCode)
             }
@@ -341,9 +388,17 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
     private fun requestWriteExternalStoragePermission(requestCode: Int) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PERMISSION_DENIED
-                || checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PERMISSION_DENIED) {
-                val permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            if (checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PERMISSION_DENIED
+                || checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PERMISSION_DENIED
+            ) {
+                val permission =
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
                 requestPermissions(permission, requestCode)
             } else {
@@ -358,9 +413,12 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         val intent = Intent(Intent.ACTION_PICK)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         intent.type = "image/*"
-        when(requestCode) {
+        when (requestCode) {
             READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO -> startActivityForResult(intent, requestCode)
-            READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> startActivityForResult(intent, requestCode)
+            READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO -> startActivityForResult(
+                intent,
+                requestCode
+            )
         }
     }
 
@@ -368,18 +426,21 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "${System.currentTimeMillis() / 1000L}")
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the TravelCompanion Camera")
-        imageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
+        imageUri = requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            values
+        )!!
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        when(requestCode) {
+        when (requestCode) {
             WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> startActivityForResult(cameraIntent, requestCode)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO && data != null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_PHOTO && data != null) {
             val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
@@ -389,7 +450,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             memoryDetailsViewModel.doneImportingImageFromGallery()
         }
 
-        if(resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO && data != null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE_COVER_PHOTO && data != null) {
             val srcFile = getRealPathForIntentData(data, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
@@ -400,7 +461,7 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
             memoryDetailsViewModel.onUpdateMemoryCoverPhoto()
         }
 
-        if(resultCode == Activity.RESULT_OK && requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
             val srcFile = getRealPathFromUri(imageUri, requireContext())
             val destFile = File(backupPhotoPath, srcFile.name)
             backupPhoto(srcFile, destFile, backupPhotoPath)
@@ -416,13 +477,15 @@ class MemoryDetailsFragment: Fragment(), MemoryDescriptionDialogFragment.DialogL
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode) {
+        when (requestCode) {
             WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     addPhotoFromCamera(8880)
                 } else {
-                    Toast.makeText(requireContext(), "Permissions denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Permissions denied", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

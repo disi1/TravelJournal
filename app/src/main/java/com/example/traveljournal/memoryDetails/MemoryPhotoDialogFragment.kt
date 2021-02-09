@@ -14,7 +14,7 @@ import com.example.traveljournal.databinding.FragmentDialogMemoryPhotoBinding
 class MemoryPhotoDialogFragment(
     val memoryPhoto: MemoryPhoto,
     val memoryDetailsViewModel: MemoryDetailsViewModel
-): DialogFragment(), MemoryPhotoCaptionDialogFragment.DialogListener {
+) : DialogFragment(), MemoryPhotoCaptionDialogFragment.DialogListener {
     private lateinit var closePhotoButton: ImageButton
     private lateinit var deletePhotoButton: ImageButton
     private lateinit var addCaptionHereText: TextView
@@ -38,29 +38,33 @@ class MemoryPhotoDialogFragment(
         addCaptionHereText = binding.photoCaptionTextView
 
         memoryDetailsViewModel.memoryPhotoDeleted.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
+            if (it == true) {
                 dismiss()
                 memoryDetailsViewModel.doneDeletingMemoryPhoto()
             }
         })
 
-        memoryDetailsViewModel.openMemoryPhotoCaptionDialogFragment.observe(viewLifecycleOwner, Observer {
-            if(it == true) {
-                val dialogFragment = MemoryPhotoCaptionDialogFragment(memoryDetailsViewModel, memoryPhoto)
+        memoryDetailsViewModel.openMemoryPhotoCaptionDialogFragment.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    val dialogFragment =
+                        MemoryPhotoCaptionDialogFragment(memoryDetailsViewModel, memoryPhoto)
 
-                val ft = parentFragmentManager.beginTransaction()
-                val prev = parentFragmentManager.findFragmentByTag("open_memory_photo_caption_dialog")
+                    val ft = parentFragmentManager.beginTransaction()
+                    val prev =
+                        parentFragmentManager.findFragmentByTag("open_memory_photo_caption_dialog")
 
-                if (prev != null) {
-                    ft.remove(prev)
+                    if (prev != null) {
+                        ft.remove(prev)
+                    }
+                    ft.addToBackStack(null)
+
+                    dialogFragment.setTargetFragment(this, 300)
+
+                    dialogFragment.show(ft, "open_memory_photo_caption_dialog")
                 }
-                ft.addToBackStack(null)
-
-                dialogFragment.setTargetFragment(this, 300)
-
-                dialogFragment.show(ft, "open_memory_photo_caption_dialog")
-            }
-        })
+            })
 
         memoryDetailsViewModel.memoryPhotoCaption.observe(viewLifecycleOwner, Observer {
             it?.let {

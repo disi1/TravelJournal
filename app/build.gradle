@@ -8,6 +8,11 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
+def properties = new Properties()
+if (rootProject.file("local.properties").exists()) {
+    properties.load(rootProject.file("local.properties").newDataInputStream())
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -24,8 +29,15 @@ android {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
         }
+
+        // Inject the Maps API key into the manifest
+        manifestPlaceholders = [ apiKey : properties.getProperty("API_KEY", "") ]
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"" + properties['API_KEY'] + "\"")
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
