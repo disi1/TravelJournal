@@ -22,12 +22,12 @@ To run the app:
     $ cd TravelJournal
     $ git checkout master
     ```
+1. In Android Studio, open the project folder.
 1. This project uses Places API, thus it needs and API Key. [Get an API Key](https://developers.google.com/places/web-service/get-api-key) and add it to the local.properties like this:
 ```properties
 API_KEY=YOUR_API_KEY
 ```
-1. In Android Studio, open the project folder.
-1. Run the app using a virtual emulator or a physical device (min API level 21).
+5. Run the app using a virtual emulator or a physical device (min API level 21).
 
 ## Application main flow
 Take a look at some of the things you can do with this app:
