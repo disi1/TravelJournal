@@ -38,42 +38,62 @@ Take a look at some of the things you can do with this app:
 ### First launch
 * Note - I used SharedPreferences to only display the Splash Screen on the very first launch of the app
 
-![](./assets/gifs/first_app_launch.gif)
+<p align="center">
+  <img src="./assets/gifs/first_app_launch.gif" width="350"/>
+</p>
 
 ### Adding a journey
 
-![](./assets/gifs/adding_a_journey.gif)
+<p align="center">
+  <img src="./assets/gifs/adding_a_journey.gif" width="350"/>
+</p>
 
 ### Adding an experience
 
-![](./assets/gifs/adding_an_experience.gif)
+<p align="center">
+  <img src="./assets/gifs/adding_an_experience.gif" width="350px"/>
+</p>
 
 ### Adding a memory
 
-![](./assets/gifs/adding_a_memory.gif)
+<p align="center">
+  <img src="./assets/gifs/adding_a_memory.gif" width="350px"/>
+</p>
 
 ### Editting a memory
 
-![](./assets/gifs/editting_a_memory.gif)
+<p align="center">
+  <img src="./assets/gifs/editting_a_memory.gif" width="350px"/>
+</p>
 
 ### Changing the cover photo
 * Note - The cover photo can be changed for Journeys, Experiences, and Memories
 
-![](./assets/gifs/changing_the_cover_photo.gif)
+<p align="center">
+  <img src="./assets/gifs/changing_the_cover_photo.gif" width="350px"/>
+</p>
 
 ### Notifications
 
-![](./assets/gifs/notifications.gif)
+<p align="center">
+  <img src="./assets/gifs/notifications.gif" width="350px"/>
+</p>
 
 ### Back up & restore data
 
-![](./assets/gifs/back_up_data.gif)
+<p align="center">
+  <img src="./assets/gifs/back_up_data.gif" width="350px"/>
+</p>
 
-![](./assets/gifs/restore_data.gif)
+<p align="center">
+  <img src="./assets/gifs/restore_data.gif" width="350px"/>
+</p>
 
 ### Deleting data
 
-![](./assets/gifs/deleting_data.gif)
+<p align="center">
+  <img src="./assets/gifs/deleting_data.gif" width="350px"/>
+</p>
 
 ## Get in touch
 Reach out at [diana.sica29@gmail.com](mailto:diana.sica29@gmail.com)
