@@ -35,5 +35,45 @@ Take a look at some of the things you can do with this app:
   <img src="./assets/MainFlow.png">
 </p>
 
+### First launch
+* Note - I used SharedPreferences to only display the Splash Screen on the very first launch of the app
+
+![](./assets/gifs/first_app_launch.gif)
+
+### Adding a journey
+
+![](./assets/gifs/adding_a_journey.gif)
+
+### Adding an experience
+
+![](./assets/gifs/adding_an_experience.gif)
+
+### Adding a memory
+
+![](./assets/gifs/adding_a_memory.gif)
+
+### Editting a memory
+
+![](./assets/gifs/editting_a_memory.gif)
+
+### Changing the cover photo
+* Note - The cover photo can be changed for Journeys, Experiences, and Memories
+
+![](./assets/gifs/changing_the_cover_photo.gif)
+
+### Notifications
+
+![](./assets/gifs/notifications.gif)
+
+### Back up & restore data
+
+![](./assets/gifs/back_up_data.gif)
+
+![](./assets/gifs/restore_data.gif)
+
+### Deleting data
+
+![](./assets/gifs/deleting_data.gif)
+
 ## Get in touch
 Reach out at [diana.sica29@gmail.com](mailto:diana.sica29@gmail.com)

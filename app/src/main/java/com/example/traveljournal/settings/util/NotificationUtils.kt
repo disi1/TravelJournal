@@ -32,7 +32,7 @@ fun NotificationManager.sendNotification(
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
-        .setPriority(NotificationCompat.PRIORITY_LOW)
+        .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true)
 
     notify(NOTIFICATION_ID, builder.build())
