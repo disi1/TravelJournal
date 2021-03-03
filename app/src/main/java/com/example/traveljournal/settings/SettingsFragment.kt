@@ -126,7 +126,7 @@ class SettingsFragment : Fragment() {
             val notificationChannel = NotificationChannel(
                 channelId,
                 channelName,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_MAX
             )
                 .apply {
                     setShowBadge(true)
